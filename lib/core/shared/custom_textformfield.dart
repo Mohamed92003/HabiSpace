@@ -138,6 +138,12 @@ class _CustomTextformfeildState extends State<CustomTextformfeild> {
         prefixIcon: widget.prefixIcon,
         suffixIcon: widget.isPassword
             ? IconButton(
+                padding: EdgeInsets.zero,
+              style: IconButton.styleFrom(
+                 backgroundColor: Colors.transparent,
+                 highlightColor: Colors.transparent,
+                 splashFactory: NoSplash.splashFactory,
+                    ),
                 icon: Icon(
                   _obscureText ? Icons.visibility_off : Icons.visibility,
                   color: AppColors.textSecondaryColor,

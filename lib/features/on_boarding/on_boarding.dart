@@ -52,7 +52,7 @@ class OnBoarding extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Container(
-                            height: 555,
+                            height: AppSizes.h500,
                             decoration: BoxDecoration(
                               image: DecorationImage(
                                 image: AssetImage(model.image),
@@ -66,7 +66,7 @@ class OnBoarding extends StatelessWidget {
                           ),
                           SizedBox(height: AppSizes.h48),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                            padding:  EdgeInsets.symmetric(horizontal: AppSizes.w16),
                             child: Text(
                               AppTexts.onboardingTitle.tr(),
                               textAlign: TextAlign.center,
@@ -79,7 +79,7 @@ class OnBoarding extends StatelessWidget {
                           ),
                           SizedBox(height: AppSizes.h12),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                            padding:  EdgeInsets.symmetric(horizontal:AppSizes.w16),
                             child: Text(
                               AppTexts.onboardingDescription.tr(),
                               textAlign: TextAlign.center,
@@ -129,25 +129,28 @@ class OnBoarding extends StatelessWidget {
                             ),
                           ),
                           SizedBox(width: AppSizes.w4),
-                          FloatingActionButton(
-                            onPressed: () {
-                              controller.pageController.nextPage(
-                                duration: const Duration(milliseconds: 300),
-                                curve: Curves.easeInOut,
-                              );
-                            },
-                            heroTag: "forward",
-                            mini: true,
-                            elevation: 0,
-                            backgroundColor: AppColors.blue,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(AppSizes.r30),
-                            ),
-                            child: Center(
-                              child: Icon(
-                                Icons.arrow_forward_ios_outlined,
-                                size: AppSizes.w18,
-                                color: AppColors.light,
+                          Visibility(
+                            visible: state.isLastPage ? false : true,
+                            child: FloatingActionButton(
+                              onPressed: () {
+                                controller.pageController.nextPage(
+                                  duration: const Duration(milliseconds: 300),
+                                  curve: Curves.easeInOut,
+                                );
+                              },
+                              heroTag: "forward",
+                              mini: true,
+                              elevation: 0,
+                              backgroundColor: AppColors.blue,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(AppSizes.r30),
+                              ),
+                              child: Center(
+                                child: Icon(
+                                  Icons.arrow_forward_ios_outlined,
+                                  size: AppSizes.w18,
+                                  color: AppColors.light,
+                                ),
                               ),
                             ),
                           ),

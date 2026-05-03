@@ -58,6 +58,14 @@ class AppSizes {
   static final double h260 = 260.h;
   static final double h290 = 290.h;
   static final double h330 = 330.h;
+  static final double h360 = 360.h;
+
+  static final double h400 = 400.h;
+  static final double h450 = 450.h;
+  static final double h480 = 480.h;
+  static final double h500 = 500.h;
+  static final double h555 = 555.h;
+  static final double h560 = 560.h;
 
   /// width
   static final double w2 = 2.w;

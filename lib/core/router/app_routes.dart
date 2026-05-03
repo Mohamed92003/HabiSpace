@@ -4,6 +4,7 @@ abstract class AppRoutes {
   static const String home = '/';
   static const String notifications = '/notifications';
   static const String chat = '/chat';
+  static const String settings = '/details';
   static const String allProperties = '/all-properties';
   static const String favoriteBody = '/favorite-body';
   static const String favoriteDetails = '/favorite-details';
