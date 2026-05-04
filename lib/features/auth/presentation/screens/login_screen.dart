@@ -56,10 +56,9 @@ class LoginScreen extends StatelessWidget {
                   children: [
                     SizedBox(height: AppSizes.h80),
                     CustomSvgImage(
-                      path: "assets/images/logo.svg",
+                      path: "assets/images/logo2.svg",
                       height: AppSizes.h50,
                       width: AppSizes.w170,
-                      color: AppColors.black,
                     ),
                     SizedBox(height: AppSizes.h24),
                     Text(
@@ -261,7 +260,7 @@ class LoginScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "By signing in, you agree to our",
+                          "By signing in, you agree to our ",
                           style: GoogleFonts.poppins(
                             fontSize: AppSizes.sp12,
                             color: AppColors.secondBlack,
@@ -276,15 +275,18 @@ class LoginScreen extends StatelessWidget {
                               builder: (_) => const TermsAndConditionsScreen(),
                             ),
                           ),
-                          child: Text(
-                            "Terms and Conditions.",
-                            style: GoogleFonts.poppins(
-                              fontSize: AppSizes.sp12,
-                              fontWeight: FontWeight.w500,
-                              color: AppColors.blue,
+                          child: SizedBox(
+                            width: AppSizes.w120,
+                            child: Text(
+                              "Terms and Conditions.",
+                              style: GoogleFonts.poppins(
+                                fontSize: AppSizes.sp12,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.blue,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
                             ),
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
                           ),
                         ),
                       ],
@@ -293,7 +295,7 @@ class LoginScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "Learn how we use your data",
+                          "Learn how we use your data ",
                           style: GoogleFonts.poppins(
                             fontSize: AppSizes.sp12,
                             color: AppColors.secondBlack,
@@ -301,19 +303,23 @@ class LoginScreen extends StatelessWidget {
                           ),
                         ),
                         GestureDetector(
-                          // PrivacyPolicyScreen has no route — Navigator.push is fine here
                           onTap: () => Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (_) => const PrivacyPolicyScreen(),
                             ),
                           ),
-                          child: Text(
-                            "in our Privacy Policy.",
-                            style: GoogleFonts.poppins(
-                              fontSize: AppSizes.sp12,
-                              fontWeight: FontWeight.w500,
-                              color: AppColors.blue,
+                          child: SizedBox(
+                            width: AppSizes.w120,
+                            child: Text(
+                              "in our Privacy Policy.",
+                              style: GoogleFonts.poppins(
+                                fontSize: AppSizes.sp12,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.blue,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
                             ),
                           ),
                         ),

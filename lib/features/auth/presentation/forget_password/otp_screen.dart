@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:habispace/features/auth/presentation/logic/auth_bloc.dart';
 import 'package:habispace/features/auth/presentation/logic/auth_state.dart';
@@ -61,13 +62,9 @@ class _OtpScreenState extends State<OtpScreen> {
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is OtpVerified) {
-            Navigator.pushReplacementNamed(
-              context,
+            context.pushReplacement(
               AppRoutes.resetPassword,
-              arguments: {
-                'email': state.email,
-                'otp': state.otp,
-              },
+              extra: {'email': state.email, 'otp': state.otp},
             );
           } else if (state is AuthError) {
             ScaffoldMessenger.of(context).showSnackBar(

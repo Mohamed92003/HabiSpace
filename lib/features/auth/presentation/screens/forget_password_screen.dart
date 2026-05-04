@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:habispace/features/auth/presentation/logic/auth_bloc.dart';
 import 'package:habispace/features/auth/presentation/logic/auth_state.dart';
@@ -34,7 +35,7 @@ class ForgetPasswordScreen extends StatelessWidget {
                  duration: const Duration(seconds: 3),
               ),
             );
-            Navigator.pushNamed(context, AppRoutes.otp, arguments: state.email);
+            context.push(AppRoutes.otp, extra: state.email);
           } else if (state is AuthError) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(

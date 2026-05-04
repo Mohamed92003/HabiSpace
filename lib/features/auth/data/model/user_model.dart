@@ -49,7 +49,7 @@ class UserModel extends UserEntity {
     String? email,
     String? role,
     String? location,
-    int? phone,
+    String? phone,
     String? token,
     DateTime? createdAt,
   }) {
