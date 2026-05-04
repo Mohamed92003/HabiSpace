@@ -5,7 +5,6 @@ import '../../../../core/utils/app_color.dart';
 import '../../../../core/utils/app_sizes.dart';
 import '../../../../core/utils/app_texts.dart';
 
-
 class SectionHeader extends StatelessWidget {
   const SectionHeader({super.key,
   required this.title,

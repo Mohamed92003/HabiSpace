@@ -41,7 +41,6 @@ class ChatInput extends StatelessWidget {
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: AppSizes.w16),
               decoration: BoxDecoration(
-                color: colorScheme.surfaceContainerHighest,
                 borderRadius: BorderRadius.circular(24),
               ),
               child: TextField(
@@ -55,9 +54,9 @@ class ChatInput extends StatelessWidget {
                     fontSize: AppSizes.sp14,
                   ),
                   border: InputBorder.none,
-                  contentPadding: EdgeInsets.symmetric(
-                    vertical: AppSizes.h12,
-                  ),
+                  enabledBorder: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                  contentPadding: EdgeInsets.symmetric(vertical: AppSizes.h12),
                 ),
               ),
             ),

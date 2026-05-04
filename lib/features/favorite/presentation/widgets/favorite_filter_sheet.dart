@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -27,7 +26,6 @@ class _FavoriteFilterSheetState extends State<FavoriteFilterSheet> {
     final List<FavoritePropertyEntity> allFavorites =
         state is FavoriteLoaded ? state.favorites : [];
 
-    // Unique category names
     final categories = allFavorites
         .map((p) => p.categoryName)
         .toSet()
@@ -49,7 +47,7 @@ class _FavoriteFilterSheetState extends State<FavoriteFilterSheet> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Handle
+
           Center(
             child: Container(
               width: 40,
@@ -81,7 +79,6 @@ class _FavoriteFilterSheetState extends State<FavoriteFilterSheet> {
           ),
           SizedBox(height: AppSizes.h12),
 
-          // All chip
           Wrap(
             spacing: AppSizes.w8,
             runSpacing: AppSizes.h8,
@@ -103,7 +100,6 @@ class _FavoriteFilterSheetState extends State<FavoriteFilterSheet> {
 
           SizedBox(height: AppSizes.h28),
 
-          // Buttons
           Row(
             children: [
               Expanded(
@@ -115,7 +111,7 @@ class _FavoriteFilterSheetState extends State<FavoriteFilterSheet> {
                     ),
                   ),
                   onPressed: () {
-                    // Clear filter — reset search to show all
+
                     context.read<FavoriteCubit>().search('');
                     Navigator.pop(context);
                   },
@@ -136,7 +132,7 @@ class _FavoriteFilterSheetState extends State<FavoriteFilterSheet> {
                     ),
                   ),
                   onPressed: () {
-                    // Apply: search by selected category name
+
                     context
                         .read<FavoriteCubit>()
                         .search(_selectedCategory ?? '');

@@ -97,7 +97,7 @@ class LoginScreen extends StatelessWidget {
                       alignment: Alignment.centerRight,
                       child: TextButton(
                         onPressed: () => context.push(AppRoutes.forgotPassword),
-                        // ← fixed
+
                         child: Text(
                           "Forgot Password?",
                           style: GoogleFonts.poppins(
@@ -269,7 +269,7 @@ class LoginScreen extends StatelessWidget {
                           ),
                         ),
                         GestureDetector(
-                          // TermsAndConditionsScreen has no route — Navigator.push is fine here
+
                           onTap: () => Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -301,7 +301,7 @@ class LoginScreen extends StatelessWidget {
                           ),
                         ),
                         GestureDetector(
-                          // PrivacyPolicyScreen has no route — Navigator.push is fine here
+
                           onTap: () => Navigator.push(
                             context,
                             MaterialPageRoute(

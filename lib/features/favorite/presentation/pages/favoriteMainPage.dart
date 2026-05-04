@@ -349,7 +349,7 @@ class FavoriteBody extends StatelessWidget {
       body: SafeArea(
         child: BlocBuilder<FavoriteCubit, FavoriteState>(
           buildWhen: (prev, curr) {
-            // Only rebuild the list when favorites count changes or edit mode changes
+
             final prevList = prev is FavoriteLoaded
                 ? prev.favorites
                 : prev is FavoriteRemoving
@@ -445,7 +445,7 @@ class _EditableCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<FavoriteCubit, FavoriteState>(
       buildWhen: (prev, curr) {
-        // Only rebuild this card when ITS removing state changes
+
         final wasRemoving = prev is FavoriteRemoving && prev.removingId == property.id;
         final isRemoving = curr is FavoriteRemoving && curr.removingId == property.id;
         return wasRemoving != isRemoving;
@@ -510,6 +510,3 @@ class _EditableCard extends StatelessWidget {
     );
   }
 }
-
-
-

@@ -34,14 +34,3 @@ class DetailsContent extends StatelessWidget {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-

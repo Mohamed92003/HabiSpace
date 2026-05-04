@@ -178,7 +178,6 @@ List<Widget> homeViewSlivers(BuildContext context, HomeState state, FavoriteCubi
             ),
           ),
         ),
-
       SliverToBoxAdapter(child: SizedBox(height: AppSizes.h24)),
     ];
   }

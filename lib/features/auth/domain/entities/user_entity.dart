@@ -6,7 +6,7 @@ class UserEntity extends Equatable {
   final String email;
   final String role;
   final String? location;
-  final int? phone;
+  final String? phone;
   final String? token;
   final DateTime createdAt;
 

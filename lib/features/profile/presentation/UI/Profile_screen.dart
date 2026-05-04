@@ -1,7 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:habispace/core/error/app_exception.dart';
+import 'package:habispace/core/router/app_router.dart';
 import 'package:habispace/core/shared/error_view.dart';
 import 'package:habispace/core/theme/theme_cubit.dart';
 import 'package:habispace/core/utils/app_texts.dart';
@@ -69,7 +71,6 @@ List<Widget> profileViewSlivers(BuildContext context, ProfileState state) {
                 AppTexts.profileNotificationPref.tr(),
               ),
 
-              // Dark / Light mode toggle
               BlocBuilder<ThemeCubit, ThemeMode>(
                 builder: (context, themeMode) {
                   final isDark = themeMode == ThemeMode.dark;
@@ -92,7 +93,7 @@ List<Widget> profileViewSlivers(BuildContext context, ProfileState state) {
                   );
                 },
               ),
-              // Language toggle
+
               Builder(
                 builder: (context) {
                   final isArabic = context.locale.languageCode == 'ar';
@@ -145,7 +146,10 @@ List<Widget> profileViewSlivers(BuildContext context, ProfileState state) {
                 Icons.delete_outline,
                 AppTexts.profileDeleteAccount.tr(),
                 isDestructive: true,
-                onTap: () => context.read<ProfileCubit>().deleteProfile(),
+                onTap: () {
+                  context.read<ProfileCubit>().deleteProfile();
+                  context.pushReplacement(AppRoutes.login);
+                  },
               ),
 
               const SizedBox(height: 100),

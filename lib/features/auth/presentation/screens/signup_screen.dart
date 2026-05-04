@@ -13,8 +13,6 @@ import '../../../../core/utils/app_color.dart';
 import '../../../../core/utils/app_sizes.dart';
 import '../../../../core/utils/app_validation.dart';
 
-
-
 class SignupScreen extends StatelessWidget {
   SignupScreen({super.key});
 
@@ -55,7 +53,6 @@ class SignupScreen extends StatelessWidget {
                   ),
                   SizedBox(height: AppSizes.h24),
 
-                  // Name
                   CustomTextformfeild(
                     keyboardType: TextInputType.name,
                     hintText: "Full Name",
@@ -68,7 +65,6 @@ class SignupScreen extends StatelessWidget {
                   ),
                   SizedBox(height: AppSizes.h16),
 
-                  // Email
                   CustomTextformfeild(
                     keyboardType: TextInputType.emailAddress,
                     hintText: "Email",
@@ -81,7 +77,6 @@ class SignupScreen extends StatelessWidget {
                   ),
                   SizedBox(height: AppSizes.h16),
 
-                  // Password
                   CustomTextformfeild(
                     keyboardType: TextInputType.visiblePassword,
                     hintText: "Password",
@@ -95,7 +90,6 @@ class SignupScreen extends StatelessWidget {
                   ),
                   SizedBox(height: AppSizes.h16),
 
-                  // Confirm Password
                   CustomTextformfeild(
                     keyboardType: TextInputType.visiblePassword,
                     hintText: "Confirm Password",
@@ -110,7 +104,6 @@ class SignupScreen extends StatelessWidget {
                   ),
                   SizedBox(height: AppSizes.h24),
 
-                  // Sign Up Button
                   BlocConsumer<AuthBloc, AuthState>(
                     listener: (context, state) {
                       if (state is SignUpSuccess) {
@@ -171,7 +164,6 @@ class SignupScreen extends StatelessWidget {
                     },
                   ),
                   SizedBox(height: AppSizes.h24),
-
 
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,

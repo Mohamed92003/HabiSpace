@@ -37,11 +37,10 @@ class SecureStorage {
   }
 
   Future<void> setStringList(String key, List<String> value) async {
-    // بنحول القائمة لـ JSON String عشان نعرف نخزنها
+
     String jsonString = jsonEncode(value);
     await _storage.write(key: key, value: jsonString);
   }
-
 
   Future<String?> getString(String key) async {
     return await _storage.read(key: key);
@@ -72,7 +71,6 @@ class SecureStorage {
       return null;
     }
   }
-
 
   Future<void> remove(String key) async {
     await _storage.delete(key: key);

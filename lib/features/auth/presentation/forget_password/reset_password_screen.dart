@@ -12,7 +12,6 @@ import '../../../../core/utils/app_color.dart';
 import '../../../../core/utils/app_sizes.dart';
 import '../../../../core/utils/app_texts.dart';
 
-
 class ResetPasswordScreen extends StatelessWidget {
   final String otp;
   final String email;
@@ -70,8 +69,6 @@ class ResetPasswordScreen extends StatelessWidget {
                     style: GoogleFonts.poppins(fontSize: 14),
                   ),
                   SizedBox(height: AppSizes.h24),
-
-
 
                   CustomTextformfeild(
                     keyboardType: TextInputType.visiblePassword,

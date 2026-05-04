@@ -12,10 +12,7 @@ class AuthDatasourceImpl implements AuthDatasource {
 
   Future ensureInitialized() async {
     if (isInitialize) return;
-    // final clientId =dotenv.env['GOOGLE_CLIENT_ID'];
-    // if (clientId == null || clientId.isEmpty) {
-    //   throw AuthException('GOOGLE_WEB_CLIENT_ID is missing in .env');
-    // }
+
     await _googleSignIn.initialize(serverClientId: '936772323750-bh2bdr1ilfaj9jr6vpvq6e7j0fgt9ids.apps.googleusercontent.com');
     isInitialize = true;
   }

@@ -10,6 +10,10 @@ import '../../features/auth/presentation/forget_password/otp_screen.dart';
 import '../../features/auth/presentation/forget_password/reset_password_screen.dart';
 import '../../features/chat/presentation/cubit/chat_cubit.dart';
 import '../../features/chat/presentation/ui/chat_view.dart';
+import '../../features/chat/presentation/ui/conversations_view.dart';
+import '../../features/details/presentation/cubit/details_cubit.dart';
+import '../../features/details/presentation/ui/details_view.dart';
+import '../../features/reviews/presentation/ui/reviews_view.dart';
 import '../../features/favorite/domain/entities/favorite_property_entity.dart';
 import '../../features/favorite/presentation/cubit/FavoriteCubit/favorite_cubit_cubit.dart';
 import '../../features/favorite/presentation/pages/favorite_details_page.dart';
@@ -25,8 +29,6 @@ import '../../features/profile/presentation/Cubit/cubit/profile_cubit.dart';
 import '../di/get_it.dart';
 part 'app_routes.dart';
 
-
-
 GoRouter createRouter(String initialLocation) => GoRouter(
   initialLocation: initialLocation,
   debugLogDiagnostics: true,
@@ -36,7 +38,27 @@ GoRouter createRouter(String initialLocation) => GoRouter(
       name: AppRoutes.onBoarding,
       builder: (context, state) => const OnBoarding(),
     ),
-
+    GoRoute(
+      path: AppRoutes.details,
+      name: AppRoutes.details,
+      builder: (context, state) {
+        final extra = state.extra as Map<String, dynamic>;
+        final propertyId = extra['propertyId'] as int;
+        final favoriteCubit = extra['favoriteCubit'] as FavoriteCubit;
+        final similar =
+            (extra['similarProperties'] as List<HomePropertyEntity>?) ?? [];
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider<DetailsCubit>(create: (_) => sl<DetailsCubit>()),
+            BlocProvider<FavoriteCubit>.value(value: favoriteCubit),
+          ],
+          child: DetailsView(
+            propertyId: propertyId,
+            similarProperties: similar,
+          ),
+        );
+      },
+    ),
     GoRoute(
       path: AppRoutes.login,
       name: AppRoutes.login,
@@ -111,6 +133,30 @@ GoRouter createRouter(String initialLocation) => GoRouter(
     ),
 
     GoRoute(
+      path: AppRoutes.reviews,
+      name: AppRoutes.reviews,
+      builder: (context, state) {
+        final extra = state.extra as Map<String, dynamic>;
+        return BlocProvider.value(
+          value: extra['detailsCubit'] as DetailsCubit,
+          child: ReviewsView(
+            propertyId: extra['propertyId'] as int,
+            propertyTitle: extra['propertyTitle'] as String,
+          ),
+        );
+      },
+    ),
+
+    GoRoute(
+      path: AppRoutes.conversations,
+      name: AppRoutes.conversations,
+      builder: (context, state) => BlocProvider(
+        create: (_) => sl<ChatCubit>(),
+        child: const ConversationsView(),
+      ),
+    ),
+
+    GoRoute(
       path: AppRoutes.chat,
       name: AppRoutes.chat,
       builder: (context, state) {
@@ -163,7 +209,7 @@ GoRouter createRouter(String initialLocation) => GoRouter(
           child: FavoriteDetailsPage(
             property: extra['property'] as FavoritePropertyEntity,
             allFavorites:
-            extra['allFavorites'] as List<FavoritePropertyEntity>? ??
+                extra['allFavorites'] as List<FavoritePropertyEntity>? ??
                 const [],
           ),
         );

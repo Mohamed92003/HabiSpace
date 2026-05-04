@@ -7,6 +7,7 @@ class AgentEntity {
   final String? licenseNumber;
   final String company;
   final AgentUserEntity user;
+  final String? phone;
 
   AgentEntity({
     required this.id,
@@ -15,5 +16,6 @@ class AgentEntity {
     this.licenseNumber,
     required this.company,
     required this.user,
+    required this.phone,
   });
 }

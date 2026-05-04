@@ -13,7 +13,6 @@ class FavoriteCubit extends Cubit<FavoriteState> {
   final AddToFavouriteUseCase addToFavouriteUseCase;
   final RemoveFavouriteUseCase removeFavouriteUseCase;
 
-  // Tracks IDs optimistically added — cleared only when getFavorites() refreshes
   final Set<int> _pendingAddIds = {};
   final Set<int> _confirmedAddIds = {};
 
@@ -27,7 +26,7 @@ class FavoriteCubit extends Cubit<FavoriteState> {
     emit(FavoriteLoading());
     try {
       final favorites = await getListFavoriteUseCase.call();
-      // Real data from server — clear all optimistic tracking
+
       _pendingAddIds.clear();
       _confirmedAddIds.clear();
       emit(FavoriteLoaded(favorites));
@@ -37,12 +36,9 @@ class FavoriteCubit extends Cubit<FavoriteState> {
     }
   }
 
-  // ── Add ───────────────────────────────────────────────────────────────────
-
   Future<void> addFavorite(int propertyId) async {
     final current = state;
 
-    // Step 1: optimistic — show star as active immediately
     _pendingAddIds.add(propertyId);
     if (current is FavoriteLoaded) {
       emit(current.copyWith(
@@ -52,11 +48,10 @@ class FavoriteCubit extends Cubit<FavoriteState> {
 
     try {
       await addToFavouriteUseCase.call(propertyId);
-      // Step 2: API confirmed — move to confirmed set, keep star active
+
       _pendingAddIds.remove(propertyId);
       _confirmedAddIds.add(propertyId);
 
-      // Step 3: silently refresh favorites list — no FavoriteLoading emitted
       final favorites = await getListFavoriteUseCase.call();
       _pendingAddIds.clear();
       _confirmedAddIds.clear();
@@ -67,7 +62,7 @@ class FavoriteCubit extends Cubit<FavoriteState> {
         searchQuery: curr is FavoriteLoaded ? curr.searchQuery : '',
       ));
     } catch (e) {
-      // Rollback — remove from both sets
+
       _pendingAddIds.remove(propertyId);
       _confirmedAddIds.remove(propertyId);
       final curr = state;
@@ -80,8 +75,6 @@ class FavoriteCubit extends Cubit<FavoriteState> {
     }
   }
 
-  // ── Check ──────────────────────────────────────────────────────────────────
-
   bool isFavorite(int propertyId) {
     if (_pendingAddIds.contains(propertyId)) return true;
     final current = state;
@@ -91,16 +84,12 @@ class FavoriteCubit extends Cubit<FavoriteState> {
     return false;
   }
 
-  // ── Search / filter ────────────────────────────────────────────────────────
-
   void search(String query) {
     final current = state;
     if (current is FavoriteLoaded) {
       emit(current.copyWith(searchQuery: query));
     }
   }
-
-  // ── Edit mode toggle ───────────────────────────────────────────────────────
 
   void toggleEditMode() {
     final current = state;
@@ -109,13 +98,10 @@ class FavoriteCubit extends Cubit<FavoriteState> {
     }
   }
 
-  // ── Remove ─────────────────────────────────────────────────────────────────
-
   Future<void> removeFavorite(int propertyId) async {
     final current = state;
     if (current is! FavoriteLoaded) return;
 
-    // Also remove from optimistic sets
     _pendingAddIds.remove(propertyId);
     _confirmedAddIds.remove(propertyId);
 

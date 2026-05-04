@@ -7,7 +7,6 @@ class FilterChipItem extends StatelessWidget {
   final bool isSelected;
   final VoidCallback onTap;
 
-
   const FilterChipItem({
     super.key,
     required this.text,

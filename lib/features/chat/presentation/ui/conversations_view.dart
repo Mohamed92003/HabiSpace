@@ -1,0 +1,206 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import '../../../../core/router/app_router.dart';
+import '../../../../core/utils/app_color.dart';
+import '../../../../core/utils/app_sizes.dart';
+import '../../domain/entity/conversation_entity.dart';
+import '../cubit/chat_cubit.dart';
+
+class ConversationsView extends StatefulWidget {
+  const ConversationsView({super.key});
+
+  @override
+  State<ConversationsView> createState() => _ConversationsViewState();
+}
+
+class _ConversationsViewState extends State<ConversationsView> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<ChatCubit>().loadConversations();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppColors.lightBackground,
+      appBar: AppBar(
+        backgroundColor: AppColors.lightBackground,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back_ios_new_rounded,
+            color: AppColors.secondBlack,
+            size: 18,
+          ),
+          onPressed: () => context.pop(),
+        ),
+        title: const Text(
+          'Messages',
+          style: TextStyle(
+            color: AppColors.secondBlack,
+            fontSize: 16,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        centerTitle: true,
+      ),
+      body: BlocBuilder<ChatCubit, ChatState>(
+        builder: (context, state) {
+          if (state is ChatLoading) {
+            return const Center(
+              child: CircularProgressIndicator(color: AppColors.blue),
+            );
+          }
+
+          if (state is ChatError) {
+            return Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(Icons.error_outline, color: Colors.red, size: 48),
+                  const SizedBox(height: 12),
+                  Text(
+                    state.message,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(color: AppColors.textSecondaryColor),
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.blue,
+                    ),
+                    onPressed: () =>
+                        context.read<ChatCubit>().loadConversations(),
+                    child: const Text(
+                      'Retry',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+
+          if (state is ConversationsLoaded) {
+            if (state.conversations.isEmpty) {
+              return Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.chat_bubble_outline_rounded,
+                      size: 64,
+                      color: AppColors.textLightColor.withValues(alpha: 0.5),
+                    ),
+                    const SizedBox(height: 16),
+                    const Text(
+                      'No conversations yet',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.textSecondaryColor,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    const Text(
+                      'Start a chat from a property listing',
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: AppColors.textLightColor,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }
+
+            return ListView.separated(
+              padding: EdgeInsets.symmetric(
+                horizontal: AppSizes.w16,
+                vertical: AppSizes.h12,
+              ),
+              itemCount: state.conversations.length,
+              separatorBuilder: (_, __) =>
+                  Divider(height: 1, color: AppColors.borderColor),
+              itemBuilder: (context, index) {
+                final conv = state.conversations[index];
+                return _ConversationTile(
+                  conversation: conv,
+                  onTap: () => context.pushNamed(
+                    AppRoutes.chat,
+                    extra: {'conversationId': conv.id, 'agentName': 'Agent'},
+                  ),
+                );
+              },
+            );
+          }
+
+          return const SizedBox();
+        },
+      ),
+    );
+  }
+}
+
+class _ConversationTile extends StatelessWidget {
+  final ConversationEntity conversation;
+  final VoidCallback onTap;
+
+  const _ConversationTile({required this.conversation, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    final lastMessage = conversation.messages.isNotEmpty
+        ? conversation.messages.last.body
+        : 'No messages yet';
+    final time = conversation.messages.isNotEmpty
+        ? _formatTime(conversation.messages.last.createdAt)
+        : '';
+
+    return ListTile(
+      onTap: onTap,
+      contentPadding: EdgeInsets.symmetric(
+        vertical: AppSizes.h8,
+        horizontal: AppSizes.w4,
+      ),
+      leading: CircleAvatar(
+        radius: 24,
+        backgroundColor: AppColors.primaryContact,
+        child: const Icon(
+          Icons.person_outline_rounded,
+          color: AppColors.blue,
+          size: 24,
+        ),
+      ),
+      title: Text(
+        'Property #${conversation.propertyId}',
+        style: const TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
+          color: AppColors.secondBlack,
+        ),
+      ),
+      subtitle: Text(
+        lastMessage,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: const TextStyle(fontSize: 12, color: AppColors.textLightColor),
+      ),
+      trailing: Text(
+        time,
+        style: const TextStyle(fontSize: 11, color: AppColors.textLightColor),
+      ),
+    );
+  }
+
+  String _formatTime(DateTime dt) {
+    final now = DateTime.now();
+    final diff = now.difference(dt);
+    if (diff.inMinutes < 1) return 'now';
+    if (diff.inHours < 1) return '${diff.inMinutes}m';
+    if (diff.inDays < 1) return '${diff.inHours}h';
+    return '${diff.inDays}d';
+  }
+}

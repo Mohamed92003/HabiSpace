@@ -21,4 +21,8 @@ class AppColors {
   static const Color textLightColor = Color(0xff9E9E9E);
   static const Color lightGrayColor = Color(0xffF5F5F5);
   static const Color borderColor = Color(0xffE0E0E0);
+
+  static const Color primaryLight = Color(0xFFBFF8FF);
+  static const Color primaryContact = Color(0xFFD6F4F8);
+
 }

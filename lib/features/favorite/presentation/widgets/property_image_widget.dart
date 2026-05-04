@@ -14,7 +14,6 @@ class PropertyImageWidget extends StatelessWidget {
     this.borderRadius,
   });
 
-  /// Prepends base URL for relative paths
   static String resolveUrl(String url) {
     if (url.startsWith('http://') || url.startsWith('https://')) return url;
     final base = ApiConstant.baseUrl.replaceAll('/api/v1', '');
@@ -22,7 +21,6 @@ class PropertyImageWidget extends StatelessWidget {
     return joined.replaceAllMapped(RegExp(r'(?<!:)//'), (_) => '/');
   }
 
-  /// placehold.co and .svg URLs return SVG — must use SvgPicture
   static bool _isSvg(String url) {
     final lower = url.toLowerCase();
     return lower.contains('placehold.co') ||
@@ -40,7 +38,7 @@ class PropertyImageWidget extends StatelessWidget {
     if (resolved == null) {
       image = _Placeholder(height: height ?? 200);
     } else if (_isSvg(resolved)) {
-      // SVG — use flutter_svg
+
       image = SvgPicture.network(
         resolved,
         width: double.infinity,
@@ -49,14 +47,14 @@ class PropertyImageWidget extends StatelessWidget {
         headers: const {'User-Agent': 'Mozilla/5.0'},
         placeholderBuilder: (_) => _Placeholder(height: height ?? 200, loading: true),
       );
-      // Wrap in SizedBox so height is respected
+
       image = SizedBox(
         width: double.infinity,
         height: height,
         child: image,
       );
     } else {
-      // Regular raster image
+
       image = Image.network(
         resolved,
         width: double.infinity,

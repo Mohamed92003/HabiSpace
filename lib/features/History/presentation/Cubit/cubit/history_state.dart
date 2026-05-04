@@ -12,7 +12,6 @@ class HistorySuccess extends HistoryState {
 
   HistorySuccess({required this.orders, this.searchQuery = ''});
 
-  /// Returns orders filtered by the current search query.
   List<OrderEntity> get filtered {
     if (searchQuery.trim().isEmpty) return orders;
     final q = searchQuery.toLowerCase();

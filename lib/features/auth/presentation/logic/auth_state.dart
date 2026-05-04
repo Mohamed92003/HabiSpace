@@ -44,7 +44,6 @@ final class ForgotPasswordEmailSent extends AuthState {
   final String email;
   final String message;
 
-
   const ForgotPasswordEmailSent({required this.email , required this.message});
 
   @override
@@ -66,4 +65,3 @@ final class SignUpSuccess extends AuthState {
   @override
   List<Object> get props => [user];
 }
-

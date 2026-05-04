@@ -46,7 +46,6 @@ class FavoriteCardWidget extends StatelessWidget {
   }
 }
 
-
 class _CardImage extends StatelessWidget {
   final FavoritePropertyEntity property;
   const _CardImage({required this.property});
@@ -69,7 +68,6 @@ class _CardImage extends StatelessWidget {
     );
   }
 }
-
 
 class _CardContent extends StatelessWidget {
   final FavoritePropertyEntity property;
@@ -95,7 +93,6 @@ class _CardContent extends StatelessWidget {
     );
   }
 }
-
 
 class _TitleRow extends StatelessWidget {
   final String title;
@@ -128,7 +125,6 @@ class _TitleRow extends StatelessWidget {
     );
   }
 }
-
 
 class _LocationRow extends StatelessWidget {
   final String address;
@@ -166,7 +162,6 @@ class _LocationRow extends StatelessWidget {
     );
   }
 }
-
 
 class _PriceRatingRow extends StatelessWidget {
   final String price;
