@@ -2,6 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:habispace/features/details/domain/entities/property_detail_entity.dart';
+import 'package:habispace/features/payment/presentation/ui/payment_view.dart';
 import '../../features/auth/presentation/logic/auth_bloc.dart';
 import '../../features/auth/presentation/screens/forget_password_screen.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
@@ -28,6 +30,8 @@ import '../../features/on_boarding/on_boarding.dart';
 import '../../features/profile/presentation/Cubit/cubit/profile_cubit.dart';
 import '../di/get_it.dart';
 part 'app_routes.dart';
+
+PropertyDetailEntity ?pr;
 
 GoRouter createRouter(String initialLocation) => GoRouter(
   initialLocation: initialLocation,
@@ -215,6 +219,8 @@ GoRouter createRouter(String initialLocation) => GoRouter(
         );
       },
     ),
+ 
+    
   ],
 
   errorBuilder: (context, state) => Scaffold(

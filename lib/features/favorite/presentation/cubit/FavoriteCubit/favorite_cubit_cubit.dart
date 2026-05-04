@@ -23,15 +23,18 @@ class FavoriteCubit extends Cubit<FavoriteState> {
   }) : super(FavoriteInitial());
 
   Future<void> getFavorites() async {
+    if (isClosed) return;
     emit(FavoriteLoading());
     try {
       final favorites = await getListFavoriteUseCase.call();
 
       _pendingAddIds.clear();
       _confirmedAddIds.clear();
+      if (isClosed) return;
       emit(FavoriteLoaded(favorites));
     } catch (e, st) {
       debugPrint('❌ FavoriteCubit.getFavorites error: $e\n$st');
+      if (isClosed) return;
       emit(FavoriteError(handleException(e).message));
     }
   }
@@ -41,6 +44,7 @@ class FavoriteCubit extends Cubit<FavoriteState> {
 
     _pendingAddIds.add(propertyId);
     if (current is FavoriteLoaded) {
+      if (isClosed) return;
       emit(current.copyWith(
         pendingFavoriteIds: {..._pendingAddIds, ..._confirmedAddIds},
       ));
@@ -56,16 +60,17 @@ class FavoriteCubit extends Cubit<FavoriteState> {
       _pendingAddIds.clear();
       _confirmedAddIds.clear();
       final curr = state;
+      if (isClosed) return;
       emit(FavoriteLoaded(
         favorites,
         isEditMode: curr is FavoriteLoaded ? curr.isEditMode : false,
         searchQuery: curr is FavoriteLoaded ? curr.searchQuery : '',
       ));
     } catch (e) {
-
       _pendingAddIds.remove(propertyId);
       _confirmedAddIds.remove(propertyId);
       final curr = state;
+      if (isClosed) return;
       if (curr is FavoriteLoaded) {
         emit(curr.copyWith(
           pendingFavoriteIds: {..._pendingAddIds, ..._confirmedAddIds},
@@ -109,6 +114,7 @@ class FavoriteCubit extends Cubit<FavoriteState> {
     final updated = currentList.where((p) => p.id != propertyId).toList();
     final wasEditMode = current.isEditMode;
 
+    if (isClosed) return;
     emit(FavoriteRemoving(
       currentList,
       propertyId,
@@ -118,12 +124,14 @@ class FavoriteCubit extends Cubit<FavoriteState> {
 
     try {
       await removeFavouriteUseCase.call(propertyId);
+      if (isClosed) return;
       emit(FavoriteLoaded(
         updated,
         isEditMode: wasEditMode,
         searchQuery: current.searchQuery,
       ));
     } catch (e) {
+      if (isClosed) return;
       emit(FavoriteLoaded(
         currentList,
         isEditMode: wasEditMode,
