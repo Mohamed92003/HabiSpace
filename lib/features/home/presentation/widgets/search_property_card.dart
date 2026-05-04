@@ -13,7 +13,7 @@ import '../../domain/entities/home_property_entity.dart';
 class SearchPropertyCard extends StatelessWidget {
   final HomePropertyEntity property;
 
-  const SearchPropertyCard({required this.property});
+  const SearchPropertyCard({super.key, required this.property});
 
   @override
   Widget build(BuildContext context) {

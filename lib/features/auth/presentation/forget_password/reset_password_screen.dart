@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:habispace/features/auth/presentation/logic/auth_bloc.dart';
 
@@ -40,11 +41,7 @@ class ResetPasswordScreen extends StatelessWidget {
                 behavior: SnackBarBehavior.floating,
               ),
             );
-            Navigator.pushNamedAndRemoveUntil(
-              context,
-              AppRoutes.login,
-                  (route) => false,
-            );
+            context.go(AppRoutes.login);
           } else if (state is AuthError) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(

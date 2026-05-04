@@ -13,7 +13,7 @@ import '../../domain/entities/home_property_entity.dart';
 class PropertyCard extends StatelessWidget {
   final HomePropertyEntity property;
 
-  const PropertyCard({required this.property});
+  const PropertyCard({super.key, required this.property});
 
   @override
   Widget build(BuildContext context) {
@@ -74,11 +74,10 @@ class PropertyCard extends StatelessWidget {
                                 ),
                               );
                             },
-                            errorBuilder: (context, error, stackTrace) =>
-                                Image.asset(
-                                  'assets/images/Frame 2147228697.png',
-                                  fit: BoxFit.cover,
-                                ),
+                            errorBuilder: (context, error, stackTrace) => Image.asset(
+                              'assets/images/logo_other.png',
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         )
                       : Image.asset(
