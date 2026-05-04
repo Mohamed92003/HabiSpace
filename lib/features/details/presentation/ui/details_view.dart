@@ -21,7 +21,6 @@ import '../widgets/details_you_must_also_like.dart';
 class DetailsView extends StatefulWidget {
   final int propertyId;
   final List<HomePropertyEntity> similarProperties;
-
   const DetailsView({
     super.key,
     required this.propertyId,
@@ -149,6 +148,7 @@ class _DetailsViewState extends State<DetailsView> {
                 left: 0,
                 right: 0,
                 child: DetailsAppBar(
+                  
                   blurAmount: _blurAmount,
                   bgColor: _appBarBg,
                   iconColor: _iconColor,
@@ -157,11 +157,13 @@ class _DetailsViewState extends State<DetailsView> {
               ),
 
               if (state is DetailsLoaded)
-                const Positioned(
+                Positioned(
                   bottom: 0,
                   left: 0,
                   right: 0,
-                  child: DetailsBottomBar(),
+                  child: DetailsBottomBar(
+                    property: state.property
+                     ,),
                 ),
             ],
           );

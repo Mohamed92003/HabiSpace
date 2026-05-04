@@ -166,20 +166,22 @@ class LoginScreen extends StatelessWidget {
                       },
                     ),
                     SizedBox(height: AppSizes.h24),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(height: 2, width: 120, color: AppColors.borderColor),
-                        Text(
-                          "or login with",
-                          style: GoogleFonts.inter(
-                            fontSize: AppSizes.sp12,
-                            fontWeight: FontWeight.w400,
-                            color: AppColors.secondBlack,
+                    FittedBox(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(height: 2, width: AppSizes.w120, color: AppColors.borderColor),
+                          Text(
+                            "or login with",
+                            style: GoogleFonts.inter(
+                              fontSize: AppSizes.sp16,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.secondBlack,
+                            ),
                           ),
-                        ),
-                        Container(height: 2, width: 120, color: AppColors.borderColor),
-                      ],
+                          Container(height: 2, width: AppSizes.w120, color: AppColors.borderColor),
+                        ],
+                      ),
                     ),
                     SizedBox(height: AppSizes.h18),
                     BlocConsumer<AuthBloc, AuthState>(

@@ -13,6 +13,7 @@ class ApiConstant {
   static const String signup = 'auth/register';
   static const String login = 'auth/login';
   static const String orders='orders';
+  static const String createPayment = 'orders';
   static const String getProfile = 'auth/me';
   static const String deleteAccount='auth/logout';
 

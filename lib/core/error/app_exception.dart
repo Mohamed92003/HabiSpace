@@ -106,6 +106,12 @@ AppException _fromStatusCode(int? statusCode, dynamic data) {
         statusCode: 404,
         type: AppExceptionType.notFound,
       );
+    case 409:
+      return AppException(
+        message: serverMessage ?? 'Conflict: this action cannot be completed.',
+        statusCode: 409,
+        type: AppExceptionType.badRequest,
+      );
     case 422:
       return AppException(
         message: serverMessage ?? 'Validation failed. Please check your input.',

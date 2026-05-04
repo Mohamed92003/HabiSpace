@@ -230,6 +230,6 @@ class AppTexts {
   static const String profileDarkMode = 'Dark Mode';
   static const String profileLightMode = 'Light Mode';
   static const String profileLanguage = 'Language';
-  static const String profileDeleteAccount = 'Delete Account';
+  static const String profilelogout = 'Log out';
   static const String profileSomethingWrong = 'Something went wrong';
 }

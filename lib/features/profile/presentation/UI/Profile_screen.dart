@@ -144,7 +144,7 @@ List<Widget> profileViewSlivers(BuildContext context, ProfileState state) {
 
               buildMenuItem(
                 Icons.delete_outline,
-                AppTexts.profileDeleteAccount.tr(),
+                AppTexts.profilelogout.tr(),
                 isDestructive: true,
                 onTap: () {
                   context.read<ProfileCubit>().deleteProfile();
