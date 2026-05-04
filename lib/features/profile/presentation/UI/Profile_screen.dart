@@ -174,7 +174,7 @@ class _ProfileHeaderSliver extends StatelessWidget {
   const _ProfileHeaderSliver({this.imageUrl, required this.name});
 
   static const String _fallbackImage =
-      'https://i.pinimg.com/736x/1d/a5/22/1da522be47c880e198dc87f77133d649.jpg';
+      'https://i.pinimg.com/474x/7a/24/75/7a247579a370259119ed42b4bdddeea1.jpg';
 
   @override
   Widget build(BuildContext context) {
