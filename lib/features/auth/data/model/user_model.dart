@@ -17,7 +17,7 @@ class UserModel extends UserEntity {
     final user = data["user"] as Map<String, dynamic>;
 
     return UserModel(
-      id: (user["id"] ?? 0).toInt(),
+      id: (user["id"] ??0).toInt(),
       username: user["name"] as String? ?? "Unknown",
       email: user["email"] as String? ?? "",
       role: user["role"] as String? ?? "user",
@@ -49,7 +49,7 @@ class UserModel extends UserEntity {
     String? email,
     String? role,
     String? location,
-    int? phone,
+    String? phone,
     String? token,
     DateTime? createdAt,
   }) {

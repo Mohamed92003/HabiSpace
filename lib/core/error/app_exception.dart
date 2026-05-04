@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 
-/// Unified exception type used across all features.
 class AppException implements Exception {
   final String message;
   final int? statusCode;
@@ -27,7 +26,6 @@ enum AppExceptionType {
   unknown,
 }
 
-/// Converts any exception (DioException, Exception, etc.) into [AppException].
 AppException handleException(Object error) {
   if (error is AppException) return error;
 
@@ -75,7 +73,7 @@ AppException _fromDio(DioException e) {
 }
 
 AppException _fromStatusCode(int? statusCode, dynamic data) {
-  // Try to extract server message from response body
+
   String? serverMessage;
   if (data is Map) {
     serverMessage = data['message']?.toString() ??

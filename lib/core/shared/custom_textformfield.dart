@@ -104,7 +104,7 @@ class _CustomTextformfeildState extends State<CustomTextformfeild> {
       textDirection: isRTL ? TextDirection.rtl : TextDirection.ltr,
       textAlign: isRTL ? TextAlign.right : TextAlign.left,
       onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
-      // ستايل النص المكتوب داخل الحقل
+
       style: TextStyle(
         fontSize: 16.sp,
         color: AppColors.black,
@@ -113,7 +113,7 @@ class _CustomTextformfeildState extends State<CustomTextformfeild> {
       decoration: InputDecoration(
         errorText: widget.errorText,
         hintText: widget.hintText,
-        // ستايل نص التلميح
+
         hintStyle: TextStyle(
           fontSize: 14.sp,
           color: AppColors.textLightColor,
@@ -124,7 +124,7 @@ class _CustomTextformfeildState extends State<CustomTextformfeild> {
           horizontal: 16.w,
           vertical: 14.h,
         ),
-        // ستايل نص الخطأ
+
         errorStyle: TextStyle(
           fontSize: 12.sp,
           color: AppColors.error,
@@ -156,7 +156,6 @@ class _CustomTextformfeildState extends State<CustomTextformfeild> {
     );
   }
 
-  // دالة داخلية لبناء الحدود لتجنب التكرار
   OutlineInputBorder _buildOutlineBorder({Color color = AppColors.borderColor, double width = 1}) {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(widget.borderRadius ?? 12.r),

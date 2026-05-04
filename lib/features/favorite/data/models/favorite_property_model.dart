@@ -1,5 +1,4 @@
 
-
 import '../../domain/entities/favorite_property_entity.dart';
 
 class FavoritePropertyModel extends FavoritePropertyEntity {
@@ -27,7 +26,6 @@ class FavoritePropertyModel extends FavoritePropertyEntity {
           .toList();
     }
 
-    // Parse amenities from API or build from known fields
     List<String> amenities = [];
     if (json['amenities'] != null) {
       amenities = (json['amenities'] as List)
@@ -35,7 +33,6 @@ class FavoritePropertyModel extends FavoritePropertyEntity {
           .toList();
     }
 
-    // Fallback: build amenities from bedrooms/bathrooms if API doesn't return them
     if (amenities.isEmpty) {
       final beds = json['bedrooms'] ?? 0;
       final baths = json['bathrooms'] ?? 0;
@@ -43,7 +40,6 @@ class FavoritePropertyModel extends FavoritePropertyEntity {
       if (baths > 0) amenities.add('$baths Bathroom${baths > 1 ? 's' : ''}');
     }
 
-    // Parse rating
     double rating = 0.0;
     if (json['rating'] != null) {
       rating = double.tryParse(json['rating'].toString()) ?? 0.0;
@@ -51,7 +47,6 @@ class FavoritePropertyModel extends FavoritePropertyEntity {
       rating = double.tryParse(json['average_rating'].toString()) ?? 0.0;
     }
 
-    // Parse type
     String type = 'For a Rent';
     if (json['type'] != null) {
       type = json['type'].toString();
@@ -61,7 +56,6 @@ class FavoritePropertyModel extends FavoritePropertyEntity {
       type = json['purpose'].toString();
     }
 
-    // Parse distance
     String distance = '';
     if (json['distance'] != null) {
       distance = json['distance'].toString();
@@ -83,7 +77,6 @@ class FavoritePropertyModel extends FavoritePropertyEntity {
       distance: distance,
     );
   }
-
 
   FavoritePropertyEntity toEntity() {
     return FavoritePropertyEntity(

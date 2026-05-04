@@ -56,7 +56,6 @@ class SignUpWithEmailEvent extends AuthEvent {
   final String password;
   final String passwordConfirmation;
 
-
   const SignUpWithEmailEvent({
     required this.name,
     required this.email,

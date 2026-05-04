@@ -1,5 +1,4 @@
 
-
 import '../entities/favorite_property_entity.dart';
 import '../repositories/Favorite_repository.dart';
 

@@ -37,7 +37,6 @@ class AmenityChipWidget extends StatelessWidget {
   }
 }
 
-/// Builds the amenity chips list from a [PropertyEntity]
 class AmenitiesWrap extends StatelessWidget {
   final FavoritePropertyEntity property;
 

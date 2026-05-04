@@ -2,6 +2,6 @@
 
 abstract class ProfileDataSource {
     Future<UserModel> getProfileData();
- 
+
     Future<void> deleteAccount();
 }

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
+import '../../../../core/router/app_router.dart';
 import '../../../../core/utils/app_color.dart';
 import '../../../../core/utils/app_sizes.dart';
 import '../../../favorite/presentation/cubit/FavoriteCubit/favorite_cubit_cubit.dart';
 import '../../../favorite/presentation/cubit/FavoriteCubit/favorite_cubit_state.dart';
+import '../../../home/presentation/cubit/home_cubit.dart';
 import '../../domain/entities/home_property_entity.dart';
 
 class PropertyCard extends StatelessWidget {
@@ -15,7 +18,23 @@ class PropertyCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-
+      onTap: () {
+        final homeState = context.read<HomeCubit>().state;
+        final similar = homeState is HomeSuccess
+            ? homeState.filteredRecommended
+                  .where((p) => p.id != property.id)
+                  .take(5)
+                  .toList()
+            : <HomePropertyEntity>[];
+        context.push(
+          AppRoutes.details,
+          extra: {
+            'propertyId': property.id,
+            'favoriteCubit': context.read<FavoriteCubit>(),
+            'similarProperties': similar,
+          },
+        );
+      },
       child: Container(
         width: AppSizes.w220,
         decoration: BoxDecoration(
@@ -36,7 +55,9 @@ class PropertyCard extends StatelessWidget {
             Stack(
               children: [
                 ClipRRect(
-                  borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+                  borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(16),
+                  ),
                   child: property.images.isNotEmpty
                       ? SizedBox(
                           height: AppSizes.h140,
@@ -48,13 +69,16 @@ class PropertyCard extends StatelessWidget {
                               if (progress == null) return child;
                               return Container(
                                 color: Colors.grey.shade200,
-                                child: const Center(child: CircularProgressIndicator()),
+                                child: const Center(
+                                  child: CircularProgressIndicator(),
+                                ),
                               );
                             },
-                            errorBuilder: (context, error, stackTrace) => Image.asset(
-                              'assets/images/Frame 2147228697.png',
-                              fit: BoxFit.cover,
-                            ),
+                            errorBuilder: (context, error, stackTrace) =>
+                                Image.asset(
+                                  'assets/images/Frame 2147228697.png',
+                                  fit: BoxFit.cover,
+                                ),
                           ),
                         )
                       : Image.asset(
@@ -68,7 +92,10 @@ class PropertyCard extends StatelessWidget {
                   top: 12,
                   left: 12,
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: AppSizes.w8, vertical: AppSizes.h6),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: AppSizes.w8,
+                      vertical: AppSizes.h6,
+                    ),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
                       color: Colors.white,
@@ -83,7 +110,9 @@ class PropertyCard extends StatelessWidget {
                         ),
                         SizedBox(width: AppSizes.w4),
                         Text(
-                          property.listingType == 'sale' ? 'For Sale' : 'For Rent',
+                          property.listingType == 'sale'
+                              ? 'For Sale'
+                              : 'For Rent',
                           style: TextStyle(
                             fontSize: AppSizes.sp12,
                             fontWeight: FontWeight.w500,
@@ -97,7 +126,10 @@ class PropertyCard extends StatelessWidget {
               ],
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: AppSizes.w12, vertical: AppSizes.h10),
+              padding: EdgeInsets.symmetric(
+                horizontal: AppSizes.w12,
+                vertical: AppSizes.h10,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -140,12 +172,19 @@ class PropertyCard extends StatelessWidget {
                   SizedBox(height: AppSizes.h6),
                   Row(
                     children: [
-                      Icon(Icons.location_on_outlined, size: AppSizes.h14, color: AppColors.blue),
+                      Icon(
+                        Icons.location_on_outlined,
+                        size: AppSizes.h14,
+                        color: AppColors.blue,
+                      ),
                       SizedBox(width: AppSizes.w2),
                       Expanded(
                         child: Text(
                           property.address,
-                          style: TextStyle(fontSize: AppSizes.sp12, color: Colors.grey.shade500),
+                          style: TextStyle(
+                            fontSize: AppSizes.sp12,
+                            color: Colors.grey.shade500,
+                          ),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
@@ -165,7 +204,11 @@ class PropertyCard extends StatelessWidget {
                       ),
                       Row(
                         children: [
-                          Icon(Icons.star, size: AppSizes.h16, color: Colors.amber),
+                          Icon(
+                            Icons.star,
+                            size: AppSizes.h16,
+                            color: Colors.amber,
+                          ),
                           SizedBox(width: AppSizes.w2),
                           Text(
                             '4.9',

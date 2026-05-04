@@ -77,14 +77,6 @@ class AppValidators {
       return 'At least 8 characters';
     }
 
-    // if (!RegExp(r'[A-Z]').hasMatch(value)) {
-    //   return 'Add uppercase letter';
-    // }
-
-    // if (!RegExp(r'[0-9]').hasMatch(value)) {
-    //   return 'Add a number';
-    // }
-
     return null;
   }
 

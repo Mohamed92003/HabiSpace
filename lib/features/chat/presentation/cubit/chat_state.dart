@@ -4,11 +4,17 @@ part of 'chat_cubit.dart';
 sealed class ChatState {}
 
 final class ChatInitial extends ChatState {}
+
 class ChatLoading extends ChatState {}
 
 class ChatError extends ChatState {
   final String message;
   ChatError(this.message);
+}
+
+class ConversationsLoaded extends ChatState {
+  final List<ConversationEntity> conversations;
+  ConversationsLoaded(this.conversations);
 }
 
 class ChatLoaded extends ChatState {

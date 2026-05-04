@@ -1,4 +1,3 @@
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -11,22 +10,18 @@ import '../../../../core/utils/app_texts.dart';
 import 'header_icon_button.dart';
 
 class Header extends StatelessWidget {
-  const Header({
-    super.key,
-  });
+  const Header({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding:  EdgeInsets.symmetric(
+      padding: EdgeInsets.symmetric(
         horizontal: AppSizes.w20,
         vertical: AppSizes.h10,
       ),
       child: Row(
         children: [
-          CustomSvgImage(
-            path: 'assets/icons/locat_icon.svg',
-          ),
+          CustomSvgImage(path: 'assets/icons/locat_icon.svg'),
           SizedBox(width: AppSizes.w10),
           Expanded(
             child: Column(
@@ -66,16 +61,11 @@ class Header extends StatelessWidget {
             path: 'assets/icons/chat_icon.svg',
             onTap: () => context.pushNamed(
               AppRoutes.chat,
-              extra: {
-                'conversationId': 1,
-                'agentName': AppTexts.agentName.tr(),
-              },
+              extra: {'conversationId': 1, 'agentName': 'Agent'},
             ),
             width: AppSizes.w20,
             height: AppSizes.h20,
           ),
-
-
         ],
       ),
     );

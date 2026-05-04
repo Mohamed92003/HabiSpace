@@ -62,5 +62,4 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
         .toList();
   }
 
-
 }

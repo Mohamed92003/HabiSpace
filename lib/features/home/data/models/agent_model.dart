@@ -9,6 +9,7 @@ class AgentModel extends AgentEntity {
     super.licenseNumber,
     required super.company,
     required super.user,
+    required super.phone,
   });
 
   factory AgentModel.fromJson(Map<String, dynamic> json) => AgentModel(
@@ -18,5 +19,6 @@ class AgentModel extends AgentEntity {
     licenseNumber: json['license_number'],
     company: json['company'],
     user: AgentUserModel.fromJson(json['user']),
+    phone: json['phone'],
   );
 }

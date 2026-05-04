@@ -12,7 +12,6 @@ import '../../../../core/utils/app_sizes.dart';
 import '../../../../core/utils/app_texts.dart';
 import '../../../../core/utils/app_validation.dart';
 
-
 class ForgetPasswordScreen extends StatelessWidget {
   ForgetPasswordScreen({super.key});
 

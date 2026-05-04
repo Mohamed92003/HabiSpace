@@ -28,7 +28,6 @@ class HomeError extends HomeState {
   HomeError(this.message);
 }
 
-//search
 class HomeSearchLoading extends HomeState {}
 
 class HomeSearchSuccess extends HomeState {

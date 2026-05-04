@@ -4,9 +4,9 @@ import '../../../../core/error/app_exception.dart';
 import '../../domain/entities/filter_entity.dart';
 import '../../domain/entities/home_entity.dart';
 import '../../domain/entities/home_property_entity.dart';
-import '../../domain/usecases/filter_properties_usecase.dart';
-import '../../domain/usecases/get_home_usecase.dart';
-import '../../domain/usecases/search_properties_usecase.dart';
+import '../../domain/useCases/filter_properties_usecase.dart';
+import '../../domain/useCases/get_home_usecase.dart';
+import '../../domain/useCases/search_properties_usecase.dart';
 
 part 'home_state.dart';
 

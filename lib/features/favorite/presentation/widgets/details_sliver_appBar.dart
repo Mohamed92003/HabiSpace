@@ -3,7 +3,6 @@ import 'package:habispace/features/favorite/presentation/widgets/property_image_
 import 'package:habispace/features/favorite/presentation/widgets/type_badge_widget.dart';
 import '../../domain/entities/favorite_property_entity.dart';
 
-
 class DetailsSliverAppBar extends StatelessWidget {
   final FavoritePropertyEntity property;
   const DetailsSliverAppBar({required this.property});

@@ -1,4 +1,3 @@
-// lib/features/chat/data/datasource/chat_remote_datasource.dart
 
 import '../../../../core/constants/api_constant.dart';
 import '../../../../core/constants/dio_helper.dart';
@@ -11,8 +10,6 @@ abstract class ChatRemoteDataSource {
   Future<MessageModel> sendMessage(int conversationId, String body);
   Future<ConversationModel> startConversation(int agentUserId, int propertyId);
 }
-
-
 
 class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
   @override

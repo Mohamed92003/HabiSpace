@@ -26,4 +26,3 @@ class FavoriteRepositoryImpl implements FavoriteRepository {
     return models.map((m) => m.toEntity()).toList();
   }
 }
-

@@ -81,7 +81,6 @@ class _MainLayoutState extends State<MainLayout> {
 
     setState(() => currentIndex = index);
 
-    // Load data on first visit
     if (index == 3 && context.read<HistoryCubit>().state is HistoryInitial) {
       context.read<HistoryCubit>().getHistory();
     }

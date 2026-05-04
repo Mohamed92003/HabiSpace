@@ -10,7 +10,6 @@ import '../../../../core/utils/app_color.dart';
 import '../../../../core/utils/app_sizes.dart';
 import '../../../../core/utils/app_texts.dart';
 
-
 class OtpScreen extends StatefulWidget {
   final String email;
   const OtpScreen({super.key, required this.email});
@@ -115,7 +114,6 @@ class _OtpScreenState extends State<OtpScreen> {
                 ),
                 SizedBox(height: AppSizes.h40),
 
-                // Verify Button
                 ElevatedButton(
                   onPressed: state is AuthLoading
                       ? null
@@ -162,7 +160,6 @@ class _OtpScreenState extends State<OtpScreen> {
                 ),
                 SizedBox(height: AppSizes.h24),
 
-                // Resend
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

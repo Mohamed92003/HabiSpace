@@ -60,7 +60,7 @@ class LogConfig {
 }
 
 class AppLogger {
-  /// Public methods
+
   static void debug({required String message, String? tag}) {
     _log(message: message, level: LogLevel.debug, tag: tag);
   }
@@ -110,7 +110,6 @@ class AppLogger {
     );
     buffer.writeln(message);
 
-    /// Show stacktrace only in debug mode
     if (stackTrace != null && !kReleaseMode) {
       buffer.writeln('StackTrace:\n$stackTrace');
     }
