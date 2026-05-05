@@ -15,7 +15,7 @@ import '../../../home/presentation/cubit/home_cubit.dart';
 import '../../../home/presentation/ui/home_view.dart';
 import '../../../profile/presentation/Cubit/cubit/profile_cubit.dart';
 import '../../../profile/presentation/UI/Profile_screen.dart';
-import '../../../profile/presentation/UI/widgets/profile_avatar.dart';
+import '../../../profile/presentation/widgets/profile_avatar.dart';
 import '../widgets/header.dart';
 import '../widgets/home_header_delegate.dart';
 
@@ -242,7 +242,9 @@ class _MainLayoutState extends State<MainLayout> {
                               }
                               return BottomNavigationBarItem(
                                 icon: _buildIcon(
-                                    _icons[index], currentIndex == index),
+                                  _icons[index],
+                                  currentIndex == index,
+                                ),
                                 label: _labels[index],
                               );
                             }),

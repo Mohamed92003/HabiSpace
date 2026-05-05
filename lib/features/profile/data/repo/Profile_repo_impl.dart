@@ -19,4 +19,12 @@ class ProfileRepoImpl implements ProfileRepo{
     return await  repo.getProfileData();
   }
 
+  @override
+  Future<ProfileEntity> updateProfile({
+    required String name,
+    required String phone,
+    required String location,
+  }) =>
+      repo.updateProfile(name: name, phone: phone, location: location);
+
 }
