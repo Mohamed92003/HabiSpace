@@ -4,7 +4,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../../../../core/utils/app_color.dart';
+import 'package:habispace/features/map/ui/map_screen.dart';
 import '../../../../core/utils/app_texts.dart';
 import '../../../favorite/presentation/cubit/FavoriteCubit/favorite_cubit_cubit.dart';
 import '../../../favorite/presentation/cubit/FavoriteCubit/favorite_cubit_state.dart';
@@ -104,12 +104,12 @@ class _MainLayoutState extends State<MainLayout> {
   }
 
   List<Widget> _buildSlivers(
-    BuildContext context,
-    HomeState homeState,
-    FavoriteState favoriteState,
-    HistoryState historyState,
-    ProfileState profileState,
-  ) {
+      BuildContext context,
+      HomeState homeState,
+      FavoriteState favoriteState,
+      HistoryState historyState,
+      ProfileState profileState,
+      ) {
     final homeCubit = context.read<HomeCubit>();
     final favoriteCubit = context.read<FavoriteCubit>();
 
@@ -144,13 +144,6 @@ class _MainLayoutState extends State<MainLayout> {
     switch (currentIndex) {
       case 1:
         return [...sharedHeader, ...favoriteBodySlivers(context, favoriteState)];
-      case 2:
-        return [
-          ...sharedHeader,
-          SliverFillRemaining(
-            child: Center(child: Text(AppTexts.mapViewPlaceholder.tr())),
-          ),
-        ];
       case 3:
         return [...sharedHeader, ...historyViewSlivers(context, historyState)];
       default:
@@ -171,34 +164,50 @@ class _MainLayoutState extends State<MainLayout> {
                 return BlocBuilder<ProfileCubit, ProfileState>(
                   builder: (context, profileState) {
                     return GestureDetector(
-                      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+                      onTap: () =>
+                          FocusManager.instance.primaryFocus?.unfocus(),
                       child: Scaffold(
-                        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                        backgroundColor:
+                        Theme.of(context).scaffoldBackgroundColor,
                         body: SafeArea(
-                          child: CustomScrollView(
-                            slivers: _buildSlivers(
-                              context,
-                              homeState,
-                              favoriteState,
-                              historyState,
-                              profileState,
-                            ),
+                          child: Stack(
+                            children: [
+                              Offstage(
+                                offstage: currentIndex != 2,
+                                child: const MapTabView(),
+                              ),
+
+                              if (currentIndex != 2)
+                                CustomScrollView(
+                                  slivers: _buildSlivers(
+                                    context,
+                                    homeState,
+                                    favoriteState,
+                                    historyState,
+                                    profileState,
+                                  ),
+                                ),
+                            ],
                           ),
                         ),
                         bottomNavigationBar: Container(
                           decoration: BoxDecoration(
                             color: Theme.of(context).colorScheme.surface,
                             boxShadow: const [
-                              BoxShadow(color: Colors.black12, blurRadius: 10),
+                              BoxShadow(
+                                  color: Colors.black12, blurRadius: 10),
                             ],
                           ),
                           child: BottomNavigationBar(
                             currentIndex: currentIndex,
                             onTap: onTap,
                             type: BottomNavigationBarType.fixed,
-                            backgroundColor: Theme.of(context).colorScheme.surface,
-                            selectedItemColor: Theme.of(context).colorScheme.primary,
-                            unselectedItemColor: Theme.of(context).colorScheme.onSurfaceVariant,
+                            backgroundColor:
+                            Theme.of(context).colorScheme.surface,
+                            selectedItemColor:
+                            Theme.of(context).colorScheme.primary,
+                            unselectedItemColor:
+                            Theme.of(context).colorScheme.onSurfaceVariant,
                             selectedLabelStyle: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
@@ -207,7 +216,9 @@ class _MainLayoutState extends State<MainLayout> {
                             unselectedLabelStyle: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
-                              color: Theme.of(context).colorScheme.onSurfaceVariant,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSurfaceVariant,
                             ),
                             showSelectedLabels: true,
                             showUnselectedLabels: false,
@@ -215,13 +226,13 @@ class _MainLayoutState extends State<MainLayout> {
                               if (index == 4) {
                                 final isActive = currentIndex == 4;
                                 final user = profileState is ProfileLoaded &&
-                                        profileState.profile.isNotEmpty
+                                    profileState.profile.isNotEmpty
                                     ? profileState.profile.first
                                     : null;
                                 return BottomNavigationBarItem(
                                   label: _labels[index],
                                   icon: ProfileAvatar(
-                                    imageUrl:  user?.image,
+                                    imageUrl: user?.image,
                                     name: user?.name ?? '',
                                     radius: 14,
                                     isActive: isActive,
