@@ -130,7 +130,12 @@ class _ConversationsViewState extends State<ConversationsView> {
                   conversation: conv,
                   onTap: () => context.pushNamed(
                     AppRoutes.chat,
-                    extra: {'conversationId': conv.id, 'agentName': 'Agent'},
+                    extra: {
+                      'conversationId': conv.id,
+                      'agentName': conv.agentName.isNotEmpty
+                          ? conv.agentName
+                          : 'Agent',
+                    },
                   ),
                 );
               },
@@ -152,9 +157,6 @@ class _ConversationTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final lastMessage = conversation.messages.isNotEmpty
-        ? conversation.messages.last.body
-        : 'No messages yet';
     final time = conversation.messages.isNotEmpty
         ? _formatTime(conversation.messages.last.createdAt)
         : '';
@@ -175,19 +177,26 @@ class _ConversationTile extends StatelessWidget {
         ),
       ),
       title: Text(
-        'Property #${conversation.propertyId}',
+        conversation.agentName.isNotEmpty
+            ? conversation.agentName
+            : 'Agent #${conversation.agentId}',
         style: const TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.w600,
           color: AppColors.secondBlack,
         ),
       ),
-      subtitle: Text(
-        lastMessage,
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-        style: const TextStyle(fontSize: 12, color: AppColors.textLightColor),
-      ),
+      subtitle: conversation.messages.isNotEmpty
+          ? Text(
+              conversation.messages.last.body,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                fontSize: 12,
+                color: AppColors.textLightColor,
+              ),
+            )
+          : null,
       trailing: Text(
         time,
         style: const TextStyle(fontSize: 11, color: AppColors.textLightColor),
