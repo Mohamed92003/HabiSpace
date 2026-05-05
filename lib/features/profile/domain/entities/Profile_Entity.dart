@@ -5,6 +5,8 @@ class ProfileEntity {
   final String phone;
   final String location;
   final String? image;
+  final String? role;
+  final String? createdAt;
 
   ProfileEntity({
     required this.id,
@@ -13,5 +15,7 @@ class ProfileEntity {
     required this.location,
     required this.phone,
     this.image,
+    this.role,
+    this.createdAt,
   });
 }

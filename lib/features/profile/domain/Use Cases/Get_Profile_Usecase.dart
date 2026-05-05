@@ -9,4 +9,8 @@ class GetProfileUsecase {
   Future<ProfileEntity> call() async {
    return  repository.getProfileData();
   }
+
+
 }
+
+

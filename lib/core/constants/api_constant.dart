@@ -16,6 +16,7 @@ class ApiConstant {
   static const String createPayment = 'orders';
   static const String getProfile = 'auth/me';
   static const String deleteAccount='auth/logout';
+  static const String updateProfile = 'auth/profile';
 
   static const int connectTimeout = 30;
   static const int receiveTimeout = 30;

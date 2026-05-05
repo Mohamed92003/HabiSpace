@@ -28,4 +28,22 @@ class ProfileDataSourceImpl implements ProfileDataSource{
     return UserModel.fromJson(data);
   }
 
+
+  @override
+  Future<UserModel> updateProfile({
+    required String name,
+    required String phone,
+    required String location,
+  }) async {
+    final response = await DioHelper.put(
+      path: ApiConstant.updateProfile,
+      withAuth: true,
+      data: {'name': name, 'phone': phone, 'location': location},
+    );
+    final data = response.data is Map && response.data['data'] != null
+        ? response.data['data']
+        : response.data;
+    return UserModel.fromJson(data);
+  }
+
 }

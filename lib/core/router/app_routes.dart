@@ -17,4 +17,5 @@ abstract class AppRoutes {
   static const String reviews = '/reviews';
   static const String resetPassword = '/reset-password';
   static const String payment='/payment';
+  static const String updateProfile = '/update-profile';
 }

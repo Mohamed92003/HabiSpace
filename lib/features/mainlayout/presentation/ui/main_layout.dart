@@ -15,7 +15,7 @@ import '../../../home/presentation/cubit/home_cubit.dart';
 import '../../../home/presentation/ui/home_view.dart';
 import '../../../profile/presentation/Cubit/cubit/profile_cubit.dart';
 import '../../../profile/presentation/UI/Profile_screen.dart';
-import '../../../profile/presentation/UI/widgets/profile_avatar.dart';
+import '../../../profile/presentation/widgets/profile_avatar.dart';
 import '../widgets/header.dart';
 import '../widgets/home_header_delegate.dart';
 
@@ -143,7 +143,10 @@ class _MainLayoutState extends State<MainLayout> {
 
     switch (currentIndex) {
       case 1:
-        return [...sharedHeader, ...favoriteBodySlivers(context, favoriteState)];
+        return [
+          ...sharedHeader,
+          ...favoriteBodySlivers(context, favoriteState),
+        ];
       case 2:
         return [
           ...sharedHeader,
@@ -154,7 +157,10 @@ class _MainLayoutState extends State<MainLayout> {
       case 3:
         return [...sharedHeader, ...historyViewSlivers(context, historyState)];
       default:
-        return [...sharedHeader, ...homeViewSlivers(context, homeState, favoriteCubit)];
+        return [
+          ...sharedHeader,
+          ...homeViewSlivers(context, homeState, favoriteCubit),
+        ];
     }
   }
 
@@ -171,10 +177,14 @@ class _MainLayoutState extends State<MainLayout> {
                 return BlocBuilder<ProfileCubit, ProfileState>(
                   builder: (context, profileState) {
                     return GestureDetector(
-                      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+                      onTap: () =>
+                          FocusManager.instance.primaryFocus?.unfocus(),
                       child: Scaffold(
-                        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                        backgroundColor: Theme.of(
+                          context,
+                        ).scaffoldBackgroundColor,
                         body: SafeArea(
+                          top: currentIndex != 4,
                           child: CustomScrollView(
                             slivers: _buildSlivers(
                               context,
@@ -196,9 +206,15 @@ class _MainLayoutState extends State<MainLayout> {
                             currentIndex: currentIndex,
                             onTap: onTap,
                             type: BottomNavigationBarType.fixed,
-                            backgroundColor: Theme.of(context).colorScheme.surface,
-                            selectedItemColor: Theme.of(context).colorScheme.primary,
-                            unselectedItemColor: Theme.of(context).colorScheme.onSurfaceVariant,
+                            backgroundColor: Theme.of(
+                              context,
+                            ).colorScheme.surface,
+                            selectedItemColor: Theme.of(
+                              context,
+                            ).colorScheme.primary,
+                            unselectedItemColor: Theme.of(
+                              context,
+                            ).colorScheme.onSurfaceVariant,
                             selectedLabelStyle: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
@@ -207,21 +223,24 @@ class _MainLayoutState extends State<MainLayout> {
                             unselectedLabelStyle: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
-                              color: Theme.of(context).colorScheme.onSurfaceVariant,
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onSurfaceVariant,
                             ),
                             showSelectedLabels: true,
                             showUnselectedLabels: false,
                             items: List.generate(_icons.length, (index) {
                               if (index == 4) {
                                 final isActive = currentIndex == 4;
-                                final user = profileState is ProfileLoaded &&
+                                final user =
+                                    profileState is ProfileLoaded &&
                                         profileState.profile.isNotEmpty
                                     ? profileState.profile.first
                                     : null;
                                 return BottomNavigationBarItem(
                                   label: _labels[index],
                                   icon: ProfileAvatar(
-                                    imageUrl:  user?.image,
+                                    imageUrl: user?.image,
                                     name: user?.name ?? '',
                                     radius: 14,
                                     isActive: isActive,
@@ -231,7 +250,9 @@ class _MainLayoutState extends State<MainLayout> {
                               }
                               return BottomNavigationBarItem(
                                 icon: _buildIcon(
-                                    _icons[index], currentIndex == index),
+                                  _icons[index],
+                                  currentIndex == index,
+                                ),
                                 label: _labels[index],
                               );
                             }),

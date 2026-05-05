@@ -53,7 +53,7 @@ flutter:
 flutter_native_splash:
   color: "#1597A8"
   image: assets/images/logo_other.png
-  android_gravity: fill
+  android_gravity: scaleAspectFit
   ios_content_mode: scaleAspectFit
   android: true
   ios: true

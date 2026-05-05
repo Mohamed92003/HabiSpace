@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:habispace/features/details/domain/entities/property_detail_entity.dart';
 import 'package:habispace/features/payment/presentation/ui/payment_view.dart';
+import '../../features/auth/domain/entities/user_entity.dart';
 import '../../features/auth/presentation/logic/auth_bloc.dart';
 import '../../features/auth/presentation/screens/forget_password_screen.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
@@ -15,6 +16,8 @@ import '../../features/chat/presentation/ui/chat_view.dart';
 import '../../features/chat/presentation/ui/conversations_view.dart';
 import '../../features/details/presentation/cubit/details_cubit.dart';
 import '../../features/details/presentation/ui/details_view.dart';
+import '../../features/profile/domain/entities/Profile_Entity.dart';
+import '../../features/profile/presentation/UI/update_profile_view.dart';
 import '../../features/reviews/presentation/ui/reviews_view.dart';
 import '../../features/favorite/domain/entities/favorite_property_entity.dart';
 import '../../features/favorite/presentation/cubit/FavoriteCubit/favorite_cubit_cubit.dart';
@@ -159,7 +162,16 @@ GoRouter createRouter(String initialLocation) => GoRouter(
         child: const ConversationsView(),
       ),
     ),
-
+    GoRoute(path:AppRoutes.updateProfile,
+    name: AppRoutes.updateProfile,
+    builder: (context, state) {
+      final extra = state.extra as Map<String, dynamic>;
+      return BlocProvider.value(
+        value: extra['profileCubit'] as ProfileCubit,
+        child: UpdateProfileView(user: extra['user'] as ProfileEntity),
+      );
+    }
+    ),
     GoRoute(
       path: AppRoutes.chat,
       name: AppRoutes.chat,
