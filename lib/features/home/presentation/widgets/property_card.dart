@@ -10,10 +10,11 @@ import '../../../favorite/presentation/cubit/FavoriteCubit/favorite_cubit_state.
 import '../../../home/presentation/cubit/home_cubit.dart';
 import '../../domain/entities/home_property_entity.dart';
 
+
+
 class PropertyCard extends StatelessWidget {
   final HomePropertyEntity property;
-
-  const PropertyCard({super.key, required this.property});
+  const PropertyCard({super.key, required this.property,});
 
   @override
   Widget build(BuildContext context) {

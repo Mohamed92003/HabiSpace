@@ -9,4 +9,10 @@ abstract class ProfileRepo {
     required String location,
   });
   Future<void> deleteAccount();
+
+  Future<String> changePassword({
+    required String currentPassword,
+    required String password,
+    required String passwordConfirmation,
+  });
 }

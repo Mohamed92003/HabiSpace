@@ -13,6 +13,11 @@ final class ProfileLoaded extends ProfileState {
   ProfileLoaded(this.profile);
 }
 
+final class ProfilePasswordChanged extends ProfileState {
+  final String message;
+  ProfilePasswordChanged(this.message);
+}
+
 final class ProfileError extends ProfileState {
   final String message;
   ProfileError(this.message);
