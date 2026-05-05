@@ -59,10 +59,7 @@ class Header extends StatelessWidget {
           SizedBox(width: AppSizes.w12),
           HeaderIconButton(
             path: 'assets/icons/chat_icon.svg',
-            onTap: () => context.pushNamed(
-              AppRoutes.chat,
-              extra: {'conversationId': 1, 'agentName': 'Agent'},
-            ),
+            onTap: () => context.pushNamed(AppRoutes.conversations),
             width: AppSizes.w20,
             height: AppSizes.h20,
           ),

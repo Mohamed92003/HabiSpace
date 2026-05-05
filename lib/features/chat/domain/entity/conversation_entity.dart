@@ -5,6 +5,7 @@ class ConversationEntity {
   final int propertyId;
   final int buyerId;
   final int agentId;
+  final String agentName;
   final List<MessageEntity> messages;
   final DateTime createdAt;
 
@@ -13,6 +14,7 @@ class ConversationEntity {
     required this.propertyId,
     required this.buyerId,
     required this.agentId,
+    this.agentName = '',
     required this.messages,
     required this.createdAt,
   });
