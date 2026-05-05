@@ -13,4 +13,10 @@ abstract class ProfileDataSource {
 
     Future<void> deleteProfile();
 
+
+    Future<String> changePassword({
+        required String currentPassword,
+        required String password,
+        required String passwordConfirmation,
+    });
 }

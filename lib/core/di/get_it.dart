@@ -45,6 +45,7 @@ import '../../features/profile/domain/Repository/Profile_repo.dart';
 import '../../features/profile/domain/Use Cases/Delete_Profile_Usecae.dart';
 import '../../features/profile/domain/Use Cases/Get_Profile_Usecase.dart';
 import '../../features/profile/domain/Use Cases/delete_account_use_case.dart';
+import '../../features/profile/domain/Use Cases/change_password_usecase.dart';
 import '../../features/profile/domain/Use Cases/updata_profile_usecase.dart';
 import '../../features/profile/presentation/Cubit/cubit/profile_cubit.dart';
 
@@ -135,6 +136,7 @@ void setupLocator() {
       logOut: sl<LogOutProfileUseCase>(),
       updateProfileUsecase: sl<UpdateProfileUsecase>(),
       deleteProfileUsecase: sl<DeleteProfileUseCase>(),
+      changePasswordUsecase: sl<ChangePasswordUsecase>(),
     ),
   );
 
@@ -155,8 +157,8 @@ void setupLocator() {
     ),
   );
 
-
   sl.registerLazySingleton(() => UpdateProfileUsecase(repository: sl<ProfileRepo>()));
+  sl.registerLazySingleton(() => ChangePasswordUsecase(repository: sl<ProfileRepo>()));
 
 
 }

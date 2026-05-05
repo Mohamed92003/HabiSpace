@@ -28,7 +28,6 @@ class ProfileDataSourceImpl implements ProfileDataSource{
     return UserModel.fromJson(data);
   }
 
-
   @override
   Future<UserModel> updateProfile({
     required String name,
@@ -55,4 +54,21 @@ class ProfileDataSourceImpl implements ProfileDataSource{
 
   }
 
+  @override
+  Future<String> changePassword({
+    required String currentPassword,
+    required String password,
+    required String passwordConfirmation,
+  }) async {
+    final response = await DioHelper.put(
+      path: ApiConstant.changePassword,
+      withAuth: true,
+      data: {
+        'current_password': currentPassword,
+        'password': password,
+        'password_confirmation': passwordConfirmation,
+      },
+    );
+    return response.data['message'] ?? 'Password updated.';
+  }
 }

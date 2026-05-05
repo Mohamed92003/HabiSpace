@@ -17,6 +17,7 @@ import '../../features/chat/presentation/ui/conversations_view.dart';
 import '../../features/details/presentation/cubit/details_cubit.dart';
 import '../../features/details/presentation/ui/details_view.dart';
 import '../../features/profile/domain/entities/Profile_Entity.dart';
+import '../../features/profile/presentation/UI/change_password_screen.dart';
 import '../../features/profile/presentation/UI/update_profile_view.dart';
 import '../../features/profile/presentation/widgets/delete_my_account_widget.dart';
 import '../../features/reviews/presentation/ui/reviews_view.dart';
@@ -30,7 +31,7 @@ import '../../features/home/presentation/cubit/home_cubit.dart';
 import '../../features/home/presentation/widgets/all_properties_page.dart';
 import '../../features/mainlayout/presentation/ui/main_layout.dart';
 import '../../features/notifications/presentation/ui/notification_view.dart';
-import '../../features/on_boarding/on_boarding.dart';
+import '../../features/on_boarding/presentation/ui/on_boarding.dart';
 import '../../features/profile/presentation/Cubit/cubit/profile_cubit.dart';
 import '../di/get_it.dart';
 
@@ -152,17 +153,28 @@ GoRouter createRouter(String initialLocation) => GoRouter(
       builder: (context, state) =>
           BlocProvider(create: (_) => sl<ChatCubit>(), child: const ConversationsView()),
     ),
-    GoRoute(
-      path: AppRoutes.updateProfile,
-      name: AppRoutes.updateProfile,
-      builder: (context, state) {
-        final extra = state.extra as Map<String, dynamic>;
-        return BlocProvider.value(
-          value: extra['profileCubit'] as ProfileCubit,
-          child: UpdateProfileView(user: extra['user'] as ProfileEntity),
-        );
-      },
+    GoRoute(path:AppRoutes.updateProfile,
+    name: AppRoutes.updateProfile,
+    builder: (context, state) {
+      final extra = state.extra as Map<String, dynamic>;
+      return BlocProvider.value(
+        value: extra['profileCubit'] as ProfileCubit,
+        child: UpdateProfileView(user: extra['user'] as ProfileEntity),
+      );
+    }
     ),
+    GoRoute(
+        path:AppRoutes.changePassword,
+      name: AppRoutes.changePassword,
+      builder: (context,state){
+          return BlocProvider.value(
+            value: sl<ProfileCubit>(),
+            child: ChangePasswordScreen(
+            ),
+          );
+      }
+      ),
+
     GoRoute(
       path: AppRoutes.deleteAccount,
       name: AppRoutes.deleteAccount,

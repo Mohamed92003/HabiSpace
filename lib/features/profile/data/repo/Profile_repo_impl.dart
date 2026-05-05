@@ -35,5 +35,20 @@ class ProfileRepoImpl implements ProfileRepo {
     required String name,
     required String phone,
     required String location,
-  }) => repo.updateProfile(name: name, phone: phone, location: location);
+  }) =>
+      repo.updateProfile(name: name, phone: phone, location: location);
+
+
+  @override
+  Future<String> changePassword({
+    required String currentPassword,
+    required String password,
+    required String passwordConfirmation,
+  }) =>
+      repo.changePassword(
+        currentPassword: currentPassword,
+        password: password,
+        passwordConfirmation: passwordConfirmation,
+      );
+
 }

@@ -4,17 +4,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import '../../core/constants/secure_storage.dart';
-import '../../core/di/get_it.dart';
-import '../../core/router/app_router.dart';
-import '../../core/utils/app_color.dart';
-import '../../core/utils/app_sizes.dart';
-import '../../core/utils/app_texts.dart';
-import '../auth/presentation/logic/auth_bloc.dart';
-import '../auth/presentation/screens/login_screen.dart';
-import '../mainlayout/presentation/ui/main_layout.dart';
-import 'cubit/onboarding_cubit.dart';
-import 'model/onboarding_model.dart';
+import '../../../../core/constants/secure_storage.dart';
+import '../../../../core/di/get_it.dart';
+import '../../../../core/router/app_router.dart';
+import '../../../../core/utils/app_color.dart';
+import '../../../../core/utils/app_sizes.dart';
+import '../../../../core/utils/app_texts.dart';
+import '../../../auth/presentation/logic/auth_bloc.dart';
+import '../../../auth/presentation/screens/login_screen.dart';
+import '../../../mainlayout/presentation/ui/main_layout.dart';
+import '../../cubit/onboarding_cubit.dart';
+import '../../model/onboarding_model.dart';
 
 class OnBoarding extends StatelessWidget {
   const OnBoarding({super.key});
