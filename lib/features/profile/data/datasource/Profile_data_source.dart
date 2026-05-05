@@ -3,11 +3,14 @@
 abstract class ProfileDataSource {
     Future<UserModel> getProfileData();
 
-    Future<void> deleteAccount();
+    Future<void> logOut();
 
     Future<UserModel> updateProfile({
         required String name,
         required String phone,
         required String location,
     });
+
+    Future<void> deleteProfile();
+
 }

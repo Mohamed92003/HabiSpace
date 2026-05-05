@@ -4,19 +4,30 @@ import 'package:habispace/features/profile/domain/entities/Profile_Entity.dart';
 
 import '../../../../core/constants/secure_storage.dart';
 
-class ProfileRepoImpl implements ProfileRepo{
+class ProfileRepoImpl implements ProfileRepo {
   final ProfileDataSourceImpl repo;
+
   ProfileRepoImpl({required this.repo});
 
   @override
-  Future<void> deleteAccount()async {
-    await SecureStorage().remove( SecureKeys.token);
-   return await  repo.deleteAccount();
+  Future<void> logOut() async {
+    await SecureStorage().remove(SecureKeys.token);
+    return await repo.logOut();
   }
 
   @override
-  Future<ProfileEntity> getProfileData()async {
-    return await  repo.getProfileData();
+  Future<void> deleteAccount() async {
+    try {
+      await repo.deleteProfile();
+      await SecureStorage().remove(SecureKeys.token);
+    } catch (e) {
+     throw Exception('Failed to delete account: $e');
+    }
+  }
+
+  @override
+  Future<ProfileEntity> getProfileData() async {
+    return await repo.getProfileData();
   }
 
   @override
@@ -24,7 +35,5 @@ class ProfileRepoImpl implements ProfileRepo{
     required String name,
     required String phone,
     required String location,
-  }) =>
-      repo.updateProfile(name: name, phone: phone, location: location);
-
+  }) => repo.updateProfile(name: name, phone: phone, location: location);
 }

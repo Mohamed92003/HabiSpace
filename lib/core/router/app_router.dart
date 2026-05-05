@@ -18,6 +18,7 @@ import '../../features/details/presentation/cubit/details_cubit.dart';
 import '../../features/details/presentation/ui/details_view.dart';
 import '../../features/profile/domain/entities/Profile_Entity.dart';
 import '../../features/profile/presentation/UI/update_profile_view.dart';
+import '../../features/profile/presentation/widgets/delete_my_account_widget.dart';
 import '../../features/reviews/presentation/ui/reviews_view.dart';
 import '../../features/favorite/domain/entities/favorite_property_entity.dart';
 import '../../features/favorite/presentation/cubit/FavoriteCubit/favorite_cubit_cubit.dart';
@@ -32,9 +33,10 @@ import '../../features/notifications/presentation/ui/notification_view.dart';
 import '../../features/on_boarding/on_boarding.dart';
 import '../../features/profile/presentation/Cubit/cubit/profile_cubit.dart';
 import '../di/get_it.dart';
+
 part 'app_routes.dart';
 
-PropertyDetailEntity ?pr;
+PropertyDetailEntity? pr;
 
 GoRouter createRouter(String initialLocation) => GoRouter(
   initialLocation: initialLocation,
@@ -52,36 +54,28 @@ GoRouter createRouter(String initialLocation) => GoRouter(
         final extra = state.extra as Map<String, dynamic>;
         final propertyId = extra['propertyId'] as int;
         final favoriteCubit = extra['favoriteCubit'] as FavoriteCubit;
-        final similar =
-            (extra['similarProperties'] as List<HomePropertyEntity>?) ?? [];
+        final similar = (extra['similarProperties'] as List<HomePropertyEntity>?) ?? [];
         return MultiBlocProvider(
           providers: [
             BlocProvider<DetailsCubit>(create: (_) => sl<DetailsCubit>()),
             BlocProvider<FavoriteCubit>.value(value: favoriteCubit),
           ],
-          child: DetailsView(
-            propertyId: propertyId,
-            similarProperties: similar,
-          ),
+          child: DetailsView(propertyId: propertyId, similarProperties: similar),
         );
       },
     ),
     GoRoute(
       path: AppRoutes.login,
       name: AppRoutes.login,
-      builder: (context, state) => BlocProvider<AuthBloc>(
-        create: (_) => sl<AuthBloc>(),
-        child: LoginScreen(),
-      ),
+      builder: (context, state) =>
+          BlocProvider<AuthBloc>(create: (_) => sl<AuthBloc>(), child: LoginScreen()),
     ),
 
     GoRoute(
       path: AppRoutes.signup,
       name: AppRoutes.signup,
-      builder: (context, state) => BlocProvider<AuthBloc>(
-        create: (_) => sl<AuthBloc>(),
-        child: SignupScreen(),
-      ),
+      builder: (context, state) =>
+          BlocProvider<AuthBloc>(create: (_) => sl<AuthBloc>(), child: SignupScreen()),
     ),
 
     GoRoute(
@@ -123,9 +117,7 @@ GoRouter createRouter(String initialLocation) => GoRouter(
       builder: (context, state) => MultiBlocProvider(
         providers: [
           BlocProvider<HomeCubit>(create: (_) => sl<HomeCubit>()..getHome()),
-          BlocProvider<FavoriteCubit>(
-            create: (_) => sl<FavoriteCubit>()..getFavorites(),
-          ),
+          BlocProvider<FavoriteCubit>(create: (_) => sl<FavoriteCubit>()..getFavorites()),
           BlocProvider<HistoryCubit>(create: (_) => sl<HistoryCubit>()),
           BlocProvider<ProfileCubit>(create: (_) => sl<ProfileCubit>()),
         ],
@@ -157,20 +149,27 @@ GoRouter createRouter(String initialLocation) => GoRouter(
     GoRoute(
       path: AppRoutes.conversations,
       name: AppRoutes.conversations,
-      builder: (context, state) => BlocProvider(
-        create: (_) => sl<ChatCubit>(),
-        child: const ConversationsView(),
-      ),
+      builder: (context, state) =>
+          BlocProvider(create: (_) => sl<ChatCubit>(), child: const ConversationsView()),
     ),
-    GoRoute(path:AppRoutes.updateProfile,
-    name: AppRoutes.updateProfile,
-    builder: (context, state) {
-      final extra = state.extra as Map<String, dynamic>;
-      return BlocProvider.value(
-        value: extra['profileCubit'] as ProfileCubit,
-        child: UpdateProfileView(user: extra['user'] as ProfileEntity),
-      );
-    }
+    GoRoute(
+      path: AppRoutes.updateProfile,
+      name: AppRoutes.updateProfile,
+      builder: (context, state) {
+        final extra = state.extra as Map<String, dynamic>;
+        return BlocProvider.value(
+          value: extra['profileCubit'] as ProfileCubit,
+          child: UpdateProfileView(user: extra['user'] as ProfileEntity),
+        );
+      },
+    ),
+    GoRoute(
+      path: AppRoutes.deleteAccount,
+      name: AppRoutes.deleteAccount,
+      builder: (context, state) => BlocProvider(
+        create: (_) => sl<ProfileCubit>(), // ✅ own cubit now
+        child: const DeleteAccountDialog(),
+      ),
     ),
     GoRoute(
       path: AppRoutes.chat,
@@ -207,9 +206,7 @@ GoRouter createRouter(String initialLocation) => GoRouter(
         final favoriteCubit = extra['favoriteCubit'] as FavoriteCubit;
         return BlocProvider.value(
           value: favoriteCubit,
-          child: FavoriteBody(
-            categoryFilter: extra['categoryFilter'] as String?,
-          ),
+          child: FavoriteBody(categoryFilter: extra['categoryFilter'] as String?),
         );
       },
     ),
@@ -225,17 +222,13 @@ GoRouter createRouter(String initialLocation) => GoRouter(
           child: FavoriteDetailsPage(
             property: extra['property'] as FavoritePropertyEntity,
             allFavorites:
-                extra['allFavorites'] as List<FavoritePropertyEntity>? ??
-                const [],
+                extra['allFavorites'] as List<FavoritePropertyEntity>? ?? const [],
           ),
         );
       },
     ),
- 
-    
   ],
 
-  errorBuilder: (context, state) => Scaffold(
-    body: Center(child: Text('${'pageNotFound'.tr()}: ${state.error}')),
-  ),
+  errorBuilder: (context, state) =>
+      Scaffold(body: Center(child: Text('${'pageNotFound'.tr()}: ${state.error}'))),
 );

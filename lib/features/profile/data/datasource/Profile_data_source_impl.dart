@@ -5,8 +5,8 @@ import 'package:habispace/features/profile/data/models/user_model.dart';
 
 class ProfileDataSourceImpl implements ProfileDataSource{
   @override
-  Future<void> deleteAccount() async{
-    await DioHelper.post(path: ApiConstant.deleteAccount, withAuth: true);
+  Future<void> logOut() async{
+    await DioHelper.post(path: ApiConstant.logout, withAuth: true);
 
   }
 
@@ -44,6 +44,15 @@ class ProfileDataSourceImpl implements ProfileDataSource{
         ? response.data['data']
         : response.data;
     return UserModel.fromJson(data);
+  }
+
+  @override
+  Future<void> deleteProfile() {
+    return DioHelper.delete(
+      path: ApiConstant.deleteAccount,
+      withAuth: true,
+    );
+
   }
 
 }

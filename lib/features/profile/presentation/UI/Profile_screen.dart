@@ -83,6 +83,12 @@ List<Widget> profileViewSlivers(BuildContext context, ProfileState state) {
                       icon: Icons.manage_accounts_outlined,
                       title: AppTexts.profileMyAccount.tr(),
                       isLast: true,
+                      onTap: (){
+                        context.pushNamed(
+                          AppRoutes.deleteAccount,
+                          extra: context.read<ProfileCubit>(),
+                        );
+                      },
                     ),
                   ],
                 ),
@@ -199,7 +205,7 @@ List<Widget> profileViewSlivers(BuildContext context, ProfileState state) {
                       isDestructive: true,
                       isLast: true,
                       onTap: () {
-                        context.read<ProfileCubit>().deleteProfile();
+                        context.read<ProfileCubit>().logOutProfile();
                         context.pushReplacement(AppRoutes.login);
                       },
                     ),
@@ -222,7 +228,6 @@ List<Widget> profileViewSlivers(BuildContext context, ProfileState state) {
   ];
 }
 
-// ─── Header Sliver ────────────────────────────────────────────────────────────
 
 class _ProfileHeaderSliver extends StatelessWidget {
   final String? imageUrl;

@@ -1,10 +1,10 @@
 import 'package:habispace/features/profile/domain/Repository/Profile_repo.dart';
 
-class DeleteProfileUsecae {
+class LogOutProfileUseCase {
   final ProfileRepo repo;
 
-  DeleteProfileUsecae(this.repo);
+  LogOutProfileUseCase(this.repo);
   Future<void>execute ()async{
-    await repo.deleteAccount();
+    await repo.logOut();
   }
 }

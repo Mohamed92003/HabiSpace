@@ -7,17 +7,22 @@ import 'package:habispace/features/profile/domain/Use%20Cases/updata_profile_use
 import 'package:habispace/features/profile/domain/entities/Profile_Entity.dart';
 import 'package:meta/meta.dart';
 
+import '../../../domain/Use Cases/delete_account_use_case.dart';
+
 part 'profile_state.dart';
 
 class ProfileCubit extends Cubit<ProfileState> {
   final GetProfileUsecase getProfileUsecase;
-  final DeleteProfileUsecae deleteAccount;
+  final LogOutProfileUseCase logOut;
   final UpdateProfileUsecase updateProfileUsecase;
+  final DeleteProfileUseCase deleteProfileUsecase;
+
 
   ProfileCubit({
-    required this.deleteAccount,
+    required this.logOut,
     required this.getProfileUsecase,
     required this.updateProfileUsecase,
+    required this.deleteProfileUsecase,
   }) : super(ProfileInitial());
 
   Future<void> getProfile() async {
@@ -30,16 +35,25 @@ class ProfileCubit extends Cubit<ProfileState> {
     }
   }
 
-  Future<void> deleteProfile() async {
+  Future<void> logOutProfile() async {
     emit(ProfileLoading());
     try {
-      await deleteAccount.execute();
-      emit(ProfileDeleted());
+      await logOut.execute();
+      emit(ProfileLogOut());
     } catch (e) {
       emit(ProfileError(handleException(e).message));
     }
   }
 
+  Future<void> deleteProfile() async {
+    emit(ProfileLoading());
+    try {
+      await deleteProfileUsecase.execute();
+      emit(ProfileDeleted());
+    } catch (e) {
+      emit(ProfileError(handleException(e).message));
+    }
+  }
 
   Future<void> updateProfile({
     required String name,

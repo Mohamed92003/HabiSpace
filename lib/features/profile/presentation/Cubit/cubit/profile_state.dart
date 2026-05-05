@@ -5,6 +5,7 @@ sealed class ProfileState {}
 
 final class ProfileInitial extends ProfileState {}
 final class ProfileLoading extends ProfileState {}
+final class ProfileLogOut extends ProfileState {}
 final class ProfileDeleted extends ProfileState {}
 
 final class ProfileLoaded extends ProfileState {
