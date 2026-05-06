@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -10,7 +9,6 @@ import 'package:latlong2/latlong.dart';
 import '../logic/map_cubit.dart';
 import '../../../core/utils/app_sizes.dart';
 
-
 class MapTabView extends StatefulWidget {
   const MapTabView({super.key});
 
@@ -20,7 +18,6 @@ class MapTabView extends StatefulWidget {
 
 class _MapTabViewState extends State<MapTabView>
     with AutomaticKeepAliveClientMixin {
-
   late final MapController _mapController;
 
   @override
@@ -52,8 +49,6 @@ class _MapBody extends StatelessWidget {
   const _MapBody({required this.mapController});
   @override
   Widget build(BuildContext context) {
-
-
     return BlocBuilder<MapCubit, MapState>(
       builder: (context, state) {
         return Stack(
@@ -110,9 +105,7 @@ class _MapBody extends StatelessWidget {
       },
     );
   }
-
 }
-
 
 class _PropertyCard extends StatelessWidget {
   final PropertyLocation property;

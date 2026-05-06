@@ -4,6 +4,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:habispace/core/constants/api_constant.dart';
 import 'package:habispace/core/constants/bloc_abserver.dart';
 import 'package:habispace/core/constants/dio_helper.dart';
@@ -14,7 +15,6 @@ import 'package:habispace/core/theme/theme_cubit.dart';
 import 'package:habispace/firebase_options.dart';
 import 'core/di/get_it.dart';
 
-/// Background handler — must be a top-level function
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -105,9 +105,22 @@ String _getInitialRoute() {
   return AppRoutes.login;
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   final String initialRoute;
   const MyApp({super.key, required this.initialRoute});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  late final GoRouter _router;
+
+  @override
+  void initState() {
+    super.initState();
+    _router = createRouter(widget.initialRoute);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -125,7 +138,7 @@ class MyApp extends StatelessWidget {
               theme: AppTheme.lightTheme(),
               darkTheme: AppTheme.darkTheme(),
               themeMode: themeMode,
-              routerConfig: createRouter(initialRoute),
+              routerConfig: _router,
             );
           },
         );
