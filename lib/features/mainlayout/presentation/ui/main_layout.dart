@@ -18,6 +18,7 @@ import '../../../profile/presentation/UI/Profile_screen.dart';
 import '../../../profile/presentation/widgets/profile_avatar.dart';
 import '../widgets/header.dart';
 import '../widgets/home_header_delegate.dart';
+import '../../../../core/utils/app_sizes.dart';
 
 class MainLayout extends StatefulWidget {
   const MainLayout({super.key});
@@ -230,12 +231,12 @@ class _MainLayoutState extends State<MainLayout> {
                               context,
                             ).colorScheme.onSurfaceVariant,
                             selectedLabelStyle: TextStyle(
-                              fontSize: 12,
+                              fontSize: AppSizes.sp12,
                               fontWeight: FontWeight.w600,
                               color: Theme.of(context).colorScheme.primary,
                             ),
                             unselectedLabelStyle: TextStyle(
-                              fontSize: 12,
+                              fontSize: AppSizes.sp12,
                               fontWeight: FontWeight.w600,
                               color: Theme.of(
                                 context,

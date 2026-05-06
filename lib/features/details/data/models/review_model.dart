@@ -13,7 +13,7 @@ class ReviewModel extends ReviewEntity {
   factory ReviewModel.fromJson(Map<String, dynamic> json) {
     final user = json['user'] as Map<String, dynamic>? ?? {};
     return ReviewModel(
-      id: json['id'] as int,
+      id: json['id'] as int? ?? 0,
       userName: user['name'] as String? ?? 'Anonymous',
       userAvatar: user['avatar'] as String?,
       rating: json['rating'] as int? ?? 0,

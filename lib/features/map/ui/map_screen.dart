@@ -8,6 +8,7 @@ import 'package:habispace/features/map/ui/widgets/price_marker.dart';
 import 'package:latlong2/latlong.dart';
 
 import '../logic/map_cubit.dart';
+import '../../../core/utils/app_sizes.dart';
 
 
 class MapTabView extends StatefulWidget {
@@ -74,8 +75,8 @@ class _MapBody extends StatelessWidget {
                     final isSelected = state.selectedProperty?.id == property.id;
                     return Marker(
                       point: LatLng(property.lat, property.lng),
-                      width: 100,
-                      height: 40,
+                      width: AppSizes.w100,
+                      height: AppSizes.h40,
                       child: GestureDetector(
                         onTap: () {
                           context.read<MapCubit>().selectMarker(property);
@@ -96,9 +97,9 @@ class _MapBody extends StatelessWidget {
             ),
             if (state.selectedProperty != null)
               Positioned(
-                bottom: 16,
-                left: 16,
-                right: 16,
+                bottom: AppSizes.h16,
+                left: AppSizes.w16,
+                right: AppSizes.w16,
                 child: _PropertyCard(
                   property: state.selectedProperty!,
                   onClose: () => context.read<MapCubit>().clearSelection(),
@@ -123,21 +124,21 @@ class _PropertyCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 8,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppSizes.r16)),
       child: Padding(
-        padding: const EdgeInsets.all(12),
+        padding: EdgeInsets.all(AppSizes.h12),
         child: Row(
           children: [
             ClipRRect(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(AppSizes.r12),
               child: Container(
-                width: 70,
-                height: 70,
+                width: AppSizes.w70,
+                height: AppSizes.h70,
                 color: Colors.grey[200],
-                child: const Icon(Icons.home, size: 36, color: Colors.grey),
+                child: Icon(Icons.home, size: AppSizes.sp36, color: Colors.grey),
               ),
             ),
-            const SizedBox(width: 12),
+            SizedBox(width: AppSizes.w12),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -145,15 +146,15 @@ class _PropertyCard extends StatelessWidget {
                 children: [
                   Text(
                     property.title,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 15),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: AppSizes.sp15),
                   ),
-                  const SizedBox(height: 4),
+                  SizedBox(height: AppSizes.h4),
                   Text(
                     property.price,
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.primary,
-                      fontSize: 13,
+                      fontSize: AppSizes.sp13,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -162,7 +163,7 @@ class _PropertyCard extends StatelessWidget {
             ),
             IconButton(
               onPressed: onClose,
-              icon: const Icon(Icons.close),
+              icon: Icon(Icons.close),
             ),
           ],
         ),

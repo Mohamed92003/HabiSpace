@@ -24,26 +24,32 @@ class HomePropertyModel extends HomePropertyEntity {
     required super.agent,
   });
 
-  factory HomePropertyModel.fromJson(Map<String, dynamic> json) => HomePropertyModel(
-    id: json['id'],
-    title: json['title'],
-    slug: json['slug'],
-    description: json['description'],
-    price: double.parse(json['price'].toString()),
-    listingType: json['listing_type'],
-    status: json['status'],
-    bedrooms: json['bedrooms'],
-    bathrooms: json['bathrooms'],
-    kitchens: json['kitchens'],
-    isFeatured: json['is_featured'],
-    salesCount: json['sales_count'],
-    latitude: (json['latitude'] as num).toDouble(),
-    longitude: (json['longitude'] as num).toDouble(),
-    address: json['address'],
-    category: CategoryModel.fromJson(json['category']),
-    images: (json['images'] as List)
-        .map((e) => e['url'] as String)
-        .toList(),
-    agent: AgentModel.fromJson(json['agent']),
-  );
+  factory HomePropertyModel.fromJson(Map<String, dynamic> json) =>
+      HomePropertyModel(
+        id: (json['id'] as num?)?.toInt() ?? 0,
+        title: json['title'] as String? ?? '',
+        slug: json['slug'] as String? ?? '',
+        description: json['description'] as String? ?? '',
+        price: double.parse((json['price'] ?? 0).toString()),
+        listingType: json['listing_type'] as String? ?? '',
+        status: json['status'] as String? ?? '',
+        bedrooms: (json['bedrooms'] as num?)?.toInt() ?? 0,
+        bathrooms: (json['bathrooms'] as num?)?.toInt() ?? 0,
+        kitchens: (json['kitchens'] as num?)?.toInt() ?? 0,
+        isFeatured: json['is_featured'] as bool? ?? false,
+        salesCount: (json['sales_count'] as num?)?.toInt() ?? 0,
+        latitude: (json['latitude'] as num?)?.toDouble() ?? 0.0,
+        longitude: (json['longitude'] as num?)?.toDouble() ?? 0.0,
+        address: json['address'] as String? ?? '',
+        category: CategoryModel.fromJson(
+          (json['category'] as Map<String, dynamic>?) ?? {},
+        ),
+        agent: AgentModel.fromJson(
+          (json['agent'] as Map<String, dynamic>?) ?? {},
+        ),
+        images: (json['images'] as List? ?? [])
+            .map((e) => e['url']?.toString() ?? '')
+            .where((url) => url.isNotEmpty)
+            .toList(),
+      );
 }

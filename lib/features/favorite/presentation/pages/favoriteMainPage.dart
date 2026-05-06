@@ -11,6 +11,7 @@ import '../widgets/favorite_header_widget.dart';
 import '../../../../core/router/app_router.dart';
 import '../../../../core/shared/error_view.dart';
 import '../../../../core/utils/app_texts.dart';
+import '../../../../core/utils/app_sizes.dart';
 
 List<Widget> favoriteBodySlivers(
   BuildContext context,
@@ -82,11 +83,15 @@ List<Widget> _buildCategoryGridSlivers({
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.favorite_border, size: 64, color: Colors.grey),
-              const SizedBox(height: 16),
+              Icon(
+                Icons.favorite_border,
+                size: AppSizes.sp64,
+                color: Colors.grey,
+              ),
+              SizedBox(height: AppSizes.h16),
               Text(
                 AppTexts.noFavoritesYet.tr(),
-                style: const TextStyle(fontSize: 16, color: Colors.grey),
+                style: TextStyle(fontSize: AppSizes.sp16, color: Colors.grey),
               ),
             ],
           ),
@@ -94,7 +99,10 @@ List<Widget> _buildCategoryGridSlivers({
       )
     else
       SliverPadding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        padding: EdgeInsets.symmetric(
+          horizontal: AppSizes.w16,
+          vertical: AppSizes.h8,
+        ),
         sliver: SliverGrid(
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
@@ -102,19 +110,16 @@ List<Widget> _buildCategoryGridSlivers({
             mainAxisSpacing: 14,
             childAspectRatio: 0.85,
           ),
-          delegate: SliverChildBuilderDelegate(
-            (context, index) {
-              final name = categories[index].key;
-              final props = categories[index].value;
-              return _CategoryCard(
-                categoryName: name,
-                properties: props,
-                allFavorites: state.favorites,
-                isEditMode: state.isEditMode,
-              );
-            },
-            childCount: categories.length,
-          ),
+          delegate: SliverChildBuilderDelegate((context, index) {
+            final name = categories[index].key;
+            final props = categories[index].value;
+            return _CategoryCard(
+              categoryName: name,
+              properties: props,
+              allFavorites: state.favorites,
+              isEditMode: state.isEditMode,
+            );
+          }, childCount: categories.length),
         ),
       ),
   ];
@@ -139,12 +144,12 @@ class _CategoryCard extends StatelessWidget {
       onTap: isEditMode
           ? null
           : () => context.pushNamed(
-                AppRoutes.favoriteBody,
-                extra: {
-                  'favoriteCubit': context.read<FavoriteCubit>(),
-                  'categoryFilter': categoryName,
-                },
-              ),
+              AppRoutes.favoriteBody,
+              extra: {
+                'favoriteCubit': context.read<FavoriteCubit>(),
+                'categoryFilter': categoryName,
+              },
+            ),
       child: Stack(
         children: [
           Column(
@@ -152,25 +157,28 @@ class _CategoryCard extends StatelessWidget {
             children: [
               Expanded(
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(14),
+                  borderRadius: BorderRadius.circular(AppSizes.r14),
                   child: _ImageGrid(properties: properties),
                 ),
               ),
-              const SizedBox(height: 8),
+              SizedBox(height: AppSizes.h8),
               Text(
                 categoryName,
                 style: TextStyle(
-                  fontSize: 15,
+                  fontSize: AppSizes.sp15,
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).colorScheme.onSurface,
                 ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
-              const SizedBox(height: 2),
+              SizedBox(height: AppSizes.h2),
               Text(
                 '${properties.length} ${properties.length == 1 ? 'property' : 'properties'}',
-                style: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.onSurfaceVariant),
+                style: TextStyle(
+                  fontSize: AppSizes.sp12,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
               ),
             ],
           ),
@@ -186,13 +194,17 @@ class _CategoryCard extends StatelessWidget {
                   }
                 },
                 child: Container(
-                  width: 28,
-                  height: 28,
-                  decoration: const BoxDecoration(
+                  width: AppSizes.w28,
+                  height: AppSizes.h28,
+                  decoration: BoxDecoration(
                     color: Colors.red,
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(Icons.remove, color: Colors.white, size: 18),
+                  child: Icon(
+                    Icons.remove,
+                    color: Colors.white,
+                    size: AppSizes.sp18,
+                  ),
                 ),
               ),
             ),
@@ -232,17 +244,17 @@ class _ImageGrid extends StatelessWidget {
             child: Row(
               children: [
                 Expanded(child: _Tile(url: slots[0])),
-                const SizedBox(width: 2),
+                SizedBox(width: AppSizes.w2),
                 Expanded(child: _Tile(url: slots[1])),
               ],
             ),
           ),
-          const SizedBox(height: 2),
+          SizedBox(height: AppSizes.h2),
           Expanded(
             child: Row(
               children: [
                 Expanded(child: _Tile(url: null)),
-                const SizedBox(width: 2),
+                SizedBox(width: AppSizes.w2),
                 Expanded(child: _Tile(url: null)),
               ],
             ),
@@ -258,17 +270,17 @@ class _ImageGrid extends StatelessWidget {
             child: Row(
               children: [
                 Expanded(child: _Tile(url: slots[0])),
-                const SizedBox(width: 2),
+                SizedBox(width: AppSizes.w2),
                 Expanded(child: _Tile(url: slots[1])),
               ],
             ),
           ),
-          const SizedBox(height: 2),
+          SizedBox(height: AppSizes.h2),
           Expanded(
             child: Row(
               children: [
                 Expanded(child: _Tile(url: slots[2])),
-                const SizedBox(width: 2),
+                SizedBox(width: AppSizes.w2),
                 Expanded(child: _Tile(url: null)),
               ],
             ),
@@ -283,17 +295,17 @@ class _ImageGrid extends StatelessWidget {
           child: Row(
             children: [
               Expanded(child: _Tile(url: slots[0])),
-              const SizedBox(width: 2),
+              SizedBox(width: AppSizes.w2),
               Expanded(child: _Tile(url: slots[1])),
             ],
           ),
         ),
-        const SizedBox(height: 2),
+        SizedBox(height: AppSizes.h2),
         Expanded(
           child: Row(
             children: [
               Expanded(child: _Tile(url: slots[2])),
-              const SizedBox(width: 2),
+              SizedBox(width: AppSizes.w2),
               Expanded(child: _Tile(url: slots[3])),
             ],
           ),
@@ -312,8 +324,12 @@ class _Tile extends StatelessWidget {
     if (url == null) {
       return Container(
         color: Colors.grey.shade100,
-        child: const Center(
-          child: Icon(Icons.home_outlined, color: Colors.grey, size: 28),
+        child: Center(
+          child: Icon(
+            Icons.home_outlined,
+            color: Colors.grey,
+            size: AppSizes.sp28,
+          ),
         ),
       );
     }
@@ -323,8 +339,12 @@ class _Tile extends StatelessWidget {
         fit: BoxFit.cover,
         errorBuilder: (_, __, ___) => Container(
           color: Colors.grey.shade100,
-          child: const Center(
-            child: Icon(Icons.home_outlined, color: Colors.grey, size: 28),
+          child: Center(
+            child: Icon(
+              Icons.home_outlined,
+              color: Colors.grey,
+              size: AppSizes.sp28,
+            ),
           ),
         ),
       ),
@@ -336,11 +356,7 @@ class FavoriteBody extends StatelessWidget {
   final String? categoryFilter;
   final List<FavoritePropertyEntity>? allFavorites;
 
-  const FavoriteBody({
-    super.key,
-    this.categoryFilter,
-    this.allFavorites,
-  });
+  const FavoriteBody({super.key, this.categoryFilter, this.allFavorites});
 
   @override
   Widget build(BuildContext context) {
@@ -349,17 +365,16 @@ class FavoriteBody extends StatelessWidget {
       body: SafeArea(
         child: BlocBuilder<FavoriteCubit, FavoriteState>(
           buildWhen: (prev, curr) {
-
             final prevList = prev is FavoriteLoaded
                 ? prev.favorites
                 : prev is FavoriteRemoving
-                    ? prev.favorites
-                    : <FavoritePropertyEntity>[];
+                ? prev.favorites
+                : <FavoritePropertyEntity>[];
             final currList = curr is FavoriteLoaded
                 ? curr.favorites
                 : curr is FavoriteRemoving
-                    ? curr.favorites
-                    : <FavoritePropertyEntity>[];
+                ? curr.favorites
+                : <FavoritePropertyEntity>[];
             final prevEdit = prev is FavoriteLoaded ? prev.isEditMode : false;
             final currEdit = curr is FavoriteLoaded ? curr.isEditMode : false;
             return prevList.length != currList.length || prevEdit != currEdit;
@@ -381,8 +396,8 @@ class FavoriteBody extends StatelessWidget {
 
             final displayed = categoryFilter != null
                 ? liveFavorites
-                    .where((p) => p.categoryName == categoryFilter)
-                    .toList()
+                      .where((p) => p.categoryName == categoryFilter)
+                      .toList()
                 : liveFavorites;
 
             return CustomScrollView(
@@ -391,7 +406,8 @@ class FavoriteBody extends StatelessWidget {
                   child: FavoriteHeaderWidget(
                     title: categoryFilter ?? AppTexts.yourFavorite.tr(),
                     isEditMode: isEditMode,
-                    onEdit: () => context.read<FavoriteCubit>().toggleEditMode(),
+                    onEdit: () =>
+                        context.read<FavoriteCubit>().toggleEditMode(),
                   ),
                 ),
                 if (displayed.isEmpty)
@@ -399,16 +415,23 @@ class FavoriteBody extends StatelessWidget {
                     child: Center(
                       child: Text(
                         AppTexts.noFavoritesYet.tr(),
-                        style: const TextStyle(fontSize: 16, color: Colors.grey),
+                        style: TextStyle(
+                          fontSize: AppSizes.sp16,
+                          color: Colors.grey,
+                        ),
                       ),
                     ),
                   )
                 else
                   SliverPadding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: AppSizes.w16,
+                      vertical: AppSizes.h12,
+                    ),
                     sliver: SliverList.separated(
                       itemCount: displayed.length,
-                      separatorBuilder: (_, _) => const SizedBox(height: 16),
+                      separatorBuilder: (_, _) =>
+                          SizedBox(height: AppSizes.h16),
                       itemBuilder: (context, index) {
                         final property = displayed[index];
                         return _EditableCard(
@@ -445,9 +468,10 @@ class _EditableCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<FavoriteCubit, FavoriteState>(
       buildWhen: (prev, curr) {
-
-        final wasRemoving = prev is FavoriteRemoving && prev.removingId == property.id;
-        final isRemoving = curr is FavoriteRemoving && curr.removingId == property.id;
+        final wasRemoving =
+            prev is FavoriteRemoving && prev.removingId == property.id;
+        final isRemoving =
+            curr is FavoriteRemoving && curr.removingId == property.id;
         return wasRemoving != isRemoving;
       },
       builder: (context, state) {
@@ -459,19 +483,19 @@ class _EditableCard extends StatelessWidget {
           children: [
             AnimatedOpacity(
               opacity: isRemoving ? 0.4 : 1.0,
-              duration: const Duration(milliseconds: 200),
+              duration: Duration(milliseconds: 200),
               child: FavoriteCardWidget(
                 property: property,
                 onTap: isEditMode
                     ? null
                     : () => context.pushNamed(
-                          AppRoutes.favoriteDetails,
-                          extra: {
-                            'favoriteCubit': context.read<FavoriteCubit>(),
-                            'property': property,
-                            'allFavorites': allFavorites,
-                          },
-                        ),
+                        AppRoutes.favoriteDetails,
+                        extra: {
+                          'favoriteCubit': context.read<FavoriteCubit>(),
+                          'property': property,
+                          'allFavorites': allFavorites,
+                        },
+                      ),
                 onFavoriteTap: () {},
               ),
             ),
@@ -482,25 +506,29 @@ class _EditableCard extends StatelessWidget {
                 child: GestureDetector(
                   onTap: isRemoving
                       ? null
-                      : () => context
-                          .read<FavoriteCubit>()
-                          .removeFavorite(property.id),
+                      : () => context.read<FavoriteCubit>().removeFavorite(
+                          property.id,
+                        ),
                   child: Container(
-                    width: 28,
-                    height: 28,
-                    decoration: const BoxDecoration(
+                    width: AppSizes.w28,
+                    height: AppSizes.h28,
+                    decoration: BoxDecoration(
                       color: Colors.red,
                       shape: BoxShape.circle,
                     ),
                     child: isRemoving
-                        ? const Padding(
-                            padding: EdgeInsets.all(6),
+                        ? Padding(
+                            padding: EdgeInsets.all(AppSizes.h6),
                             child: CircularProgressIndicator(
                               strokeWidth: 2,
                               color: Colors.white,
                             ),
                           )
-                        : const Icon(Icons.remove, color: Colors.white, size: 18),
+                        : Icon(
+                            Icons.remove,
+                            color: Colors.white,
+                            size: AppSizes.sp18,
+                          ),
                   ),
                 ),
               ),

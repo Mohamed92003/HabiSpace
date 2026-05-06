@@ -1,7 +1,6 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppSizes {
-
   static final double sp8 = 8.sp;
   static final double sp10 = 10.sp;
   static final double sp11 = 11.sp;
@@ -10,15 +9,19 @@ class AppSizes {
   static final double sp14 = 14.sp;
   static final double sp15 = 15.sp;
   static final double sp16 = 16.sp;
+  static final double sp17 = 17.sp;
   static final double sp18 = 18.sp;
   static final double sp20 = 20.sp;
   static final double sp22 = 22.sp;
   static final double sp24 = 24.sp;
+  static final double sp26 = 26.sp;
   static final double sp28 = 28.sp;
   static final double sp32 = 32.sp;
+  static final double sp36 = 36.sp;
   static final double sp40 = 40.sp;
   static final double sp42 = 42.sp;
   static final double sp48 = 48.sp;
+  static final double sp64 = 64.sp;
 
   static final double h2 = 2.h;
   static final double h4 = 4.h;
@@ -29,11 +32,14 @@ class AppSizes {
   static final double h11 = 11.h;
   static final double h12 = 12.h;
   static final double h14 = 14.h;
+  static final double h15 = 15.h;
   static final double h16 = 16.h;
   static final double h18 = 18.h;
   static final double h20 = 20.h;
+  static final double h22 = 22.h;
   static final double h24 = 24.h;
   static final double h25 = 25.h;
+  static final double h26 = 26.h;
   static final double h28 = 28.h;
   static final double h30 = 30.h;
   static final double h36 = 36.h;
@@ -45,15 +51,19 @@ class AppSizes {
   static final double h42 = 42.h;
   static final double h44 = 44.h;
   static final double h45 = 45.h;
+  static final double h46 = 46.h;
   static final double h48 = 48.h;
   static final double h50 = 50.h;
   static final double h52 = 52.h;
   static final double h56 = 56.h;
   static final double h60 = 60.h;
   static final double h64 = 64.h;
+  static final double h68 = 68.h;
   static final double h70 = 70.h;
+  static final double h72 = 72.h;
   static final double h80 = 80.h;
   static final double h100 = 100.h;
+  static final double h110 = 110.h;
   static final double h117 = 117.h;
   static final double h130 = 130.h;
   static final double h140 = 140.h;
@@ -89,7 +99,10 @@ class AppSizes {
   static final double w16 = 16.w;
   static final double w18 = 18.w;
   static final double w20 = 20.w;
+  static final double w22 = 22.w;
   static final double w24 = 24.w;
+  static final double w26 = 26.w;
+  static final double w28 = 28.w;
   static final double w32 = 32.w;
   static final double w36 = 36.w;
   static final double w38 = 38.w;
@@ -97,11 +110,14 @@ class AppSizes {
   static final double w42 = 42.w;
   static final double w44 = 44.w;
   static final double w45 = 45.w;
+  static final double w46 = 46.w;
   static final double w48 = 48.w;
   static final double w50 = 50.w;
+  static final double w52 = 52.w;
   static final double w56 = 56.w;
   static final double w64 = 64.w;
   static final double w70 = 70.w;
+  static final double w72 = 72.w;
   static final double w75 = 75.w;
   static final double w80 = 80.w;
   static final double w85 = 85.w;

@@ -29,13 +29,13 @@ class ProfileHeaderSliver extends StatelessWidget {
               ),
             ),
             Positioned(
-              bottom: 16,
-              left: 20,
+              bottom: AppSizes.h16,
+              left: AppSizes.w20,
               child: Stack(
                 clipBehavior: Clip.none,
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(4),
+                    padding: EdgeInsets.all(AppSizes.h4),
                     decoration: const BoxDecoration(
                       color: Colors.white,
                       shape: BoxShape.circle,
@@ -48,19 +48,19 @@ class ProfileHeaderSliver extends StatelessWidget {
                     ),
                   ),
                   Positioned(
-                    bottom: 4,
-                    right: 4,
+                    bottom: AppSizes.h4,
+                    right: AppSizes.w4,
                     child: Container(
-                      width: 26,
-                      height: 26,
+                      width: AppSizes.w26,
+                      height: AppSizes.h26,
                       decoration: BoxDecoration(
                         color: AppColors.blue,
                         shape: BoxShape.circle,
                         border: Border.all(color: Colors.white, width: 2),
                       ),
-                      child: const Icon(
+                      child: Icon(
                         Icons.edit_outlined,
-                        size: 13,
+                        size: AppSizes.sp13,
                         color: Colors.white,
                       ),
                     ),

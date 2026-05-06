@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -6,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:habispace/core/router/app_router.dart';
 import 'package:habispace/core/utils/app_color.dart';
 import 'package:habispace/features/profile/presentation/Cubit/cubit/profile_cubit.dart';
+import '../../../../core/utils/app_sizes.dart';
 
 class DeleteAccountDialog extends StatelessWidget {
   const DeleteAccountDialog({super.key});
@@ -31,11 +31,11 @@ class DeleteAccountDialog extends StatelessWidget {
         backgroundColor: AppColors.lightBackground,
         body: Center(
           child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 24),
-            padding: const EdgeInsets.all(24),
+            margin: EdgeInsets.symmetric(horizontal: AppSizes.w24),
+            padding: EdgeInsets.all(AppSizes.h24),
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.surface,
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(AppSizes.r20),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withValues(alpha: 0.1),
@@ -48,40 +48,40 @@ class DeleteAccountDialog extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
-                  width: 72,
-                  height: 72,
+                  width: AppSizes.w72,
+                  height: AppSizes.h72,
                   decoration: BoxDecoration(
                     color: Colors.red.shade50,
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(
+                  child: Icon(
                     Icons.delete_outline_rounded,
                     color: Colors.red,
-                    size: 36,
+                    size: AppSizes.sp36,
                   ),
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: AppSizes.h20),
 
                 Text(
                   'Delete Account',
                   style: GoogleFonts.poppins(
-                    fontSize: 20,
+                    fontSize: AppSizes.sp20,
                     fontWeight: FontWeight.w600,
                     color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: AppSizes.h8),
 
                 Text(
                   'Are you sure you want to permanently\ndelete your account? This action\ncannot be undone.',
                   textAlign: TextAlign.center,
                   style: GoogleFonts.poppins(
-                    fontSize: 13,
+                    fontSize: AppSizes.sp13,
                     height: 1.6,
                     color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
                 ),
-                const SizedBox(height: 28),
+                SizedBox(height: AppSizes.h28),
 
                 BlocBuilder<ProfileCubit, ProfileState>(
                   builder: (context, state) {
@@ -92,62 +92,64 @@ class DeleteAccountDialog extends StatelessWidget {
                         // Delete button
                         SizedBox(
                           width: double.infinity,
-                          height: 50,
+                          height: AppSizes.h50,
                           child: ElevatedButton(
                             onPressed: isLoading
                                 ? null
                                 : () => context
-                                .read<ProfileCubit>()
-                                .deleteProfile(),
+                                      .read<ProfileCubit>()
+                                      .deleteProfile(),
                             style: ElevatedButton.styleFrom(
                               elevation: 0,
                               backgroundColor: Colors.red,
                               disabledBackgroundColor: Colors.red.shade200,
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(14),
+                                borderRadius: BorderRadius.circular(
+                                  AppSizes.r14,
+                                ),
                               ),
                             ),
                             child: isLoading
                                 ? const SizedBox(
-                              width: 22,
-                              height: 22,
-                              child: CircularProgressIndicator(
-                                color: Colors.white,
-                                strokeWidth: 2.5,
-                              ),
-                            )
+                                    width: 22,
+                                    height: 22,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
+                                      strokeWidth: 2.5,
+                                    ),
+                                  )
                                 : Text(
-                              'Yes, Delete My Account',
-                              style: GoogleFonts.poppins(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white,
-                              ),
-                            ),
+                                    'Yes, Delete My Account',
+                                    style: GoogleFonts.poppins(
+                                      fontSize: AppSizes.sp14,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.white,
+                                    ),
+                                  ),
                           ),
                         ),
-                        const SizedBox(height: 12),
+                        SizedBox(height: AppSizes.h12),
 
                         // Cancel button
                         SizedBox(
                           width: double.infinity,
-                          height: 50,
+                          height: AppSizes.h50,
                           child: OutlinedButton(
-                            onPressed: isLoading
-                                ? null
-                                : () => context.pop(),
+                            onPressed: isLoading ? null : () => context.pop(),
                             style: OutlinedButton.styleFrom(
                               side: BorderSide(
                                 color: Theme.of(context).colorScheme.outline,
                               ),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(14),
+                                borderRadius: BorderRadius.circular(
+                                  AppSizes.r14,
+                                ),
                               ),
                             ),
                             child: Text(
                               'Cancel',
                               style: GoogleFonts.poppins(
-                                fontSize: 14,
+                                fontSize: AppSizes.sp14,
                                 fontWeight: FontWeight.w600,
                                 color: Theme.of(context).colorScheme.onSurface,
                               ),

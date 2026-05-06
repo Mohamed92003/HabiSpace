@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../core/utils/app_sizes.dart';
 
 
 class PriceMarker extends StatelessWidget {
@@ -11,12 +12,12 @@ class PriceMarker extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 200),
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      padding: EdgeInsets.symmetric(horizontal: AppSizes.w10, vertical: AppSizes.h6),
       decoration: BoxDecoration(
         color: isSelected
             ? Theme.of(context).colorScheme.primary
             : Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(AppSizes.r20),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.15),
@@ -37,7 +38,7 @@ class PriceMarker extends StatelessWidget {
               ? Colors.white
               : Theme.of(context).colorScheme.onSurface,
           fontWeight: FontWeight.bold,
-          fontSize: 12,
+          fontSize: AppSizes.sp12,
         ),
       ),
     );

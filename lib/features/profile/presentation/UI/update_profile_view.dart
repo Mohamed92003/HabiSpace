@@ -4,6 +4,7 @@ import 'package:habispace/core/utils/app_color.dart';
 import 'package:habispace/features/profile/domain/entities/Profile_Entity.dart';
 import 'package:habispace/features/profile/presentation/Cubit/cubit/profile_cubit.dart';
 import 'package:intl/intl.dart';
+import '../../../../core/utils/app_sizes.dart';
 
 class UpdateProfileView extends StatefulWidget {
   final ProfileEntity user;
@@ -81,11 +82,11 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
           backgroundColor: Colors.white,
           elevation: 0,
           leading: const BackButton(color: AppColors.secondBlack),
-          title: const Text(
+          title: Text(
             'Personal Information',
             style: TextStyle(
               color: AppColors.secondBlack,
-              fontSize: 18,
+              fontSize: AppSizes.sp18,
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -94,7 +95,7 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
             if (!_isEditing)
               TextButton(
                 onPressed: () => setState(() => _isEditing = true),
-                child: const Text(
+                child: Text(
                   'Edit',
                   style: TextStyle(
                     color: AppColors.blue,
@@ -105,7 +106,7 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
             else
               TextButton(
                 onPressed: _save,
-                child: const Text(
+                child: Text(
                   'Save',
                   style: TextStyle(
                     color: AppColors.blue,
@@ -116,7 +117,7 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
           ],
         ),
         body: SingleChildScrollView(
-          padding: const EdgeInsets.all(20),
+          padding: EdgeInsets.all(AppSizes.h20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -137,7 +138,7 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
                         widget.user.name.isNotEmpty
                             ? widget.user.name[0].toUpperCase()
                             : 'U',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 36,
                           fontWeight: FontWeight.bold,
                           color: AppColors.blue,
@@ -150,16 +151,16 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
                         bottom: 0,
                         right: 0,
                         child: Container(
-                          padding: const EdgeInsets.all(6),
+                          padding: EdgeInsets.all(AppSizes.h6),
                           decoration: BoxDecoration(
                             color: AppColors.blue,
                             shape: BoxShape.circle,
                             border:
                             Border.all(color: Colors.white, width: 2),
                           ),
-                          child: const Icon(
+                          child: Icon(
                             Icons.camera_alt_outlined,
-                            size: 14,
+                            size: AppSizes.sp14,
                             color: Colors.white,
                           ),
                         ),
@@ -167,27 +168,27 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
                   ],
                 ),
               ),
-              const SizedBox(height: 8),
+              SizedBox(height: AppSizes.h8),
               Center(
                 child: Container(
                   padding:
-                  const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                  EdgeInsets.symmetric(horizontal: AppSizes.w12, vertical: AppSizes.h4),
                   decoration: BoxDecoration(
                     color: AppColors.blue.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(AppSizes.r20),
                   ),
                   child: Text(
                     widget.user.role?.toUpperCase() ?? 'USER',
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: AppColors.blue,
-                      fontSize: 11,
+                      fontSize: AppSizes.sp11,
                       fontWeight: FontWeight.w700,
                       letterSpacing: 1.2,
                     ),
                   ),
                 ),
               ),
-              const SizedBox(height: 28),
+              SizedBox(height: AppSizes.h28),
 
               // ── Editable fields ────────────────────────────────────────
               _SectionLabel(label: 'Full Name'),
@@ -197,7 +198,7 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
                 enabled: _isEditing,
                 hint: 'Your full name',
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: AppSizes.h16),
               _SectionLabel(label: 'Phone Number'),
               _InfoField(
                 icon: Icons.phone_outlined,
@@ -206,7 +207,7 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
                 hint: 'Your phone number',
                 keyboardType: TextInputType.phone,
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: AppSizes.h16),
               _SectionLabel(label: 'Location'),
               _InfoField(
                 icon: Icons.location_on_outlined,
@@ -214,7 +215,7 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
                 enabled: _isEditing,
                 hint: 'Your city',
               ),
-              const SizedBox(height: 24),
+              SizedBox(height: AppSizes.h24),
 
               // ── Read-only fields ───────────────────────────────────────
               _SectionLabel(label: 'Account Details'),
@@ -225,7 +226,7 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
                     label: 'Email',
                     value: widget.user.email,
                   ),
-                  const Divider(height: 1, thickness: 0.8, indent: 52),
+                  Divider(height: 1, thickness: 0.8, indent: 52),
                   _ReadOnlyRow(
                     icon: Icons.calendar_today_outlined,
                     label: 'Member since',
@@ -250,12 +251,12 @@ class _SectionLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
+      padding: EdgeInsets.only(bottom: AppSizes.h8),
       child: Text(
         label,
-        style: const TextStyle(
+        style: TextStyle(
           color: AppColors.textSecondaryColor,
-          fontSize: 13,
+          fontSize: AppSizes.sp13,
           fontWeight: FontWeight.w500,
         ),
       ),
@@ -283,7 +284,7 @@ class _InfoField extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppSizes.r12),
         border: Border.all(
           color: enabled ? AppColors.blue.withOpacity(0.5) : AppColors.borderColor,
           width: enabled ? 1.5 : 0.8,
@@ -292,10 +293,10 @@ class _InfoField extends StatelessWidget {
       child: Row(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 14),
+            padding: EdgeInsets.symmetric(horizontal: AppSizes.w14),
             child: Icon(
               icon,
-              size: 20,
+              size: AppSizes.sp20,
               color: enabled ? AppColors.blue : Colors.grey.shade400,
             ),
           ),
@@ -304,16 +305,16 @@ class _InfoField extends StatelessWidget {
               controller: controller,
               enabled: enabled,
               keyboardType: keyboardType,
-              style: const TextStyle(
-                fontSize: 15,
+              style: TextStyle(
+                fontSize: AppSizes.sp15,
                 color: AppColors.secondBlack,
                 fontWeight: FontWeight.w500,
               ),
               decoration: InputDecoration(
                 hintText: hint,
-                hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: 14),
+                hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: AppSizes.sp14),
                 border: InputBorder.none,
-                contentPadding: const EdgeInsets.symmetric(vertical: 14),
+                contentPadding: EdgeInsets.symmetric(vertical: AppSizes.h14),
                 disabledBorder: InputBorder.none,
               ),
             ),
@@ -333,7 +334,7 @@ class _ReadOnlyCard extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppSizes.r12),
         border: Border.all(color: AppColors.borderColor, width: 0.8),
       ),
       child: Column(children: children),
@@ -354,27 +355,27 @@ class _ReadOnlyRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      padding: EdgeInsets.symmetric(horizontal: AppSizes.w16, vertical: AppSizes.h14),
       child: Row(
         children: [
-          Icon(icon, size: 20, color: Colors.grey.shade400),
-          const SizedBox(width: 14),
+          Icon(icon, size: AppSizes.sp20, color: Colors.grey.shade400),
+          SizedBox(width: AppSizes.w14),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 label,
                 style: TextStyle(
-                  fontSize: 11,
+                  fontSize: AppSizes.sp11,
                   color: Colors.grey.shade500,
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              const SizedBox(height: 2),
+              SizedBox(height: AppSizes.h2),
               Text(
                 value,
-                style: const TextStyle(
-                  fontSize: 15,
+                style: TextStyle(
+                  fontSize: AppSizes.sp15,
                   color: AppColors.secondBlack,
                   fontWeight: FontWeight.w500,
                 ),

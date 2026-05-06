@@ -29,7 +29,7 @@ class ChatInput extends StatelessWidget {
         color: colorScheme.surface,
         boxShadow: [
           BoxShadow(
-            color: colorScheme.shadow.withOpacity(0.05),
+            color: colorScheme.shadow.withValues(alpha: 0.05),
             blurRadius: 8,
             offset: const Offset(0, -2),
           ),
@@ -65,11 +65,11 @@ class ChatInput extends StatelessWidget {
           GestureDetector(
             onTap: isSending ? null : onSend,
             child: Container(
-              width: 46,
-              height: 46,
+              width: AppSizes.w44,
+              height: AppSizes.h44,
               decoration: BoxDecoration(
                 color: isSending
-                    ? colorScheme.primary.withOpacity(0.5)
+                    ? colorScheme.primary.withValues(alpha: 0.5)
                     : colorScheme.primary,
                 shape: BoxShape.circle,
               ),

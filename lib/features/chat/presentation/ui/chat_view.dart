@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../../core/utils/app_color.dart';
 import '../../../../core/utils/app_sizes.dart';
 import '../../../../core/utils/app_texts.dart';
 import '../cubit/chat_cubit.dart';
@@ -91,7 +90,7 @@ class _ChatViewState extends State<ChatView> {
               radius: 18,
               backgroundColor: Theme.of(
                 context,
-              ).colorScheme.primary.withOpacity(0.2),
+              ).colorScheme.primary.withValues(alpha: 0.2),
               child: Text(
                 widget.agentName.isNotEmpty
                     ? widget.agentName[0].toUpperCase()
@@ -107,7 +106,7 @@ class _ChatViewState extends State<ChatView> {
               widget.agentName,
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onSurface,
-                fontSize: 16,
+                fontSize: AppSizes.sp16,
                 fontWeight: FontWeight.w600,
               ),
             ),

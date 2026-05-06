@@ -54,7 +54,7 @@ class ResetPasswordScreen extends StatelessWidget {
         },
         builder: (context, state) {
           return SingleChildScrollView(
-            padding: const EdgeInsets.all(24),
+            padding: EdgeInsets.all(AppSizes.h24),
             child: Form(
               key: _formKey,
               child: Column(
@@ -63,7 +63,7 @@ class ResetPasswordScreen extends StatelessWidget {
                   SizedBox(height: AppSizes.h24),
                   Text(
                     '${AppTexts.createNewPasswordFor.tr()}\n$email',
-                    style: GoogleFonts.poppins(fontSize: 14),
+                    style: GoogleFonts.poppins(fontSize: AppSizes.sp14),
                   ),
                   SizedBox(height: AppSizes.h24),
 

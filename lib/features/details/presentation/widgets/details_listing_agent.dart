@@ -67,18 +67,16 @@ class _DetailsListingAgentState extends State<DetailsListingAgent> {
             CircleAvatar(
               radius: AppSizes.w24,
               backgroundColor: AppColors.textLightColor,
-              backgroundImage:
-                  (agent.company != null && agent.company!.startsWith('http'))
-                  ? NetworkImage(agent.company!)
+              backgroundImage: agent.company.startsWith('http')
+                  ? NetworkImage(agent.company)
                   : null,
-              child:
-                  (agent.company == null || !agent.company!.startsWith('http'))
-                  ? Icon(
+              child: agent.company.startsWith('http')
+                  ? null
+                  : Icon(
                       Icons.person,
                       color: AppColors.light,
                       size: AppSizes.h24,
-                    )
-                  : null,
+                    ),
             ),
             SizedBox(width: AppSizes.w12),
             Expanded(
@@ -117,10 +115,13 @@ class _DetailsListingAgentState extends State<DetailsListingAgent> {
                 final existingId = prefs.getInt('agent_conv_${agent.user.id}');
                 if (existingId != null) {
                   if (!context.mounted) return;
-                  context.pushNamed(AppRoutes.chat, extra: {
-                    'conversationId': existingId,
-                    'agentName': agent.user.name,
-                  });
+                  context.pushNamed(
+                    AppRoutes.chat,
+                    extra: {
+                      'conversationId': existingId,
+                      'agentName': agent.user.name,
+                    },
+                  );
                   return;
                 }
                 final chatCubit = sl<ChatCubit>();
@@ -141,10 +142,13 @@ class _DetailsListingAgentState extends State<DetailsListingAgent> {
                     state.conversation.id,
                   );
                   if (!context.mounted) return;
-                  context.pushNamed(AppRoutes.chat, extra: {
-                    'conversationId': state.conversation.id,
-                    'agentName': agent.user.name,
-                  });
+                  context.pushNamed(
+                    AppRoutes.chat,
+                    extra: {
+                      'conversationId': state.conversation.id,
+                      'agentName': agent.user.name,
+                    },
+                  );
                 }
               },
             ),

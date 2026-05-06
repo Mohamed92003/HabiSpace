@@ -53,7 +53,7 @@ class SearchPropertyCard extends StatelessWidget {
           children: [
             Stack(
               children: [
-                property.images.isNotEmpty
+                property.images.isNotEmpty && property.images[0].isNotEmpty
                     ? SizedBox(
                         height: AppSizes.h140,
                         width: AppSizes.w360,
@@ -62,25 +62,22 @@ class SearchPropertyCard extends StatelessWidget {
                           fit: BoxFit.cover,
                           loadingBuilder: (context, child, progress) {
                             if (progress == null) return child;
-                            return Container(
-                              color: Colors.grey.shade200,
-                              child: const Center(
-                                child: CircularProgressIndicator(),
-                              ),
+                            return _PropertyImagePlaceholder(
+                              width: AppSizes.w360,
+                              height: AppSizes.h140,
+                              showShimmer: true,
                             );
                           },
                           errorBuilder: (context, error, stackTrace) =>
-                              Image.asset(
-                                'assets/images/Frame 2147228697.png',
-                                fit: BoxFit.cover,
+                              _PropertyImagePlaceholder(
+                                width: AppSizes.w360,
+                                height: AppSizes.h140,
                               ),
                         ),
                       )
-                    : Image.asset(
-                        'assets/images/Frame 2147228697.png',
-                        fit: BoxFit.cover,
+                    : _PropertyImagePlaceholder(
+                        width: AppSizes.w360,
                         height: AppSizes.h140,
-                        width: AppSizes.w220,
                       ),
                 Positioned(
                   top: 12,
@@ -218,6 +215,53 @@ class SearchPropertyCard extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+// ── Shared image placeholder ──────────────────────────────────────────────────
+class _PropertyImagePlaceholder extends StatelessWidget {
+  final double width;
+  final double height;
+  final bool showShimmer;
+
+  const _PropertyImagePlaceholder({
+    required this.width,
+    required this.height,
+    this.showShimmer = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: width,
+      height: height,
+      color: Colors.grey.shade200,
+      child: showShimmer
+          ? Center(
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                color: AppColors.blue,
+              ),
+            )
+          : Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.home_outlined,
+                  size: AppSizes.sp40,
+                  color: Colors.grey.shade400,
+                ),
+                SizedBox(height: AppSizes.h6),
+                Text(
+                  'No Image',
+                  style: TextStyle(
+                    fontSize: AppSizes.sp11,
+                    color: Colors.grey.shade400,
+                  ),
+                ),
+              ],
+            ),
     );
   }
 }

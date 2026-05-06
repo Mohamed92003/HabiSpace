@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import '../../../../core/utils/app_sizes.dart';
 
 class PaymentWebView extends StatefulWidget {
   final String url;
   final String title;
 
-  const PaymentWebView({
-    super.key,
-    required this.url,
-    this.title = 'Payment',
-  });
+  const PaymentWebView({super.key, required this.url, this.title = 'Payment'});
 
   @override
   State<PaymentWebView> createState() => _PaymentWebViewState();
@@ -63,8 +60,8 @@ class _PaymentWebViewState extends State<PaymentWebView> {
         ),
         title: Text(
           widget.title,
-          style: const TextStyle(
-            fontSize: 16,
+          style: TextStyle(
+            fontSize: AppSizes.sp16,
             fontWeight: FontWeight.w600,
             color: Colors.black,
           ),

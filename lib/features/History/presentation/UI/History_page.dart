@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:habispace/core/shared/error_view.dart';
 import 'package:habispace/features/History/presentation/Cubit/cubit/history_cubit.dart';
-import '../../../../core/shared/custom_svg.dart';
+import '../../../../core/utils/app_sizes.dart';
 import '../../../../core/utils/app_texts.dart';
 
 List<Widget> historyViewSlivers(BuildContext context, HistoryState state) {
@@ -34,11 +34,18 @@ List<Widget> historyViewSlivers(BuildContext context, HistoryState state) {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.history, size: 64, color: Colors.grey),
-                const SizedBox(height: 16),
+                Icon(
+                  Icons.history,
+                  size: AppSizes.h64,
+                  color: Colors.grey,
+                ),
+                SizedBox(height: AppSizes.h16),
                 Text(
                   AppTexts.noHistoryYet.tr(),
-                  style: const TextStyle(fontSize: 16, color: Colors.grey),
+                  style: TextStyle(
+                    fontSize: AppSizes.sp16,
+                    color: Colors.grey,
+                  ),
                 ),
               ],
             ),
@@ -49,20 +56,20 @@ List<Widget> historyViewSlivers(BuildContext context, HistoryState state) {
 
     return [
       SliverPadding(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        padding: EdgeInsets.symmetric(horizontal: AppSizes.w12, vertical: AppSizes.h8),
         sliver: SliverList.separated(
           itemCount: orders.length,
-          separatorBuilder: (_, _) => const SizedBox(height: 4),
+          separatorBuilder: (_, _) => SizedBox(height: AppSizes.h4),
           itemBuilder: (context, index) {
             final order = orders[index];
             final property = order.property;
 
             return Container(
               width: double.infinity,
-              margin: const EdgeInsets.symmetric(vertical: 4),
+              margin: EdgeInsets.symmetric(vertical: AppSizes.h4),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(AppSizes.r20),
                 boxShadow: const [
                   BoxShadow(
                     color: Colors.black12,
@@ -75,29 +82,29 @@ List<Widget> historyViewSlivers(BuildContext context, HistoryState state) {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ClipRRect(
-                    borderRadius: const BorderRadius.vertical(
-                      top: Radius.circular(20),
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(AppSizes.r20),
                     ),
                     child: property.images.isNotEmpty
                         ? Image.network(
                             property.images[0],
                             width: double.infinity,
-                            height: 180,
+                            height: AppSizes.h180,
                             fit: BoxFit.cover,
                           )
                         : Container(
                             width: double.infinity,
-                            height: 180,
+                            height: AppSizes.h180,
                             color: Colors.grey[200],
-                            child: const Icon(
+                            child: Icon(
                               Icons.home,
                               color: Colors.grey,
-                              size: 48,
+                              size: AppSizes.sp48,
                             ),
                           ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(12),
+                    padding: EdgeInsets.all(AppSizes.h12),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -106,8 +113,8 @@ List<Widget> historyViewSlivers(BuildContext context, HistoryState state) {
                             Expanded(
                               child: Text(
                                 property.title,
-                                style: const TextStyle(
-                                  fontSize: 16,
+                                style: TextStyle(
+                                  fontSize: AppSizes.sp16,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -115,28 +122,31 @@ List<Widget> historyViewSlivers(BuildContext context, HistoryState state) {
                             _StatusBadge(status: order.status),
                           ],
                         ),
-                        const SizedBox(height: 6),
+                        SizedBox(height: AppSizes.h6),
                         Row(
                           children: [
-                            const Icon(Icons.location_on_outlined,
-                                size: 16, color: Colors.grey),
-                            const SizedBox(width: 4),
+                            Icon(
+                              Icons.location_on_outlined,
+                              size: AppSizes.sp16,
+                              color: Colors.grey,
+                            ),
+                            SizedBox(width: AppSizes.w4),
                             Expanded(
                               child: Text(
                                 property.address,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   color: Colors.grey,
-                                  fontSize: 12,
+                                  fontSize: AppSizes.sp12,
                                 ),
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
                           ],
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: AppSizes.h10),
                         Wrap(
-                          spacing: 12,
-                          runSpacing: 8,
+                          spacing: AppSizes.w12,
+                          runSpacing: AppSizes.h8,
                           children: [
                             _InfoItem(
                               icon: Icons.bed,
@@ -154,33 +164,36 @@ List<Widget> historyViewSlivers(BuildContext context, HistoryState state) {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 12),
+                        SizedBox(height: AppSizes.h12),
                         Row(
                           children: [
                             Text(
                               '\$${order.amount}',
-                              style: const TextStyle(
-                                fontSize: 16,
+                              style: TextStyle(
+                                fontSize: AppSizes.sp16,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            const SizedBox(width: 4),
+                            SizedBox(width: AppSizes.w4),
                             Text(
                               order.currency.toUpperCase(),
-                              style: const TextStyle(
+                              style: TextStyle(
                                 color: Colors.grey,
-                                fontSize: 12,
+                                fontSize: AppSizes.sp12,
                               ),
                             ),
                             const Spacer(),
-                            const Icon(Icons.calendar_today_outlined,
-                                size: 14, color: Colors.grey),
-                            const SizedBox(width: 4),
+                            Icon(
+                              Icons.calendar_today_outlined,
+                              size: AppSizes.sp14,
+                              color: Colors.grey,
+                            ),
+                            SizedBox(width: AppSizes.w4),
                             Text(
                               order.createdAt.substring(0, 10),
-                              style: const TextStyle(
+                              style: TextStyle(
                                 color: Colors.grey,
-                                fontSize: 12,
+                                fontSize: AppSizes.sp12,
                               ),
                             ),
                           ],
@@ -214,17 +227,17 @@ class _StatusBadge extends StatelessWidget {
     };
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      padding: EdgeInsets.symmetric(horizontal: AppSizes.w10, vertical: AppSizes.h4),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.12),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(AppSizes.r20),
         border: Border.all(color: color.withValues(alpha: 0.4)),
       ),
       child: Text(
         status,
         style: TextStyle(
           color: color,
-          fontSize: 11,
+          fontSize: AppSizes.sp11,
           fontWeight: FontWeight.w600,
         ),
       ),
@@ -243,12 +256,9 @@ class _InfoItem extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(icon, size: 16, color: Colors.grey),
-        const SizedBox(width: 4),
-        Text(
-          text,
-          style: const TextStyle(fontSize: 12, color: Colors.grey),
-        ),
+        Icon(icon, size: AppSizes.sp16, color: Colors.grey),
+        SizedBox(width: AppSizes.w4),
+        Text(text, style: TextStyle(fontSize: AppSizes.sp12, color: Colors.grey)),
       ],
     );
   }

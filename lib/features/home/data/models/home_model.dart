@@ -16,15 +16,12 @@ class HomeModel extends HomeEntity {
       categories: (data['categories'] as List)
           .map((e) => CategoryModel.fromJson(e))
           .toList(),
-      bestSelling: (data['best_selling'] as List)
-          .map((e) => HomePropertyModel.fromJson(e))
-          .toList(),
-      featured: (data['featured'] as List)
-          .map((e) => HomePropertyModel.fromJson(e))
-          .toList(),
-      recommended: (data['recommended'] as List)
-          .map((e) => HomePropertyModel.fromJson(e))
-          .toList(),
+      bestSelling: (data['best_selling'] as List? ?? [])
+          .map((e) => HomePropertyModel.fromJson(e)).toList(),
+      featured: (data['featured'] as List? ?? [])
+          .map((e) => HomePropertyModel.fromJson(e)).toList(),
+      recommended: (data['recommended'] as List? ?? [])
+          .map((e) => HomePropertyModel.fromJson(e)).toList(),
     );
   }
 }

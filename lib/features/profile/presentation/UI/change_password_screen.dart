@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:habispace/core/utils/app_color.dart';
 import 'package:habispace/features/profile/presentation/Cubit/cubit/profile_cubit.dart';
 import '../../../../core/shared/snakbar.dart';
-
+import '../../../../core/utils/app_sizes.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   const ChangePasswordScreen({super.key});
@@ -60,45 +60,43 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
           backgroundColor: Colors.white,
           elevation: 0,
           leading: const BackButton(color: AppColors.secondBlack),
-          title: const Text(
+          title: Text(
             'Change Password',
             style: TextStyle(
               color: AppColors.secondBlack,
-              fontSize: 18,
+              fontSize: AppSizes.sp18,
               fontWeight: FontWeight.w600,
             ),
           ),
           centerTitle: true,
         ),
         body: SingleChildScrollView(
-          padding: const EdgeInsets.all(20),
+          padding: EdgeInsets.all(AppSizes.h20),
           child: Form(
             key: _formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  padding: const EdgeInsets.all(16),
+                  padding: EdgeInsets.all(AppSizes.h16),
                   decoration: BoxDecoration(
                     color: AppColors.blue.withOpacity(0.07),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: AppColors.blue.withOpacity(0.2),
-                    ),
+                    borderRadius: BorderRadius.circular(AppSizes.r12),
+                    border: Border.all(color: AppColors.blue.withOpacity(0.2)),
                   ),
                   child: Row(
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.info_outline_rounded,
                         color: AppColors.blue,
-                        size: 20,
+                        size: AppSizes.sp20,
                       ),
-                      const SizedBox(width: 10),
-                      const Expanded(
+                      SizedBox(width: AppSizes.w10),
+                      Expanded(
                         child: Text(
                           'Your new password must be at least 8 characters and include an uppercase letter and a number.',
                           style: TextStyle(
-                            fontSize: 13,
+                            fontSize: AppSizes.sp13,
                             color: AppColors.blue,
                             height: 1.4,
                           ),
@@ -107,15 +105,14 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 28),
+                SizedBox(height: AppSizes.h28),
 
                 const _FieldLabel(label: 'Current Password'),
                 _PasswordField(
                   controller: _currentCtrl,
                   hint: 'Enter your current password',
                   showPassword: _showCurrent,
-                  onToggle: () =>
-                      setState(() => _showCurrent = !_showCurrent),
+                  onToggle: () => setState(() => _showCurrent = !_showCurrent),
                   validator: (v) {
                     if (v == null || v.isEmpty) {
                       return 'Current password is required';
@@ -123,7 +120,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: AppSizes.h20),
 
                 const _FieldLabel(label: 'New Password'),
                 _PasswordField(
@@ -147,17 +144,16 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: AppSizes.h8),
                 _StrengthIndicator(password: _newCtrl.text),
-                const SizedBox(height: 20),
+                SizedBox(height: AppSizes.h20),
 
                 const _FieldLabel(label: 'Confirm New Password'),
                 _PasswordField(
                   controller: _confirmCtrl,
                   hint: 'Re-enter your new password',
                   showPassword: _showConfirm,
-                  onToggle: () =>
-                      setState(() => _showConfirm = !_showConfirm),
+                  onToggle: () => setState(() => _showConfirm = !_showConfirm),
                   validator: (v) {
                     if (v == null || v.isEmpty) {
                       return 'Please confirm your password';
@@ -168,42 +164,43 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 36),
+                SizedBox(height: AppSizes.h36),
 
                 BlocBuilder<ProfileCubit, ProfileState>(
                   builder: (context, state) {
                     final isLoading = state is ProfileLoading;
                     return SizedBox(
                       width: double.infinity,
-                      height: 52,
+                      height: AppSizes.h52,
                       child: ElevatedButton(
                         onPressed: isLoading ? null : _submit,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.blue,
-                          disabledBackgroundColor:
-                          AppColors.blue.withOpacity(0.5),
+                          disabledBackgroundColor: AppColors.blue.withOpacity(
+                            0.5,
+                          ),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(14),
+                            borderRadius: BorderRadius.circular(AppSizes.r14),
                           ),
                           elevation: 0,
                         ),
                         child: isLoading
-                            ? const SizedBox(
-                          width: 22,
-                          height: 22,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2.5,
-                            color: Colors.white,
-                          ),
-                        )
-                            : const Text(
-                          'Update Password',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white,
-                          ),
-                        ),
+                            ? SizedBox(
+                                width: 22,
+                                height: 22,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2.5,
+                                  color: Colors.white,
+                                ),
+                              )
+                            : Text(
+                                'Update Password',
+                                style: TextStyle(
+                                  fontSize: AppSizes.sp16,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
+                                ),
+                              ),
                       ),
                     );
                   },
@@ -226,12 +223,12 @@ class _FieldLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
+      padding: EdgeInsets.only(bottom: AppSizes.h8),
       child: Text(
         label,
-        style: const TextStyle(
+        style: TextStyle(
           color: AppColors.textSecondaryColor,
-          fontSize: 13,
+          fontSize: AppSizes.sp13,
           fontWeight: FontWeight.w500,
         ),
       ),
@@ -260,17 +257,20 @@ class _PasswordField extends StatelessWidget {
       controller: controller,
       obscureText: !showPassword,
       validator: validator,
-      style: const TextStyle(
-        fontSize: 15,
+      style: TextStyle(
+        fontSize: AppSizes.sp15,
         color: AppColors.secondBlack,
         fontWeight: FontWeight.w500,
       ),
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: 14),
+        hintStyle: TextStyle(
+          color: Colors.grey.shade400,
+          fontSize: AppSizes.sp14,
+        ),
         prefixIcon: Icon(
           Icons.lock_outline_rounded,
-          size: 20,
+          size: AppSizes.sp20,
           color: Colors.grey.shade400,
         ),
         suffixIcon: IconButton(
@@ -283,33 +283,35 @@ class _PasswordField extends StatelessWidget {
             showPassword
                 ? Icons.visibility_off_outlined
                 : Icons.visibility_outlined,
-            size: 20,
+            size: AppSizes.sp20,
             color: Colors.grey.shade400,
           ),
           onPressed: onToggle,
         ),
         filled: true,
         fillColor: Colors.white,
-        contentPadding:
-        const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: AppSizes.w16,
+          vertical: AppSizes.h14,
+        ),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppSizes.r12),
           borderSide: BorderSide(color: AppColors.borderColor, width: 0.8),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppSizes.r12),
           borderSide: BorderSide(color: AppColors.borderColor, width: 0.8),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: AppColors.blue, width: 1.5),
+          borderRadius: BorderRadius.circular(AppSizes.r12),
+          borderSide: BorderSide(color: AppColors.blue, width: 1.5),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppSizes.r12),
           borderSide: BorderSide(color: AppColors.error, width: 1.2),
         ),
         focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppSizes.r12),
           borderSide: BorderSide(color: AppColors.error, width: 1.5),
         ),
       ),
@@ -362,7 +364,7 @@ class _StrengthIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (password.isEmpty) return const SizedBox.shrink();
+    if (password.isEmpty) return SizedBox.shrink();
     return Row(
       children: [
         ...List.generate(4, (i) {
@@ -372,16 +374,16 @@ class _StrengthIndicator extends StatelessWidget {
               margin: EdgeInsets.only(right: i < 3 ? 4 : 0),
               decoration: BoxDecoration(
                 color: i < _strength ? _color : Colors.grey.shade200,
-                borderRadius: BorderRadius.circular(4),
+                borderRadius: BorderRadius.circular(AppSizes.r4),
               ),
             ),
           );
         }),
-        const SizedBox(width: 10),
+        SizedBox(width: AppSizes.w10),
         Text(
           _label,
           style: TextStyle(
-            fontSize: 12,
+            fontSize: AppSizes.sp12,
             color: _color,
             fontWeight: FontWeight.w600,
           ),

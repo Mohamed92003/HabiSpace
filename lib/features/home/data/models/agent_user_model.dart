@@ -11,11 +11,11 @@ class AgentUserModel extends AgentUserEntity {
   });
 
   factory AgentUserModel.fromJson(Map<String, dynamic> json) => AgentUserModel(
-    id: json['id'],
-    name: json['name'],
-    email: json['email'],
-    role: json['role'],
-    location: json['location'],
-    phone: json['phone'],
+    id: json['id'] as int? ?? 0,
+    name: json['name'] as String? ?? '',
+    email: json['email'] as String? ?? '',
+    role: json['role'] as String? ?? '',
+    location: json['location'] as String? ?? '',
+    phone: json['phone'] as String? ?? '',
   );
 }

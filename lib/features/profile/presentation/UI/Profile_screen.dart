@@ -44,30 +44,30 @@ List<Widget> profileViewSlivers(BuildContext context, ProfileState state) {
         child: Container(
           color: AppColors.lightBackground,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: EdgeInsets.symmetric(horizontal: AppSizes.w20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                  SizedBox(height: AppSizes.h16),
                 Text(
                   user?.name ?? AppTexts.profileUserName.tr(),
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 26,
                     fontWeight: FontWeight.bold,
                     color: AppColors.secondBlack,
                   ),
                 ),
-                const SizedBox(height: 6),
+                SizedBox(height: AppSizes.h6),
                 Text(
                   user?.location.isNotEmpty == true
                       ? user!.location
                       : AppTexts.profileNoLocation.tr(),
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: AppColors.textSecondaryColor,
-                    fontSize: 15,
+                    fontSize: AppSizes.sp15,
                   ),
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: AppSizes.h24),
                 ProfileMenuCard(
                   sectionTitle: AppTexts.profileAccountSetting.tr(),
                   items: [
@@ -96,7 +96,7 @@ List<Widget> profileViewSlivers(BuildContext context, ProfileState state) {
                   ],
                 ),
 
-                const SizedBox(height: 16),
+                SizedBox(height: AppSizes.h16),
 
                 ProfileMenuCard(
                   sectionTitle: AppTexts.profileSettingSecurity.tr(),
@@ -155,13 +155,13 @@ List<Widget> profileViewSlivers(BuildContext context, ProfileState state) {
                                     : const Locale('ar'),
                               ),
                               child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 12,
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: AppSizes.w12,
                                   vertical: 5,
                                 ),
                                 decoration: BoxDecoration(
                                   color: Colors.blueGrey.shade50,
-                                  borderRadius: BorderRadius.circular(20),
+                                  borderRadius: BorderRadius.circular(AppSizes.r20),
                                   border: Border.all(
                                     color: Colors.blueGrey.shade200,
                                   ),
@@ -171,13 +171,13 @@ List<Widget> profileViewSlivers(BuildContext context, ProfileState state) {
                                   children: [
                                     Text(
                                       isArabic ? '🇸🇦' : '🇺🇸',
-                                      style: const TextStyle(fontSize: 15),
+                                      style: TextStyle(fontSize: AppSizes.sp15),
                                     ),
-                                    const SizedBox(width: 5),
+                                    SizedBox(width: 5),
                                     Text(
                                       isArabic ? 'العربية' : 'English',
-                                      style: const TextStyle(
-                                        fontSize: 13,
+                                      style: TextStyle(
+                                        fontSize: AppSizes.sp13,
                                         fontWeight: FontWeight.w600,
                                         color: Colors.blueGrey,
                                       ),
@@ -192,7 +192,7 @@ List<Widget> profileViewSlivers(BuildContext context, ProfileState state) {
                     ),
                   ],
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: AppSizes.h16),
                 ProfileMenuCard(
                   items: [
                     ProfileMenuItem(
@@ -208,7 +208,7 @@ List<Widget> profileViewSlivers(BuildContext context, ProfileState state) {
                   ],
                 ),
 
-                const SizedBox(height: 100),
+                SizedBox(height: AppSizes.h100),
               ],
             ),
           ),

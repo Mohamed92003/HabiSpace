@@ -57,28 +57,36 @@ GoRouter createRouter(String initialLocation) => GoRouter(
         final extra = state.extra as Map<String, dynamic>;
         final propertyId = extra['propertyId'] as int;
         final favoriteCubit = extra['favoriteCubit'] as FavoriteCubit;
-        final similar = (extra['similarProperties'] as List<HomePropertyEntity>?) ?? [];
+        final similar =
+            (extra['similarProperties'] as List<HomePropertyEntity>?) ?? [];
         return MultiBlocProvider(
           providers: [
             BlocProvider<DetailsCubit>(create: (_) => sl<DetailsCubit>()),
             BlocProvider<FavoriteCubit>.value(value: favoriteCubit),
           ],
-          child: DetailsView(propertyId: propertyId, similarProperties: similar),
+          child: DetailsView(
+            propertyId: propertyId,
+            similarProperties: similar,
+          ),
         );
       },
     ),
     GoRoute(
       path: AppRoutes.login,
       name: AppRoutes.login,
-      builder: (context, state) =>
-          BlocProvider<AuthBloc>(create: (_) => sl<AuthBloc>(), child: LoginScreen()),
+      builder: (context, state) => BlocProvider<AuthBloc>(
+        create: (_) => sl<AuthBloc>(),
+        child: LoginScreen(),
+      ),
     ),
 
     GoRoute(
       path: AppRoutes.signup,
       name: AppRoutes.signup,
-      builder: (context, state) =>
-          BlocProvider<AuthBloc>(create: (_) => sl<AuthBloc>(), child: SignupScreen()),
+      builder: (context, state) => BlocProvider<AuthBloc>(
+        create: (_) => sl<AuthBloc>(),
+        child: SignupScreen(),
+      ),
     ),
 
     GoRoute(
@@ -120,7 +128,9 @@ GoRouter createRouter(String initialLocation) => GoRouter(
       builder: (context, state) => MultiBlocProvider(
         providers: [
           BlocProvider<HomeCubit>(create: (_) => sl<HomeCubit>()..getHome()),
-          BlocProvider<FavoriteCubit>(create: (_) => sl<FavoriteCubit>()..getFavorites()),
+          BlocProvider<FavoriteCubit>(
+            create: (_) => sl<FavoriteCubit>()..getFavorites(),
+          ),
           BlocProvider<HistoryCubit>(create: (_) => sl<HistoryCubit>()),
           BlocProvider<ProfileCubit>(create: (_) => sl<ProfileCubit>()),
         ],
@@ -152,30 +162,41 @@ GoRouter createRouter(String initialLocation) => GoRouter(
     GoRoute(
       path: AppRoutes.conversations,
       name: AppRoutes.conversations,
-      builder: (context, state) =>
-          BlocProvider(create: (_) => sl<ChatCubit>(), child: const ConversationsView()),
-    ),
-    GoRoute(path:AppRoutes.updateProfile,
-    name: AppRoutes.updateProfile,
-    builder: (context, state) {
-      final extra = state.extra as Map<String, dynamic>;
-      return BlocProvider.value(
-        value: extra['profileCubit'] as ProfileCubit,
-        child: UpdateProfileView(user: extra['user'] as ProfileEntity),
-      );
-    }
+      builder: (context, state) => BlocProvider(
+        create: (_) => sl<ChatCubit>(),
+        child: const ConversationsView(),
+      ),
     ),
     GoRoute(
-        path:AppRoutes.changePassword,
-      name: AppRoutes.changePassword,
-      builder: (context,state){
-          return BlocProvider.value(
-            value: sl<ProfileCubit>(),
-            child: ChangePasswordScreen(
-            ),
+      path: AppRoutes.updateProfile,
+      name: AppRoutes.updateProfile,
+      builder: (context, state) {
+        final extra = state.extra as Map<String, dynamic>;
+        final user = extra['user'] as ProfileEntity?;
+        final profileCubit = extra['profileCubit'] as ProfileCubit;
+        // If user is null the profile hasn't loaded yet — go back gracefully
+        if (user == null) {
+          return Scaffold(
+            appBar: AppBar(title: const Text('Personal Information')),
+            body: const Center(child: CircularProgressIndicator()),
           );
-      }
-      ),
+        }
+        return BlocProvider.value(
+          value: profileCubit,
+          child: UpdateProfileView(user: user),
+        );
+      },
+    ),
+    GoRoute(
+      path: AppRoutes.changePassword,
+      name: AppRoutes.changePassword,
+      builder: (context, state) {
+        return BlocProvider.value(
+          value: sl<ProfileCubit>(),
+          child: ChangePasswordScreen(),
+        );
+      },
+    ),
 
     GoRoute(
       path: AppRoutes.deleteAccount,
@@ -246,7 +267,9 @@ GoRouter createRouter(String initialLocation) => GoRouter(
         final favoriteCubit = extra['favoriteCubit'] as FavoriteCubit;
         return BlocProvider.value(
           value: favoriteCubit,
-          child: FavoriteBody(categoryFilter: extra['categoryFilter'] as String?),
+          child: FavoriteBody(
+            categoryFilter: extra['categoryFilter'] as String?,
+          ),
         );
       },
     ),
@@ -262,16 +285,16 @@ GoRouter createRouter(String initialLocation) => GoRouter(
           value: favoriteCubit,
           child: FavoriteDetailsPage(
             property: extra['property'] as FavoritePropertyEntity,
-            allFavorites: extra['allFavorites'] as List<FavoritePropertyEntity>? ?? const [],
+            allFavorites:
+                extra['allFavorites'] as List<FavoritePropertyEntity>? ??
+                const [],
           ),
         );
       },
     ),
   ],
 
-  errorBuilder: (context, state) =>
-      Scaffold(body: Center(child: Text('${'pageNotFound'.tr()}: ${state.error}'))),
+  errorBuilder: (context, state) => Scaffold(
+    body: Center(child: Text('${'pageNotFound'.tr()}: ${state.error}')),
+  ),
 );
-
-
-

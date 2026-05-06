@@ -29,18 +29,18 @@ class _ConversationsViewState extends State<ConversationsView> {
         backgroundColor: AppColors.lightBackground,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back_ios_new_rounded,
             color: AppColors.secondBlack,
-            size: 18,
+            size: AppSizes.sp18,
           ),
           onPressed: () => context.pop(),
         ),
-        title: const Text(
+        title: Text(
           'Messages',
           style: TextStyle(
             color: AppColors.secondBlack,
-            fontSize: 16,
+            fontSize: AppSizes.sp16,
             fontWeight: FontWeight.w700,
           ),
         ),
@@ -59,21 +59,21 @@ class _ConversationsViewState extends State<ConversationsView> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Icon(Icons.error_outline, color: Colors.red, size: 48),
-                  const SizedBox(height: 12),
+                  Icon(Icons.error_outline, color: Colors.red, size: AppSizes.sp48),
+                  SizedBox(height: AppSizes.h12),
                   Text(
                     state.message,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(color: AppColors.textSecondaryColor),
+                    style: TextStyle(color: AppColors.textSecondaryColor),
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: AppSizes.h16),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.blue,
                     ),
                     onPressed: () =>
                         context.read<ChatCubit>().loadConversations(),
-                    child: const Text(
+                    child: Text(
                       'Retry',
                       style: TextStyle(color: Colors.white),
                     ),
@@ -91,23 +91,23 @@ class _ConversationsViewState extends State<ConversationsView> {
                   children: [
                     Icon(
                       Icons.chat_bubble_outline_rounded,
-                      size: 64,
+                      size: AppSizes.sp64,
                       color: AppColors.textLightColor.withValues(alpha: 0.5),
                     ),
-                    const SizedBox(height: 16),
-                    const Text(
+                    SizedBox(height: AppSizes.h16),
+                    Text(
                       'No conversations yet',
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: AppSizes.sp16,
                         fontWeight: FontWeight.w600,
                         color: AppColors.textSecondaryColor,
                       ),
                     ),
-                    const SizedBox(height: 8),
-                    const Text(
+                    SizedBox(height: AppSizes.h8),
+                    Text(
                       'Start a chat from a property listing',
                       style: TextStyle(
-                        fontSize: 13,
+                        fontSize: AppSizes.sp13,
                         color: AppColors.textLightColor,
                       ),
                     ),
@@ -142,7 +142,7 @@ class _ConversationsViewState extends State<ConversationsView> {
             );
           }
 
-          return const SizedBox();
+          return SizedBox();
         },
       ),
     );
@@ -170,18 +170,18 @@ class _ConversationTile extends StatelessWidget {
       leading: CircleAvatar(
         radius: 24,
         backgroundColor: AppColors.primaryContact,
-        child: const Icon(
+        child: Icon(
           Icons.person_outline_rounded,
           color: AppColors.blue,
-          size: 24,
+          size: AppSizes.sp24,
         ),
       ),
       title: Text(
         conversation.agentName.isNotEmpty
             ? conversation.agentName
             : 'Agent #${conversation.agentId}',
-        style: const TextStyle(
-          fontSize: 14,
+        style: TextStyle(
+          fontSize: AppSizes.sp14,
           fontWeight: FontWeight.w600,
           color: AppColors.secondBlack,
         ),
@@ -191,15 +191,15 @@ class _ConversationTile extends StatelessWidget {
               conversation.messages.last.body,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                fontSize: 12,
+              style: TextStyle(
+                fontSize: AppSizes.sp12,
                 color: AppColors.textLightColor,
               ),
             )
           : null,
       trailing: Text(
         time,
-        style: const TextStyle(fontSize: 11, color: AppColors.textLightColor),
+        style: TextStyle(fontSize: AppSizes.sp11, color: AppColors.textLightColor),
       ),
     );
   }

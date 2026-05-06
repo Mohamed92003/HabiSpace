@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/utils/app_color.dart';
+import '../../../../core/utils/app_sizes.dart';
 
 
 Widget buildSwitchTile({
@@ -10,16 +11,16 @@ Widget buildSwitchTile({
   required Widget trailing,
 }) {
   return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+    padding: EdgeInsets.symmetric(horizontal: AppSizes.w16, vertical: AppSizes.h4),
     child: Row(
       children: [
-        Icon(icon, color: iconColor, size: 22),
-        const SizedBox(width: 14),
+        Icon(icon, color: iconColor, size: AppSizes.sp22),
+        SizedBox(width: AppSizes.w14),
         Expanded(
           child: Text(
             title,
-            style: const TextStyle(
-              fontSize: 15,
+            style: TextStyle(
+              fontSize: AppSizes.sp15,
               fontWeight: FontWeight.w500,
               color: AppColors.secondBlack,
             ),

@@ -1,7 +1,7 @@
-
 import 'package:flutter/material.dart';
 
 import '../../domain/entities/favorite_property_entity.dart';
+import '../../../../core/utils/app_sizes.dart';
 
 class DetailsTitleRow extends StatelessWidget {
   final FavoritePropertyEntity property;
@@ -15,15 +15,15 @@ class DetailsTitleRow extends StatelessWidget {
         Expanded(
           child: Text(
             property.title,
-            style: const TextStyle(
-              fontSize: 22,
+            style: TextStyle(
+              fontSize: AppSizes.sp22,
               fontWeight: FontWeight.bold,
               color: Colors.black,
             ),
           ),
         ),
-        const SizedBox(width: 8),
-        const Icon(Icons.star, color: Color(0xFFFFC107), size: 28),
+        SizedBox(width: AppSizes.w8),
+        Icon(Icons.star, color: Color(0xFFFFC107), size: AppSizes.sp28),
       ],
     );
   }

@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/utils/app_color.dart';
+import '../../../../core/utils/app_sizes.dart';
 
 class ProfileMenuItem extends StatelessWidget {
   final IconData icon;
@@ -27,18 +28,18 @@ class ProfileMenuItem extends StatelessWidget {
       children: [
         InkWell(
           onTap: onTap,
-          borderRadius: BorderRadius.circular(14),
+          borderRadius: BorderRadius.circular(AppSizes.r14),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+            padding: EdgeInsets.symmetric(horizontal: AppSizes.w16, vertical: AppSizes.h14),
             child: Row(
               children: [
-                Icon(icon, color: iconColor, size: 22),
-                const SizedBox(width: 14),
+                Icon(icon, color: iconColor, size: AppSizes.sp22),
+                SizedBox(width: AppSizes.w14),
                 Expanded(
                   child: Text(
                     title,
                     style: TextStyle(
-                      fontSize: 15,
+                      fontSize: AppSizes.sp15,
                       fontWeight: FontWeight.w500,
                       color: color,
                     ),
@@ -46,7 +47,7 @@ class ProfileMenuItem extends StatelessWidget {
                 ),
                 Icon(
                   Icons.arrow_forward_ios_rounded,
-                  size: 15,
+                  size: AppSizes.sp15,
                   color: isDestructive ? AppColors.error : Colors.grey.shade400,
                 ),
               ],

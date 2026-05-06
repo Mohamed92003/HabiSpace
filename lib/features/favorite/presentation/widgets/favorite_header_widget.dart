@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../../../../core/utils/app_texts.dart';
+import '../../../../core/utils/app_sizes.dart';
 
 class FavoriteHeaderWidget extends StatelessWidget {
   final String title;
@@ -21,22 +22,22 @@ class FavoriteHeaderWidget extends StatelessWidget {
     final canGoBack = Navigator.canPop(context);
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: EdgeInsets.symmetric(horizontal: AppSizes.w16, vertical: AppSizes.h12),
       child: Row(
         children: [
           if (canGoBack)
             GestureDetector(
               onTap: onBack ?? () => Navigator.pop(context),
-              child: const Padding(
-                padding: EdgeInsets.only(right: 12),
-                child: Icon(Icons.arrow_back, size: 24, color: Colors.black),
+              child: Padding(
+                padding: EdgeInsets.only(right: AppSizes.w12),
+                child: Icon(Icons.arrow_back, size: AppSizes.sp24, color: Colors.black),
               ),
             ),
           Expanded(
             child: Text(
               title,
-              style: const TextStyle(
-                fontSize: 20,
+              style: TextStyle(
+                fontSize: AppSizes.sp20,
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
               ),
@@ -46,8 +47,8 @@ class FavoriteHeaderWidget extends StatelessWidget {
             onTap: onEdit,
             child: Text(
               isEditMode ? AppTexts.done.tr() : AppTexts.edit.tr(),
-              style: const TextStyle(
-                fontSize: 15,
+              style: TextStyle(
+                fontSize: AppSizes.sp15,
                 fontWeight: FontWeight.w600,
                 color: Color(0xFF2BBFB3),
                 decoration: TextDecoration.underline,

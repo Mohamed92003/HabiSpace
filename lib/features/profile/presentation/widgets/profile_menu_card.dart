@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/utils/app_color.dart';
+import '../../../../core/utils/app_sizes.dart';
 
 class ProfileMenuCard extends StatelessWidget {
   final String? sectionTitle;
@@ -15,12 +16,12 @@ class ProfileMenuCard extends StatelessWidget {
       children: [
         if (sectionTitle != null)
           Padding(
-            padding: const EdgeInsets.only(bottom: 8),
+            padding: EdgeInsets.only(bottom: AppSizes.h8),
             child: Text(
               sectionTitle!,
-              style: const TextStyle(
+              style: TextStyle(
                 color: AppColors.textSecondaryColor,
-                fontSize: 14,
+                fontSize: AppSizes.sp14,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -28,7 +29,7 @@ class ProfileMenuCard extends StatelessWidget {
         Container(
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(14),
+            borderRadius: BorderRadius.circular(AppSizes.r14),
             border: Border.all(color: AppColors.borderColor, width: 0.8),
           ),
           child: Column(children: items),
