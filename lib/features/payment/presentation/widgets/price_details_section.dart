@@ -80,4 +80,3 @@ class PriceDetailsSection extends StatelessWidget {
     );
   }
 }
-// 

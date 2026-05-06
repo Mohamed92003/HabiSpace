@@ -1,4 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,11 +11,34 @@ import 'package:habispace/core/constants/secure_storage.dart';
 import 'package:habispace/core/router/app_router.dart';
 import 'package:habispace/core/theme/app_theme.dart';
 import 'package:habispace/core/theme/theme_cubit.dart';
+import 'package:habispace/firebase_options.dart';
 import 'core/di/get_it.dart';
+
+/// Background handler — must be a top-level function
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  debugPrint('🔔 Background message: ${message.notification?.title}');
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await EasyLocalization.ensureInitialized();
+
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+
+    // Register background message handler
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+    await _setupFCM();
+  } catch (e) {
+    debugPrint('⚠️ Firebase initialization failed: $e');
+  }
+
   ScreenUtil.ensureScreenSize;
   await AuthStorage().init();
   Bloc.observer = AppBlocObserver();
@@ -34,6 +59,35 @@ void main() async {
       ),
     ),
   );
+}
+
+/// Request notification permission and set up FCM listeners
+Future<void> _setupFCM() async {
+  final messaging = FirebaseMessaging.instance;
+
+  // Request permission — required on iOS & Android 13+
+  final settings = await messaging.requestPermission(
+    alert: true,
+    badge: true,
+    sound: true,
+    provisional: false,
+  );
+
+  debugPrint('🔔 Notification permission: ${settings.authorizationStatus}');
+
+  // Print FCM token for backend registration
+  final token = await messaging.getToken();
+  debugPrint('🔥 FCM Token: $token');
+
+  // Handle foreground messages
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    debugPrint('📩 Foreground message: ${message.notification?.title}');
+  });
+
+  // Handle tap on notification when app is in background
+  FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+    debugPrint('📬 Opened from notification: ${message.notification?.title}');
+  });
 }
 
 String _getInitialRoute() {
