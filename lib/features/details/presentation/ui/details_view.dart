@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/utils/app_color.dart';
@@ -40,6 +41,9 @@ class _DetailsViewState extends State<DetailsView> {
 
   @override
   void initState() {
+    _initDeepLinks();
+    _scrollController.addListener(_onScroll);
+    context.read<DetailsCubit>().loadDetails(widget.propertyId);
     super.initState();
     _scrollController.addListener(_onScroll);
     context.read<DetailsCubit>().loadDetails(widget.propertyId);
@@ -54,6 +58,33 @@ class _DetailsViewState extends State<DetailsView> {
       setState(() => _scrollFraction = fraction);
     }
   }
+late AppLinks _appLinks;
+void _initDeepLinks() async {
+  _appLinks = AppLinks();
+
+  // 🔹 لو التطبيق اتفتح من لينك وهو مقفول
+  final uri = await _appLinks.getInitialLink();
+  if (uri != null) {
+    _handleLink(uri);
+  }
+
+  // 🔹 لو التطبيق شغال وجاله لينك
+  _appLinks.uriLinkStream.listen((uri) {
+    if (uri != null) {
+      _handleLink(uri);
+    }
+  });
+}
+ void _handleLink(Uri uri) {
+  // مثال: /details/slug
+  if (uri.pathSegments.contains('details')) {
+    final slug = uri.pathSegments.last;
+
+     Navigator.push(context,MaterialPageRoute(builder: (context){
+      return DetailsView(propertyId:widget.propertyId);
+     }));
+  }
+} 
 
   @override
   void dispose() {

@@ -3,9 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:habispace/features/details/domain/entities/property_detail_entity.dart';
-import 'package:habispace/features/payment/presentation/ui/payment_view.dart';
-import '../../features/3d/presentation/ui/3d_view.dart';
-import '../../features/auth/domain/entities/user_entity.dart';
 import '../../features/auth/presentation/logic/auth_bloc.dart';
 import '../../features/auth/presentation/screens/forget_password_screen.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
@@ -21,7 +18,6 @@ import '../../features/payment/presentation/cubit/payment_cubit.dart';
 import '../../features/profile/domain/entities/Profile_Entity.dart';
 import '../../features/profile/presentation/UI/change_password_screen.dart';
 import '../../features/profile/presentation/UI/update_profile_view.dart';
-import '../../features/profile/presentation/widgets/delete_my_account_widget.dart';
 import '../../features/reviews/presentation/ui/reviews_view.dart';
 import '../../features/favorite/domain/entities/favorite_property_entity.dart';
 import '../../features/favorite/presentation/cubit/FavoriteCubit/favorite_cubit_cubit.dart';
@@ -198,39 +194,6 @@ GoRouter createRouter(String initialLocation) => GoRouter(
       },
     ),
 
-    GoRoute(
-      path: AppRoutes.deleteAccount,
-      name: AppRoutes.deleteAccount,
-      builder: (context, state) => BlocProvider(
-        create: (_) => sl<ProfileCubit>(),
-        child: const DeleteAccountDialog(),
-      ),
-    ),
-
-    GoRoute(
-      path: AppRoutes.payment,
-      name: AppRoutes.payment,
-      builder: (context, state) {
-        final extra = state.extra as Map<String, dynamic>?;
-        if (extra == null) {
-          return const Scaffold(
-            body: Center(child: Text('Something went wrong.')),
-          );
-        }
-        return BlocProvider(
-          create: (_) => sl<PaymentCubit>(),
-          child: PaymentView(
-            property: extra['property'] as PropertyDetailEntity,
-          ),
-        );
-      },
-    ),
-
-    GoRoute(
-      path: AppRoutes.explore,
-      name: AppRoutes.explore,
-      builder: (context, state) => const ExploreView(),
-    ),
     GoRoute(
       path: AppRoutes.chat,
       name: AppRoutes.chat,

@@ -25,15 +25,21 @@ class DetailsAppBar extends StatelessWidget {
     this.property,
   });
 
-  void _onShare() {
-    if (property == null) return;
+  // void _onShare() {
+  //   if (property == null) return;
+  //   final link = 'https://real.newcinderella.online/details/${property!.slug}';
+  //   Share.share(
+  //     '${property!.title}\n$link',
+  //     subject: property!.title,
+  //   );
+  // }
+   void _onShare(){
     final link = 'https://real.newcinderella.online/details/${property!.slug}';
     Share.share(
-      '${property!.title}\n$link',
-      subject: property!.title,
-    );
-  }
-
+    '${property!.title}\n$link',
+    subject: property!.title,
+  );
+   }
   @override
   Widget build(BuildContext context) {
     return ClipRect(

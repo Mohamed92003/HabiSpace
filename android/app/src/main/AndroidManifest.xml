@@ -39,11 +39,16 @@
 
             <!-- App Links (HTTPS): https://real.newcinderella.online/details/some-slug -->
             <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:scheme="https" android:host="real.newcinderella.online"/>
-            </intent-filter>
+    <action android:name="android.intent.action.VIEW" />
+
+    <category android:name="android.intent.category.DEFAULT" />
+    <category android:name="android.intent.category.BROWSABLE" />
+
+    <data
+        android:scheme="https"
+        android:host="real.newcinderella.online"
+        android:pathPrefix="/details" />
+</intent-filter>
         </activity>
 
         <!-- Firebase Messaging: enable auto-init -->

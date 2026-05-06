@@ -9,6 +9,7 @@ import 'package:habispace/core/theme/theme_cubit.dart';
 import 'package:habispace/core/utils/app_color.dart';
 import 'package:habispace/core/utils/app_texts.dart';
 import 'package:habispace/features/profile/presentation/Cubit/cubit/profile_cubit.dart';
+import 'package:habispace/features/profile/presentation/widgets/delete_my_account_widget.dart';
 import '../../../../core/utils/app_sizes.dart';
 import '../widgets/build_switch_tile.dart';
 import '../widgets/profile_header.dart';
@@ -86,12 +87,7 @@ List<Widget> profileViewSlivers(BuildContext context, ProfileState state) {
                       icon: Icons.manage_accounts_outlined,
                       title: AppTexts.profileMyAccount.tr(),
                       isLast: true,
-                      onTap: (){
-                        context.pushNamed(
-                          AppRoutes.deleteAccount,
-                          extra: context.read<ProfileCubit>(),
-                        );
-                      },
+                      onTap: () => DeleteAccountPopup.show(context),
                     ),
                   ],
                 ),
@@ -131,7 +127,7 @@ List<Widget> profileViewSlivers(BuildContext context, ProfileState state) {
                                 : AppTexts.profileLightMode.tr(),
                             trailing: Switch(
                               value: isDark,
-                              activeColor: AppColors.blue,
+                              activeThumbColor: AppColors.blue,
                               onChanged: (_) =>
                                   context.read<ThemeCubit>().toggleTheme(),
                             ),

@@ -1,9 +1,9 @@
 class CategoryEntity {
   final int id;
-  final String name;
-  final String slug;
+  final String? name;
+  final String? slug;
   final String? description;
-  final int sortOrder;
+  final int? sortOrder;
 
   CategoryEntity({
     required this.id,
