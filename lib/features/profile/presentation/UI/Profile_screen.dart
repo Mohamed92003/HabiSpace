@@ -43,13 +43,13 @@ List<Widget> profileViewSlivers(BuildContext context, ProfileState state) {
       ProfileHeaderSliver(imageUrl: user?.image, name: user?.name ?? ''),
       SliverToBoxAdapter(
         child: Container(
-          color: AppColors.lightBackground,
+          color: Theme.of(context).colorScheme.surfaceContainerHighest,
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: AppSizes.w20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                 SizedBox(height: AppSizes.h16),
+                SizedBox(height: AppSizes.h16),
                 Text(
                   user?.name ?? AppTexts.profileUserName.tr(),
                   style: TextStyle(
@@ -75,13 +75,15 @@ List<Widget> profileViewSlivers(BuildContext context, ProfileState state) {
                     ProfileMenuItem(
                       icon: Icons.person_outline_rounded,
                       title: AppTexts.profilePersonalInfo.tr(),
-                      onTap: (){
-                        context.pushNamed(AppRoutes.updateProfile, extra: {
-                          'user': user,
-                          'profileCubit': context.read<ProfileCubit>(),
-                        });
+                      onTap: () {
+                        context.pushNamed(
+                          AppRoutes.updateProfile,
+                          extra: {
+                            'user': user,
+                            'profileCubit': context.read<ProfileCubit>(),
+                          },
+                        );
                       },
-
                     ),
                     ProfileMenuItem(
                       icon: Icons.manage_accounts_outlined,
@@ -100,16 +102,16 @@ List<Widget> profileViewSlivers(BuildContext context, ProfileState state) {
                     ProfileMenuItem(
                       icon: Icons.lock_outline_rounded,
                       title: AppTexts.profileChangePassword.tr(),
-                      onTap: (){
-                         context.pushNamed(AppRoutes.changePassword);
+                      onTap: () {
+                        context.pushNamed(AppRoutes.changePassword);
                       },
                     ),
                     ProfileMenuItem(
                       icon: Icons.notifications_none_rounded,
                       title: AppTexts.profileNotificationPref.tr(),
-                      onTap: (){
-                       context.pushNamed(AppRoutes.notifications);
-                      }
+                      onTap: () {
+                        context.pushNamed(AppRoutes.notifications);
+                      },
                     ),
                     ProfileMenuItemWidget(
                       child: BlocBuilder<ThemeCubit, ThemeMode>(
@@ -157,7 +159,9 @@ List<Widget> profileViewSlivers(BuildContext context, ProfileState state) {
                                 ),
                                 decoration: BoxDecoration(
                                   color: Colors.blueGrey.shade50,
-                                  borderRadius: BorderRadius.circular(AppSizes.r20),
+                                  borderRadius: BorderRadius.circular(
+                                    AppSizes.r20,
+                                  ),
                                   border: Border.all(
                                     color: Colors.blueGrey.shade200,
                                   ),

@@ -2,6 +2,9 @@ import 'dart:collection';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:habispace/features/map/ui/map_screen.dart';
+import '../../../../core/router/app_router.dart';
 import '../../../../core/utils/app_color.dart';
 import '../../../../core/utils/app_sizes.dart';
 import '../../../../core/utils/app_texts.dart';
@@ -26,13 +29,22 @@ class DetailsLocationMap extends StatelessWidget {
           ),
         ),
         SizedBox(height: AppSizes.h12),
-        Container(
-          height: AppSizes.h160,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(AppSizes.r16),
-            color: AppColors.lightBackground,
+        GestureDetector(
+          onTap: () {
+            Navigator.push(context,MaterialPageRoute(builder:
+            (context)=> MapTabView()
+            ));
+          },
+          child: Container(
+            height: AppSizes.h160,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(AppSizes.r16),
+              color: AppColors.lightBackground,
+            ),
+            clipBehavior: Clip.hardEdge,
+            child: Image.asset('assets/images/map.png', fit: BoxFit.cover),
           ),
-          clipBehavior: Clip.hardEdge,
         ),
       ],
     );

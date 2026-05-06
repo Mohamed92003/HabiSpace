@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import '../../../../core/utils/app_sizes.dart';
+import '../../../../core/utils/app_texts.dart';
 
 class PaymentWebView extends StatefulWidget {
   final String url;
@@ -37,7 +39,11 @@ class _PaymentWebViewState extends State<PaymentWebView> {
             if (mounted) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text('Failed to load page: ${error.description}'),
+                  content: Text(
+                    AppTexts.failedToLoadPage.tr(
+                      namedArgs: {'error': error.description},
+                    ),
+                  ),
                   backgroundColor: Colors.red,
                 ),
               );

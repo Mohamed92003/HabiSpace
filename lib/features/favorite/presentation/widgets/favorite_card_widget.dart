@@ -1,7 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:habispace/features/favorite/presentation/widgets/property_image_widget.dart';
 import 'package:habispace/features/favorite/presentation/widgets/type_badge_widget.dart';
 
+import '../../../../core/theme/app_theme.dart';
+import '../../../../core/utils/app_texts.dart';
 import '../../../favorite/domain/entities/favorite_property_entity.dart';
 import 'amenity_chip_widget.dart';
 import '../../../../core/utils/app_sizes.dart';
@@ -20,17 +23,18 @@ class FavoriteCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ext = context.appTheme;
     return GestureDetector(
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: ext.cardBg,
           borderRadius: BorderRadius.circular(AppSizes.r16),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.07),
+              color: ext.cardShadow,
               blurRadius: 12,
-              offset: Offset(0, 4),
+              offset: const Offset(0, 4),
             ),
           ],
         ),
@@ -103,6 +107,7 @@ class _TitleRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ext = context.appTheme;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -112,7 +117,7 @@ class _TitleRow extends StatelessWidget {
             style: TextStyle(
               fontSize: AppSizes.sp16,
               fontWeight: FontWeight.bold,
-              color: Colors.black,
+              color: ext.titleText,
             ),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
@@ -121,11 +126,7 @@ class _TitleRow extends StatelessWidget {
         SizedBox(width: AppSizes.w8),
         GestureDetector(
           onTap: onFavoriteTap,
-          child: Icon(
-            Icons.star,
-            color: Color(0xFFFFC107),
-            size: AppSizes.sp26,
-          ),
+          child: Icon(Icons.star, color: ext.starColor, size: AppSizes.sp26),
         ),
       ],
     );
@@ -139,35 +140,36 @@ class _LocationRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ext = context.appTheme;
     return Row(
       children: [
         Icon(
           Icons.location_on_outlined,
           size: AppSizes.sp15,
-          color: Color(0xFF2BBFB3),
+          color: ext.locationIconColor,
         ),
         SizedBox(width: AppSizes.w4),
         Expanded(
           child: Text(
             address,
-            style: TextStyle(fontSize: AppSizes.sp12, color: Colors.black54),
+            style: TextStyle(fontSize: AppSizes.sp12, color: ext.subtleText),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
         ),
         if (distance.isNotEmpty) ...[
           SizedBox(width: AppSizes.w8),
-          Container(width: 1, height: 12, color: Colors.black26),
+          Container(width: 1, height: 12, color: ext.divider),
           SizedBox(width: AppSizes.w8),
           Icon(
             Icons.near_me_outlined,
             size: AppSizes.sp14,
-            color: Color(0xFF2BBFB3),
+            color: ext.locationIconColor,
           ),
           SizedBox(width: AppSizes.w4),
           Text(
             distance,
-            style: TextStyle(fontSize: AppSizes.sp12, color: Colors.black54),
+            style: TextStyle(fontSize: AppSizes.sp12, color: ext.subtleText),
           ),
         ],
       ],
@@ -182,6 +184,7 @@ class _PriceRatingRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ext = context.appTheme;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -193,14 +196,14 @@ class _PriceRatingRow extends StatelessWidget {
                 style: TextStyle(
                   fontSize: AppSizes.sp18,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  color: ext.titleText,
                 ),
               ),
               TextSpan(
-                text: '/ month',
+                text: ' ${AppTexts.perMonth.tr()}',
                 style: TextStyle(
                   fontSize: AppSizes.sp13,
-                  color: Colors.black54,
+                  color: ext.subtleText,
                   fontWeight: FontWeight.normal,
                 ),
               ),
@@ -210,14 +213,14 @@ class _PriceRatingRow extends StatelessWidget {
         if (rating > 0)
           Row(
             children: [
-              Icon(Icons.star, color: Color(0xFFFFC107), size: AppSizes.sp18),
+              Icon(Icons.star, color: ext.starColor, size: AppSizes.sp18),
               SizedBox(width: AppSizes.w4),
               Text(
                 rating.toStringAsFixed(1),
                 style: TextStyle(
                   fontSize: AppSizes.sp14,
                   fontWeight: FontWeight.w600,
-                  color: Colors.black87,
+                  color: ext.bodyText,
                 ),
               ),
             ],

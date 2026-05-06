@@ -1,9 +1,11 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:habispace/core/utils/app_color.dart';
 import 'package:habispace/features/profile/presentation/Cubit/cubit/profile_cubit.dart';
 import '../../../../core/shared/snakbar.dart';
 import '../../../../core/utils/app_sizes.dart';
+import '../../../../core/utils/app_texts.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   const ChangePasswordScreen({super.key});
@@ -61,7 +63,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
           elevation: 0,
           leading: const BackButton(color: AppColors.secondBlack),
           title: Text(
-            'Change Password',
+            AppTexts.changePasswordTitle.tr(),
             style: TextStyle(
               color: AppColors.secondBlack,
               fontSize: AppSizes.sp18,
@@ -94,7 +96,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       SizedBox(width: AppSizes.w10),
                       Expanded(
                         child: Text(
-                          'Your new password must be at least 8 characters and include an uppercase letter and a number.',
+                          AppTexts.changePasswordInfo.tr(),
                           style: TextStyle(
                             fontSize: AppSizes.sp13,
                             color: AppColors.blue,
@@ -107,39 +109,39 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 ),
                 SizedBox(height: AppSizes.h28),
 
-                const _FieldLabel(label: 'Current Password'),
+                const _FieldLabel(label: AppTexts.currentPassword),
                 _PasswordField(
                   controller: _currentCtrl,
-                  hint: 'Enter your current password',
+                  hint: AppTexts.currentPasswordHint,
                   showPassword: _showCurrent,
                   onToggle: () => setState(() => _showCurrent = !_showCurrent),
                   validator: (v) {
                     if (v == null || v.isEmpty) {
-                      return 'Current password is required';
+                      return AppTexts.currentPasswordRequired.tr();
                     }
                     return null;
                   },
                 ),
                 SizedBox(height: AppSizes.h20),
 
-                const _FieldLabel(label: 'New Password'),
+                const _FieldLabel(label: AppTexts.newPasswordLabel2),
                 _PasswordField(
                   controller: _newCtrl,
-                  hint: 'Enter your new password',
+                  hint: AppTexts.newPasswordHint,
                   showPassword: _showNew,
                   onToggle: () => setState(() => _showNew = !_showNew),
                   validator: (v) {
                     if (v == null || v.isEmpty) {
-                      return 'New password is required';
+                      return AppTexts.newPasswordRequired.tr();
                     }
                     if (v.length < 8) {
-                      return 'At least 8 characters required';
+                      return AppTexts.atLeast8CharsRequired.tr();
                     }
                     if (!v.contains(RegExp(r'[A-Z]'))) {
-                      return 'Add at least one uppercase letter';
+                      return AppTexts.addAtLeastOneUppercase.tr();
                     }
                     if (!v.contains(RegExp(r'[0-9]'))) {
-                      return 'Add at least one number';
+                      return AppTexts.addAtLeastOneNumber.tr();
                     }
                     return null;
                   },
@@ -148,18 +150,18 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 _StrengthIndicator(password: _newCtrl.text),
                 SizedBox(height: AppSizes.h20),
 
-                const _FieldLabel(label: 'Confirm New Password'),
+                const _FieldLabel(label: AppTexts.confirmNewPassword),
                 _PasswordField(
                   controller: _confirmCtrl,
-                  hint: 'Re-enter your new password',
+                  hint: AppTexts.confirmNewPasswordHint,
                   showPassword: _showConfirm,
                   onToggle: () => setState(() => _showConfirm = !_showConfirm),
                   validator: (v) {
                     if (v == null || v.isEmpty) {
-                      return 'Please confirm your password';
+                      return AppTexts.pleaseConfirmPassword.tr();
                     }
                     if (v != _newCtrl.text) {
-                      return 'Passwords do not match';
+                      return AppTexts.passwordsDoNotMatch.tr();
                     }
                     return null;
                   },
@@ -194,7 +196,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                 ),
                               )
                             : Text(
-                                'Update Password',
+                                AppTexts.updatePassword.tr(),
                                 style: TextStyle(
                                   fontSize: AppSizes.sp16,
                                   fontWeight: FontWeight.w600,
@@ -225,7 +227,7 @@ class _FieldLabel extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(bottom: AppSizes.h8),
       child: Text(
-        label,
+        label.tr(),
         style: TextStyle(
           color: AppColors.textSecondaryColor,
           fontSize: AppSizes.sp13,
@@ -263,7 +265,7 @@ class _PasswordField extends StatelessWidget {
         fontWeight: FontWeight.w500,
       ),
       decoration: InputDecoration(
-        hintText: hint,
+        hintText: hint.tr(),
         hintStyle: TextStyle(
           color: Colors.grey.shade400,
           fontSize: AppSizes.sp14,
@@ -350,13 +352,13 @@ class _StrengthIndicator extends StatelessWidget {
   String get _label {
     switch (_strength) {
       case 1:
-        return 'Weak';
+        return AppTexts.passwordStrengthWeak.tr();
       case 2:
-        return 'Fair';
+        return AppTexts.passwordStrengthFair.tr();
       case 3:
-        return 'Good';
+        return AppTexts.passwordStrengthGood.tr();
       case 4:
-        return 'Strong';
+        return AppTexts.passwordStrengthStrong.tr();
       default:
         return '';
     }

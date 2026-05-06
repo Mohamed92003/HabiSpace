@@ -1,10 +1,13 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/router/app_router.dart';
+import '../../../../core/theme/app_theme.dart';
 import '../../../../core/utils/app_color.dart';
 import '../../../../core/utils/app_sizes.dart';
+import '../../../../core/utils/app_texts.dart';
 import '../../../favorite/presentation/cubit/FavoriteCubit/favorite_cubit_cubit.dart';
 import '../../../favorite/presentation/cubit/FavoriteCubit/favorite_cubit_state.dart';
 import '../../../home/presentation/cubit/home_cubit.dart';
@@ -16,6 +19,7 @@ class PropertyCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ext = context.appTheme;
     return GestureDetector(
       onTap: () {
         final homeState = context.read<HomeCubit>().state;
@@ -38,10 +42,10 @@ class PropertyCard extends StatelessWidget {
         width: AppSizes.w220,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
-          color: Colors.white,
+          color: ext.cardBg,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.07),
+              color: ext.cardShadow,
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),
@@ -96,7 +100,7 @@ class PropertyCard extends StatelessWidget {
                     ),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
-                      color: Colors.white,
+                      color: ext.badgeBg,
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -109,12 +113,12 @@ class PropertyCard extends StatelessWidget {
                         SizedBox(width: AppSizes.w4),
                         Text(
                           property.listingType == 'sale'
-                              ? 'For Sale'
-                              : 'For Rent',
+                              ? AppTexts.forSaleLabel.tr()
+                              : AppTexts.forRentLabel.tr(),
                           style: TextStyle(
                             fontSize: AppSizes.sp12,
                             fontWeight: FontWeight.w500,
-                            color: AppColors.black,
+                            color: ext.titleText,
                           ),
                         ),
                       ],
@@ -140,7 +144,7 @@ class PropertyCard extends StatelessWidget {
                           style: TextStyle(
                             fontSize: AppSizes.sp16,
                             fontWeight: FontWeight.w600,
-                            color: AppColors.black,
+                            color: ext.titleText,
                           ),
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -160,7 +164,7 @@ class PropertyCard extends StatelessWidget {
                             child: Icon(
                               isFav ? Icons.star : Icons.star_border,
                               size: AppSizes.h24,
-                              color: isFav ? Colors.amber : AppColors.black,
+                              color: isFav ? ext.starColor : ext.subtleText,
                             ),
                           );
                         },
@@ -181,7 +185,7 @@ class PropertyCard extends StatelessWidget {
                           property.address,
                           style: TextStyle(
                             fontSize: AppSizes.sp12,
-                            color: Colors.grey.shade500,
+                            color: ext.subtleText,
                           ),
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -197,7 +201,7 @@ class PropertyCard extends StatelessWidget {
                         style: TextStyle(
                           fontSize: AppSizes.sp18,
                           fontWeight: FontWeight.w700,
-                          color: AppColors.black,
+                          color: ext.titleText,
                         ),
                       ),
                       Row(
@@ -205,7 +209,7 @@ class PropertyCard extends StatelessWidget {
                           Icon(
                             Icons.star,
                             size: AppSizes.h16,
-                            color: Colors.amber,
+                            color: ext.starColor,
                           ),
                           SizedBox(width: AppSizes.w2),
                           Text(
@@ -213,7 +217,7 @@ class PropertyCard extends StatelessWidget {
                             style: TextStyle(
                               fontSize: AppSizes.sp12,
                               fontWeight: FontWeight.w600,
-                              color: AppColors.black,
+                              color: ext.bodyText,
                             ),
                           ),
                         ],
@@ -230,7 +234,6 @@ class PropertyCard extends StatelessWidget {
   }
 }
 
-// ── Shared image placeholder ──────────────────────────────────────────────────
 class _PropertyImagePlaceholder extends StatelessWidget {
   final double width;
   final double height;
@@ -244,10 +247,11 @@ class _PropertyImagePlaceholder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ext = context.appTheme;
     return Container(
       width: width,
       height: height,
-      color: Colors.grey.shade200,
+      color: ext.imagePlaceholder,
       child: showShimmer
           ? Center(
               child: CircularProgressIndicator(
@@ -261,14 +265,14 @@ class _PropertyImagePlaceholder extends StatelessWidget {
                 Icon(
                   Icons.home_outlined,
                   size: AppSizes.sp40,
-                  color: Colors.grey.shade400,
+                  color: ext.subtleText,
                 ),
                 SizedBox(height: AppSizes.h6),
                 Text(
                   'No Image',
                   style: TextStyle(
                     fontSize: AppSizes.sp11,
-                    color: Colors.grey.shade400,
+                    color: ext.subtleText,
                   ),
                 ),
               ],

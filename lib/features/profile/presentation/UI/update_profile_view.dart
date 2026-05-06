@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:habispace/core/utils/app_color.dart';
@@ -5,6 +6,7 @@ import 'package:habispace/features/profile/domain/entities/Profile_Entity.dart';
 import 'package:habispace/features/profile/presentation/Cubit/cubit/profile_cubit.dart';
 import 'package:intl/intl.dart';
 import '../../../../core/utils/app_sizes.dart';
+import '../../../../core/utils/app_texts.dart';
 
 class UpdateProfileView extends StatefulWidget {
   final ProfileEntity user;
@@ -69,8 +71,8 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
         }
         if (state is ProfileLoaded) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Profile updated successfully'),
+            SnackBar(
+              content: Text(AppTexts.profileUpdatedSuccess.tr()),
               backgroundColor: Colors.green,
             ),
           );
@@ -83,7 +85,7 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
           elevation: 0,
           leading: const BackButton(color: AppColors.secondBlack),
           title: Text(
-            'Personal Information',
+            AppTexts.personalInformation.tr(),
             style: TextStyle(
               color: AppColors.secondBlack,
               fontSize: AppSizes.sp18,
@@ -96,7 +98,7 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
               TextButton(
                 onPressed: () => setState(() => _isEditing = true),
                 child: Text(
-                  'Edit',
+                  AppTexts.edit.tr(),
                   style: TextStyle(
                     color: AppColors.blue,
                     fontWeight: FontWeight.w600,
@@ -107,7 +109,7 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
               TextButton(
                 onPressed: _save,
                 child: Text(
-                  'Save',
+                  AppTexts.saveButton.tr(),
                   style: TextStyle(
                     color: AppColors.blue,
                     fontWeight: FontWeight.w600,
@@ -128,22 +130,24 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
                     CircleAvatar(
                       radius: 48,
                       backgroundColor: AppColors.blue.withOpacity(0.1),
-                      backgroundImage: widget.user.image != null &&
-                          widget.user.image!.isNotEmpty
+                      backgroundImage:
+                          widget.user.image != null &&
+                              widget.user.image!.isNotEmpty
                           ? NetworkImage(widget.user.image!)
                           : null,
-                      child: widget.user.image == null ||
-                          widget.user.image!.isEmpty
+                      child:
+                          widget.user.image == null ||
+                              widget.user.image!.isEmpty
                           ? Text(
-                        widget.user.name.isNotEmpty
-                            ? widget.user.name[0].toUpperCase()
-                            : 'U',
-                        style: TextStyle(
-                          fontSize: 36,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.blue,
-                        ),
-                      )
+                              widget.user.name.isNotEmpty
+                                  ? widget.user.name[0].toUpperCase()
+                                  : 'U',
+                              style: TextStyle(
+                                fontSize: 36,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.blue,
+                              ),
+                            )
                           : null,
                     ),
                     if (_isEditing)
@@ -155,8 +159,7 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
                           decoration: BoxDecoration(
                             color: AppColors.blue,
                             shape: BoxShape.circle,
-                            border:
-                            Border.all(color: Colors.white, width: 2),
+                            border: Border.all(color: Colors.white, width: 2),
                           ),
                           child: Icon(
                             Icons.camera_alt_outlined,
@@ -171,8 +174,10 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
               SizedBox(height: AppSizes.h8),
               Center(
                 child: Container(
-                  padding:
-                  EdgeInsets.symmetric(horizontal: AppSizes.w12, vertical: AppSizes.h4),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: AppSizes.w12,
+                    vertical: AppSizes.h4,
+                  ),
                   decoration: BoxDecoration(
                     color: AppColors.blue.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(AppSizes.r20),
@@ -191,45 +196,44 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
               SizedBox(height: AppSizes.h28),
 
               // ── Editable fields ────────────────────────────────────────
-              _SectionLabel(label: 'Full Name'),
+              _SectionLabel(label: AppTexts.fullNameLabel),
               _InfoField(
                 icon: Icons.person_outline_rounded,
                 controller: _nameCtrl,
                 enabled: _isEditing,
-                hint: 'Your full name',
+                hint: AppTexts.fullNameHint,
               ),
               SizedBox(height: AppSizes.h16),
-              _SectionLabel(label: 'Phone Number'),
+              _SectionLabel(label: AppTexts.phoneNumberLabel),
               _InfoField(
                 icon: Icons.phone_outlined,
                 controller: _phoneCtrl,
                 enabled: _isEditing,
-                hint: 'Your phone number',
+                hint: AppTexts.phoneNumberHint,
                 keyboardType: TextInputType.phone,
               ),
               SizedBox(height: AppSizes.h16),
-              _SectionLabel(label: 'Location'),
+              _SectionLabel(label: AppTexts.locationLabel2),
               _InfoField(
                 icon: Icons.location_on_outlined,
                 controller: _locationCtrl,
                 enabled: _isEditing,
-                hint: 'Your city',
+                hint: AppTexts.yourCityHint,
               ),
               SizedBox(height: AppSizes.h24),
 
-              // ── Read-only fields ───────────────────────────────────────
-              _SectionLabel(label: 'Account Details'),
+              _SectionLabel(label: AppTexts.accountDetails),
               _ReadOnlyCard(
                 children: [
                   _ReadOnlyRow(
                     icon: Icons.email_outlined,
-                    label: 'Email',
+                    label: AppTexts.emailReadOnly,
                     value: widget.user.email,
                   ),
                   Divider(height: 1, thickness: 0.8, indent: 52),
                   _ReadOnlyRow(
                     icon: Icons.calendar_today_outlined,
-                    label: 'Member since',
+                    label: AppTexts.memberSince,
                     value: _formatDate(widget.user.createdAt),
                   ),
                 ],
@@ -253,7 +257,7 @@ class _SectionLabel extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(bottom: AppSizes.h8),
       child: Text(
-        label,
+        label.tr(),
         style: TextStyle(
           color: AppColors.textSecondaryColor,
           fontSize: AppSizes.sp13,
@@ -286,7 +290,9 @@ class _InfoField extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(AppSizes.r12),
         border: Border.all(
-          color: enabled ? AppColors.blue.withOpacity(0.5) : AppColors.borderColor,
+          color: enabled
+              ? AppColors.blue.withOpacity(0.5)
+              : AppColors.borderColor,
           width: enabled ? 1.5 : 0.8,
         ),
       ),
@@ -311,8 +317,11 @@ class _InfoField extends StatelessWidget {
                 fontWeight: FontWeight.w500,
               ),
               decoration: InputDecoration(
-                hintText: hint,
-                hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: AppSizes.sp14),
+                hintText: hint.tr(),
+                hintStyle: TextStyle(
+                  color: Colors.grey.shade400,
+                  fontSize: AppSizes.sp14,
+                ),
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.symmetric(vertical: AppSizes.h14),
                 disabledBorder: InputBorder.none,
@@ -355,7 +364,10 @@ class _ReadOnlyRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: AppSizes.w16, vertical: AppSizes.h14),
+      padding: EdgeInsets.symmetric(
+        horizontal: AppSizes.w16,
+        vertical: AppSizes.h14,
+      ),
       child: Row(
         children: [
           Icon(icon, size: AppSizes.sp20, color: Colors.grey.shade400),
@@ -364,7 +376,7 @@ class _ReadOnlyRow extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                label,
+                label.tr(),
                 style: TextStyle(
                   fontSize: AppSizes.sp11,
                   color: Colors.grey.shade500,

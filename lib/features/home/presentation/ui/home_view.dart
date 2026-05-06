@@ -22,7 +22,9 @@ List<Widget> homeViewSlivers(
     return [
       SliverFillRemaining(
         child: Center(
-          child: CircularProgressIndicator(color: Theme.of(context).colorScheme.primary),
+          child: CircularProgressIndicator(
+            color: Theme.of(context).colorScheme.primary,
+          ),
         ),
       ),
     ];
@@ -54,7 +56,10 @@ List<Widget> homeViewSlivers(
     }
     return [
       SliverPadding(
-        padding: EdgeInsets.symmetric(horizontal: AppSizes.w16, vertical: AppSizes.h12),
+        padding: EdgeInsets.symmetric(
+          horizontal: AppSizes.w16,
+          vertical: AppSizes.h12,
+        ),
         sliver: SliverList(
           delegate: SliverChildBuilderDelegate(
             (context, index) => Padding(
@@ -83,7 +88,8 @@ List<Widget> homeViewSlivers(
                 (index) => FilterChipItem(
                   text: tabs[index] ?? "",
                   isSelected: state.selectedTab == index,
-                  onTap: () => context.read<HomeCubit>().filterByCategory(index),
+                  onTap: () =>
+                      context.read<HomeCubit>().filterByCategory(index),
                 ),
               ),
             ),
@@ -112,7 +118,8 @@ List<Widget> homeViewSlivers(
         SliverToBoxAdapter(child: SizedBox(height: AppSizes.h12)),
         HorizontalList(
           items: state.filteredBestSelling,
-          builder: (index) => PropertyCard(property: state.filteredBestSelling[index]),
+          builder: (index) =>
+              PropertyCard(property: state.filteredBestSelling[index]),
         ),
         SliverToBoxAdapter(child: SizedBox(height: AppSizes.h16)),
       ],
@@ -136,7 +143,8 @@ List<Widget> homeViewSlivers(
         SliverToBoxAdapter(child: SizedBox(height: AppSizes.h12)),
         HorizontalList(
           items: state.filteredFeatured,
-          builder: (index) => PropertyCard(property: state.filteredFeatured[index]),
+          builder: (index) =>
+              PropertyCard(property: state.filteredFeatured[index]),
         ),
         SliverToBoxAdapter(child: SizedBox(height: AppSizes.h16)),
       ],
@@ -160,7 +168,8 @@ List<Widget> homeViewSlivers(
         SliverToBoxAdapter(child: SizedBox(height: AppSizes.h12)),
         HorizontalList(
           items: state.filteredRecommended,
-          builder: (index) => PropertyCard(property: state.filteredRecommended[index]),
+          builder: (index) =>
+              PropertyCard(property: state.filteredRecommended[index]),
         ),
         SliverToBoxAdapter(child: SizedBox(height: AppSizes.h16)),
       ],

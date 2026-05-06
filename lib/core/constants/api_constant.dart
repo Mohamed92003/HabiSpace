@@ -1,6 +1,5 @@
 class ApiConstant {
   static const String baseUrl = 'https://real.newcinderella.online/api/v1/';
-
   static const String home = 'home';
   static const String properties = 'properties';
   static const String conversations = 'conversations';

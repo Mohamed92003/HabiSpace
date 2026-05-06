@@ -1,8 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../core/utils/app_color.dart';
 import '../../../../core/utils/app_sizes.dart';
+import '../../../../core/utils/app_texts.dart';
 
 class PrivacyPolicyScreen extends StatelessWidget {
   const PrivacyPolicyScreen({super.key});
@@ -19,7 +21,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          "Privacy Policy",
+          AppTexts.privacyPolicyTitle.tr(),
           style: GoogleFonts.poppins(
             fontSize: AppSizes.sp16,
             fontWeight: FontWeight.w600,
@@ -29,76 +31,59 @@ class PrivacyPolicyScreen extends StatelessWidget {
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: AppSizes.w24, vertical: AppSizes.h16),
+        padding: EdgeInsets.symmetric(
+          horizontal: AppSizes.w24,
+          vertical: AppSizes.h16,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildLastUpdated(),
+            _buildLastUpdated(context),
             SizedBox(height: AppSizes.h24),
             _buildSection(
-              title: "1. Information We Collect",
-              content:
-              "We collect information you provide directly to us, such as when you create an account, update your profile, or contact us for support. This includes:\n\n"
-                  "• Name, email address, and password\n"
-                  "• Profile information such as location and phone number\n"
-                  "• Property preferences and search history\n"
-                  "• Communications you send to us",
+              context,
+              title: AppTexts.privacy1Title.tr(),
+              content: AppTexts.privacy1Content.tr(),
             ),
             _buildSection(
-              title: "2. How We Use Your Information",
-              content:
-              "We use the information we collect to:\n\n"
-                  "• Provide, maintain, and improve our services\n"
-                  "• Process transactions and send related information\n"
-                  "• Send promotional communications (with your consent)\n"
-                  "• Respond to comments and questions\n"
-                  "• Monitor and analyze usage patterns",
+              context,
+              title: AppTexts.privacy2Title.tr(),
+              content: AppTexts.privacy2Content.tr(),
             ),
             _buildSection(
-              title: "3. Information Sharing",
-              content:
-              "We do not sell, trade, or rent your personal information to third parties. We may share your information in the following circumstances:\n\n"
-                  "• With service providers who assist in our operations\n"
-                  "• When required by law or to protect our rights\n"
-                  "• In connection with a merger or acquisition\n"
-                  "• With your consent",
+              context,
+              title: AppTexts.privacy3Title.tr(),
+              content: AppTexts.privacy3Content.tr(),
             ),
             _buildSection(
-              title: "4. Data Security",
-              content:
-              "We implement appropriate technical and organizational measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction. However, no method of transmission over the internet is 100% secure.",
+              context,
+              title: AppTexts.privacy4Title.tr(),
+              content: AppTexts.privacy4Content.tr(),
             ),
             _buildSection(
-              title: "5. Your Rights",
-              content:
-              "You have the right to:\n\n"
-                  "• Access the personal data we hold about you\n"
-                  "• Request correction of inaccurate data\n"
-                  "• Request deletion of your personal data\n"
-                  "• Opt-out of marketing communications\n"
-                  "• Lodge a complaint with a supervisory authority",
+              context,
+              title: AppTexts.privacy5Title.tr(),
+              content: AppTexts.privacy5Content.tr(),
             ),
             _buildSection(
-              title: "6. Cookies",
-              content:
-              "We use cookies and similar tracking technologies to track activity on our app and hold certain information. You can instruct your device to refuse all cookies or to indicate when a cookie is being sent.",
+              context,
+              title: AppTexts.privacy6Title.tr(),
+              content: AppTexts.privacy6Content.tr(),
             ),
             _buildSection(
-              title: "7. Children's Privacy",
-              content:
-              "Our service is not directed to individuals under the age of 18. We do not knowingly collect personal information from children. If you become aware that a child has provided us with personal information, please contact us.",
+              context,
+              title: AppTexts.privacy7Title.tr(),
+              content: AppTexts.privacy7Content.tr(),
             ),
             _buildSection(
-              title: "8. Changes to This Policy",
-              content:
-              "We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new policy on this page and updating the 'Last Updated' date.",
+              context,
+              title: AppTexts.privacy8Title.tr(),
+              content: AppTexts.privacy8Content.tr(),
             ),
             _buildSection(
-              title: "9. Contact Us",
-              content:
-              "If you have any questions about this Privacy Policy, please contact us at:\n\n"
-                  "📧 privacy@habispace.com\n"
-                  "📍 Cairo, Egypt",
+              context,
+              title: AppTexts.privacy9Title.tr(),
+              content: AppTexts.privacy9Content.tr(),
             ),
             SizedBox(height: AppSizes.h32),
           ],
@@ -107,7 +92,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildLastUpdated() {
+  Widget _buildLastUpdated(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(AppSizes.h12),
       decoration: BoxDecoration(
@@ -120,7 +105,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
           Icon(Icons.info_outline, color: AppColors.blue, size: AppSizes.r16),
           SizedBox(width: AppSizes.w8),
           Text(
-            "Last updated: May 1, 2025",
+            AppTexts.lastUpdated.tr(),
             style: GoogleFonts.poppins(
               fontSize: AppSizes.sp12,
               color: AppColors.blue,
@@ -132,7 +117,11 @@ class PrivacyPolicyScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSection({required String title, required String content}) {
+  Widget _buildSection(
+    BuildContext context, {
+    required String title,
+    required String content,
+  }) {
     return Padding(
       padding: EdgeInsets.only(bottom: AppSizes.h20),
       child: Column(

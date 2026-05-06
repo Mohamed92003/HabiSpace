@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -13,6 +14,7 @@ import '../../../../core/shared/custom_textformfield.dart';
 import '../../../../core/shared/snakbar.dart';
 import '../../../../core/utils/app_color.dart';
 import '../../../../core/utils/app_sizes.dart';
+import '../../../../core/utils/app_texts.dart';
 import '../../../../core/utils/app_validation.dart';
 import 'in_our_privacy_policy_screen.dart';
 
@@ -26,15 +28,15 @@ class LoginScreen extends StatelessWidget {
   String _getErrorMessage(String apiMessage) {
     final msg = apiMessage.toLowerCase();
     if (msg.contains('invalid credentials') || msg.contains('unauthorized')) {
-      return 'Incorrect email or password. Please try again.';
+      return AppTexts.incorrectEmailOrPassword.tr();
     }
-    if (msg.contains('email')) return 'Please check your email address.';
-    if (msg.contains('password')) return 'Incorrect password. Please try again.';
+    if (msg.contains('email')) return AppTexts.pleaseCheckEmail.tr();
+    if (msg.contains('password')) return AppTexts.incorrectPassword.tr();
     if (msg.contains('not found') || msg.contains('no account')) {
-      return 'No account found with this email.';
+      return AppTexts.noAccountFound.tr();
     }
     if (msg.contains('server') || msg.contains('500')) {
-      return 'Server error. Please try again later.';
+      return AppTexts.serverError.tr();
     }
     return apiMessage;
   }
@@ -62,7 +64,7 @@ class LoginScreen extends StatelessWidget {
                     ),
                     SizedBox(height: AppSizes.h24),
                     Text(
-                      "Sign In Account",
+                      AppTexts.signInAccount.tr(),
                       style: GoogleFonts.poppins(
                         fontSize: AppSizes.h20,
                         fontWeight: FontWeight.w600,
@@ -72,22 +74,22 @@ class LoginScreen extends StatelessWidget {
                     SizedBox(height: AppSizes.h24),
                     CustomTextformfeild(
                       keyboardType: TextInputType.emailAddress,
-                      hintText: "Email",
+                      hintText: AppTexts.emailFieldLabel.tr(),
                       controller: _emailController,
                       validator: AppValidators.email,
                       formFieldKey: const Key("email"),
-                      labelText: "Email",
+                      labelText: AppTexts.emailFieldLabel.tr(),
                       labelcolor: AppColors.secondBlack,
                       borderRadius: AppSizes.r10,
                     ),
                     SizedBox(height: AppSizes.h16),
                     CustomTextformfeild(
                       keyboardType: TextInputType.visiblePassword,
-                      hintText: "Password",
+                      hintText: AppTexts.passwordFieldLabel.tr(),
                       controller: _passwordController,
                       validator: AppValidators.password,
                       formFieldKey: const Key("password"),
-                      labelText: "Password",
+                      labelText: AppTexts.passwordFieldLabel.tr(),
                       isPassword: true,
                       labelcolor: AppColors.secondBlack,
                       borderRadius: AppSizes.r10,
@@ -96,9 +98,8 @@ class LoginScreen extends StatelessWidget {
                       alignment: Alignment.centerRight,
                       child: TextButton(
                         onPressed: () => context.push(AppRoutes.forgotPassword),
-
                         child: Text(
-                          "Forgot Password?",
+                          AppTexts.forgotPassword.tr(),
                           style: GoogleFonts.poppins(
                             fontSize: AppSizes.h12,
                             fontWeight: FontWeight.w400,
@@ -113,7 +114,9 @@ class LoginScreen extends StatelessWidget {
                         if (state is AuthSuccess) {
                           CustomSnackBar().successBar(
                             context,
-                            "Welcome back, ${state.user.username}!",
+                            AppTexts.welcomeBack.tr(
+                              namedArgs: {'name': state.user.username},
+                            ),
                           );
                           context.go(AppRoutes.home);
                         } else if (state is AuthError) {
@@ -155,7 +158,7 @@ class LoginScreen extends StatelessWidget {
                                   ),
                                 )
                               : Text(
-                                  "Login",
+                                  AppTexts.loginButton.tr(),
                                   style: GoogleFonts.poppins(
                                     fontSize: AppSizes.sp12,
                                     fontWeight: FontWeight.w500,
@@ -170,16 +173,24 @@ class LoginScreen extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Container(height: 2, width: AppSizes.w120, color: AppColors.borderColor),
+                          Container(
+                            height: 2,
+                            width: AppSizes.w120,
+                            color: AppColors.borderColor,
+                          ),
                           Text(
-                            "or login with",
+                            AppTexts.orLoginWith.tr(),
                             style: GoogleFonts.inter(
                               fontSize: AppSizes.sp16,
                               fontWeight: FontWeight.w400,
                               color: AppColors.secondBlack,
                             ),
                           ),
-                          Container(height: 2, width: AppSizes.w120, color: AppColors.borderColor),
+                          Container(
+                            height: 2,
+                            width: AppSizes.w120,
+                            color: AppColors.borderColor,
+                          ),
                         ],
                       ),
                     ),
@@ -189,7 +200,9 @@ class LoginScreen extends StatelessWidget {
                         if (state is AuthSuccess) {
                           CustomSnackBar().successBar(
                             context,
-                            "Welcome back, ${state.user.username}!",
+                            AppTexts.welcomeBack.tr(
+                              namedArgs: {'name': state.user.username},
+                            ),
                           );
                           context.go(AppRoutes.home);
                         } else if (state is AuthError) {
@@ -204,7 +217,9 @@ class LoginScreen extends StatelessWidget {
                           onPressed: state is AuthLoading
                               ? null
                               : () {
-                                  context.read<AuthBloc>().add(SignInWithGoogleEvent());
+                                  context.read<AuthBloc>().add(
+                                    SignInWithGoogleEvent(),
+                                  );
                                 },
                           style: ElevatedButton.styleFrom(
                             elevation: 0,
@@ -222,7 +237,7 @@ class LoginScreen extends StatelessWidget {
                             size: AppSizes.r20,
                           ),
                           label: Text(
-                            "Continue with Google",
+                            AppTexts.continueWithGoogle.tr(),
                             style: GoogleFonts.poppins(
                               fontSize: AppSizes.sp16,
                               fontWeight: FontWeight.w600,
@@ -237,7 +252,7 @@ class LoginScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "Don't have an account?",
+                          AppTexts.dontHaveAccount.tr(),
                           style: GoogleFonts.poppins(
                             fontSize: AppSizes.sp12,
                             color: AppColors.secondBlack,
@@ -247,7 +262,7 @@ class LoginScreen extends StatelessWidget {
                         TextButton(
                           onPressed: () => context.push(AppRoutes.signup),
                           child: Text(
-                            "Sign Up",
+                            AppTexts.signUp.tr(),
                             style: GoogleFonts.poppins(
                               fontSize: AppSizes.sp12,
                               fontWeight: FontWeight.w500,
@@ -262,7 +277,7 @@ class LoginScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "By signing in, you agree to our ",
+                          AppTexts.bySigningInAgree.tr(),
                           style: GoogleFonts.poppins(
                             fontSize: AppSizes.sp12,
                             color: AppColors.secondBlack,
@@ -270,7 +285,6 @@ class LoginScreen extends StatelessWidget {
                           ),
                         ),
                         GestureDetector(
-
                           onTap: () => Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -280,7 +294,7 @@ class LoginScreen extends StatelessWidget {
                           child: SizedBox(
                             width: AppSizes.w120,
                             child: Text(
-                              "Terms and Conditions.",
+                              AppTexts.termsAndConditions.tr(),
                               style: GoogleFonts.poppins(
                                 fontSize: AppSizes.sp12,
                                 fontWeight: FontWeight.w500,
@@ -297,7 +311,7 @@ class LoginScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "Learn how we use your data ",
+                          AppTexts.learnHowWeUseData.tr(),
                           style: GoogleFonts.poppins(
                             fontSize: AppSizes.sp12,
                             color: AppColors.secondBlack,
@@ -305,7 +319,6 @@ class LoginScreen extends StatelessWidget {
                           ),
                         ),
                         GestureDetector(
-
                           onTap: () => Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -315,7 +328,7 @@ class LoginScreen extends StatelessWidget {
                           child: SizedBox(
                             width: AppSizes.w120,
                             child: Text(
-                              "in our Privacy Policy.",
+                              AppTexts.inOurPrivacyPolicy.tr(),
                               style: GoogleFonts.poppins(
                                 fontSize: AppSizes.sp12,
                                 fontWeight: FontWeight.w500,

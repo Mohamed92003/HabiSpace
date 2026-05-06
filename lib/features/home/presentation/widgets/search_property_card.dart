@@ -1,10 +1,13 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:habispace/core/shared/custom_svg.dart';
 import '../../../../core/router/app_router.dart';
+import '../../../../core/theme/app_theme.dart';
 import '../../../../core/utils/app_color.dart';
 import '../../../../core/utils/app_sizes.dart';
+import '../../../../core/utils/app_texts.dart';
 import '../../../favorite/presentation/cubit/FavoriteCubit/favorite_cubit_cubit.dart';
 import '../../../favorite/presentation/cubit/FavoriteCubit/favorite_cubit_state.dart';
 import '../cubit/home_cubit.dart';
@@ -17,6 +20,7 @@ class SearchPropertyCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ext = context.appTheme;
     return GestureDetector(
       onTap: () {
         final homeState = context.read<HomeCubit>().state;
@@ -38,10 +42,10 @@ class SearchPropertyCard extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
-          color: AppColors.light,
+          color: ext.cardBg,
           boxShadow: [
             BoxShadow(
-              color: AppColors.black.withOpacity(0.07),
+              color: ext.cardShadow,
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),
@@ -89,7 +93,7 @@ class SearchPropertyCard extends StatelessWidget {
                     ),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
-                      color: AppColors.light,
+                      color: ext.badgeBg,
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -102,12 +106,12 @@ class SearchPropertyCard extends StatelessWidget {
                         SizedBox(width: AppSizes.w4),
                         Text(
                           property.listingType == 'sale'
-                              ? 'For Sale'
-                              : 'For Rent',
+                              ? AppTexts.forSaleLabel.tr()
+                              : AppTexts.forRentLabel.tr(),
                           style: TextStyle(
                             fontSize: AppSizes.sp12,
                             fontWeight: FontWeight.w500,
-                            color: AppColors.black,
+                            color: ext.titleText,
                           ),
                         ),
                       ],
@@ -133,7 +137,7 @@ class SearchPropertyCard extends StatelessWidget {
                           style: TextStyle(
                             fontSize: AppSizes.sp16,
                             fontWeight: FontWeight.w600,
-                            color: AppColors.black,
+                            color: ext.titleText,
                           ),
                         ),
                       ),
@@ -152,7 +156,7 @@ class SearchPropertyCard extends StatelessWidget {
                             child: Icon(
                               isFav ? Icons.star : Icons.star_border,
                               size: AppSizes.h24,
-                              color: isFav ? Colors.amber : AppColors.black,
+                              color: isFav ? ext.starColor : ext.subtleText,
                             ),
                           );
                         },
@@ -168,11 +172,14 @@ class SearchPropertyCard extends StatelessWidget {
                         color: AppColors.blue,
                       ),
                       SizedBox(width: AppSizes.w2),
-                      Text(
-                        property.address,
-                        style: TextStyle(
-                          fontSize: AppSizes.sp12,
-                          color: Colors.grey.shade500,
+                      Expanded(
+                        child: Text(
+                          property.address,
+                          style: TextStyle(
+                            fontSize: AppSizes.sp12,
+                            color: ext.subtleText,
+                          ),
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ],
@@ -186,7 +193,7 @@ class SearchPropertyCard extends StatelessWidget {
                         style: TextStyle(
                           fontSize: AppSizes.sp18,
                           fontWeight: FontWeight.w700,
-                          color: AppColors.black,
+                          color: ext.titleText,
                         ),
                       ),
                       Row(
@@ -194,7 +201,7 @@ class SearchPropertyCard extends StatelessWidget {
                           Icon(
                             Icons.star,
                             size: AppSizes.h16,
-                            color: Colors.amber,
+                            color: ext.starColor,
                           ),
                           SizedBox(width: AppSizes.w2),
                           Text(
@@ -202,7 +209,7 @@ class SearchPropertyCard extends StatelessWidget {
                             style: TextStyle(
                               fontSize: AppSizes.sp12,
                               fontWeight: FontWeight.w600,
-                              color: AppColors.black,
+                              color: ext.bodyText,
                             ),
                           ),
                         ],
@@ -233,10 +240,11 @@ class _PropertyImagePlaceholder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ext = context.appTheme;
     return Container(
       width: width,
       height: height,
-      color: Colors.grey.shade200,
+      color: ext.imagePlaceholder,
       child: showShimmer
           ? Center(
               child: CircularProgressIndicator(
@@ -250,14 +258,14 @@ class _PropertyImagePlaceholder extends StatelessWidget {
                 Icon(
                   Icons.home_outlined,
                   size: AppSizes.sp40,
-                  color: Colors.grey.shade400,
+                  color: ext.subtleText,
                 ),
                 SizedBox(height: AppSizes.h6),
                 Text(
                   'No Image',
                   style: TextStyle(
                     fontSize: AppSizes.sp11,
-                    color: Colors.grey.shade400,
+                    color: ext.subtleText,
                   ),
                 ),
               ],

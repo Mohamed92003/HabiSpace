@@ -74,6 +74,7 @@ List<Widget> _buildCategoryGridSlivers({
       child: FavoriteHeaderWidget(
         title: AppTexts.yourFavorite.tr(),
         isEditMode: state.isEditMode,
+        showBackButton: false,
         onEdit: () => context.read<FavoriteCubit>().toggleEditMode(),
       ),
     ),
@@ -151,6 +152,7 @@ class _CategoryCard extends StatelessWidget {
               },
             ),
       child: Stack(
+        clipBehavior: Clip.none,
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -184,7 +186,7 @@ class _CategoryCard extends StatelessWidget {
           ),
           if (isEditMode)
             Positioned(
-              top: -4,
+              top: -5,
               left: -4,
               child: GestureDetector(
                 onTap: () {

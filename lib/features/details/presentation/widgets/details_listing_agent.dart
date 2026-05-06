@@ -35,14 +35,18 @@ class _DetailsListingAgentState extends State<DetailsListingAgent> {
       final launched = await launchUrl(url);
       if (!launched && context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Could not open phone dialer')),
+          SnackBar(content: Text(AppTexts.couldNotOpenDialer.tr())),
         );
       }
     } catch (e) {
       if (context.mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Error: $e')));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              AppTexts.errorMessage.tr(namedArgs: {'error': e.toString()}),
+            ),
+          ),
+        );
       }
     }
   }

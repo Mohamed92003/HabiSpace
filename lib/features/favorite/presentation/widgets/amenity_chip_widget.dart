@@ -1,36 +1,31 @@
-
-import 'package:flutter/cupertino.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../core/theme/app_theme.dart';
 import '../../../favorite/domain/entities/favorite_property_entity.dart';
+import '../../../../core/utils/app_texts.dart';
 
 class AmenityChipWidget extends StatelessWidget {
   final IconData icon;
   final String label;
 
-  const AmenityChipWidget({
-    super.key,
-    required this.icon,
-    required this.label,
-  });
+  const AmenityChipWidget({super.key, required this.icon, required this.label});
 
   @override
   Widget build(BuildContext context) {
+    final ext = context.appTheme;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
       decoration: BoxDecoration(
-        color: const Color(0xFFF0F0EC),
+        color: ext.chipBg,
         borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 13, color: Colors.black54),
+          Icon(icon, size: 13, color: ext.subtleText),
           const SizedBox(width: 4),
-          Text(
-            label,
-            style: const TextStyle(fontSize: 11, color: Colors.black54),
-          ),
+          Text(label, style: TextStyle(fontSize: 11, color: ext.subtleText)),
         ],
       ),
     );
@@ -48,13 +43,15 @@ class AmenitiesWrap extends StatelessWidget {
     if (property.bedrooms > 0) {
       items.add((
         icon: Icons.bed_outlined,
-        label: '${property.bedrooms} Bedroom${property.bedrooms > 1 ? 's' : ''}',
+        label:
+            '${property.bedrooms} ${property.bedrooms > 1 ? AppTexts.bedroomPlural.tr() : AppTexts.bedroomSingular.tr()}',
       ));
     }
     if (property.bathrooms > 0) {
       items.add((
         icon: Icons.bathtub_outlined,
-        label: '${property.bathrooms} Bathroom${property.bathrooms > 1 ? 's' : ''}',
+        label:
+            '${property.bathrooms} ${property.bathrooms > 1 ? AppTexts.bathroomPlural.tr() : AppTexts.bathroomSingular.tr()}',
       ));
     }
 
@@ -69,9 +66,12 @@ class AmenitiesWrap extends StatelessWidget {
 
   IconData _iconFor(String name) {
     if (name.contains('kitchen')) return Icons.kitchen_outlined;
-    if (name.contains('lounge') || name.contains('living')) return Icons.weekend_outlined;
-    if (name.contains('balcony') || name.contains('terrace')) return Icons.deck_outlined;
-    if (name.contains('gym') || name.contains('fitness')) return Icons.fitness_center_outlined;
+    if (name.contains('lounge') || name.contains('living'))
+      return Icons.weekend_outlined;
+    if (name.contains('balcony') || name.contains('terrace'))
+      return Icons.deck_outlined;
+    if (name.contains('gym') || name.contains('fitness'))
+      return Icons.fitness_center_outlined;
     if (name.contains('pool')) return Icons.pool_outlined;
     if (name.contains('parking')) return Icons.local_parking_outlined;
     if (name.contains('wifi')) return Icons.wifi_outlined;

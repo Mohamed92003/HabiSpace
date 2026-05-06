@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:habispace/core/shared/error_view.dart';
 import 'package:habispace/features/History/presentation/Cubit/cubit/history_cubit.dart';
+import '../../../../core/theme/app_theme.dart';
+import '../../../../core/utils/app_color.dart';
 import '../../../../core/utils/app_sizes.dart';
 import '../../../../core/utils/app_texts.dart';
 
@@ -26,6 +28,7 @@ List<Widget> historyViewSlivers(BuildContext context, HistoryState state) {
 
   if (state is HistorySuccess) {
     final orders = state.filtered;
+    final cs = Theme.of(context).colorScheme;
 
     if (orders.isEmpty) {
       return [
@@ -37,14 +40,14 @@ List<Widget> historyViewSlivers(BuildContext context, HistoryState state) {
                 Icon(
                   Icons.history,
                   size: AppSizes.h64,
-                  color: Colors.grey,
+                  color: cs.onSurfaceVariant,
                 ),
                 SizedBox(height: AppSizes.h16),
                 Text(
                   AppTexts.noHistoryYet.tr(),
                   style: TextStyle(
                     fontSize: AppSizes.sp16,
-                    color: Colors.grey,
+                    color: cs.onSurfaceVariant,
                   ),
                 ),
               ],
@@ -56,25 +59,29 @@ List<Widget> historyViewSlivers(BuildContext context, HistoryState state) {
 
     return [
       SliverPadding(
-        padding: EdgeInsets.symmetric(horizontal: AppSizes.w12, vertical: AppSizes.h8),
+        padding: EdgeInsets.symmetric(
+          horizontal: AppSizes.w12,
+          vertical: AppSizes.h8,
+        ),
         sliver: SliverList.separated(
           itemCount: orders.length,
           separatorBuilder: (_, _) => SizedBox(height: AppSizes.h4),
           itemBuilder: (context, index) {
             final order = orders[index];
             final property = order.property;
+            final ext = context.appTheme;
 
             return Container(
               width: double.infinity,
               margin: EdgeInsets.symmetric(vertical: AppSizes.h4),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: ext.cardBg,
                 borderRadius: BorderRadius.circular(AppSizes.r20),
-                boxShadow: const [
+                boxShadow: [
                   BoxShadow(
-                    color: Colors.black12,
+                    color: ext.cardShadow,
                     blurRadius: 10,
-                    offset: Offset(0, 4),
+                    offset: const Offset(0, 4),
                   ),
                 ],
               ),
@@ -87,18 +94,35 @@ List<Widget> historyViewSlivers(BuildContext context, HistoryState state) {
                     ),
                     child: property.images.isNotEmpty
                         ? Image.network(
-                            property.images[0],
-                            width: double.infinity,
-                            height: AppSizes.h180,
-                            fit: BoxFit.cover,
-                          )
+                      property.images[0],
+                      width: double.infinity,
+                      height: AppSizes.h180,
+                      fit: BoxFit.cover,
+                      loadingBuilder: (context, child, progress) {
+                        if (progress == null) return child;
+                        return Container(
+                          width: double.infinity,
+                          height: AppSizes.h180,
+                          color: AppColors.gray,
+                          child: const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        );
+                      },
+                      errorBuilder: (context, error, stackTrace) {
+                        return _imagePlaceholder(context);
+                      },
+                    )
                         : Container(
                             width: double.infinity,
                             height: AppSizes.h180,
-                            color: Colors.grey[200],
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(AppSizes.r20),
+                              color: AppColors.gray
+                            ),
                             child: Icon(
                               Icons.home,
-                              color: Colors.grey,
+                              color: ext.subtleText,
                               size: AppSizes.sp48,
                             ),
                           ),
@@ -116,6 +140,7 @@ List<Widget> historyViewSlivers(BuildContext context, HistoryState state) {
                                 style: TextStyle(
                                   fontSize: AppSizes.sp16,
                                   fontWeight: FontWeight.bold,
+                                  color: ext.titleText,
                                 ),
                               ),
                             ),
@@ -128,14 +153,14 @@ List<Widget> historyViewSlivers(BuildContext context, HistoryState state) {
                             Icon(
                               Icons.location_on_outlined,
                               size: AppSizes.sp16,
-                              color: Colors.grey,
+                              color: ext.subtleText,
                             ),
                             SizedBox(width: AppSizes.w4),
                             Expanded(
                               child: Text(
                                 property.address,
                                 style: TextStyle(
-                                  color: Colors.grey,
+                                  color: ext.subtleText,
                                   fontSize: AppSizes.sp12,
                                 ),
                                 overflow: TextOverflow.ellipsis,
@@ -172,13 +197,14 @@ List<Widget> historyViewSlivers(BuildContext context, HistoryState state) {
                               style: TextStyle(
                                 fontSize: AppSizes.sp16,
                                 fontWeight: FontWeight.bold,
+                                color: ext.titleText,
                               ),
                             ),
                             SizedBox(width: AppSizes.w4),
                             Text(
                               order.currency.toUpperCase(),
                               style: TextStyle(
-                                color: Colors.grey,
+                                color: ext.subtleText,
                                 fontSize: AppSizes.sp12,
                               ),
                             ),
@@ -186,13 +212,13 @@ List<Widget> historyViewSlivers(BuildContext context, HistoryState state) {
                             Icon(
                               Icons.calendar_today_outlined,
                               size: AppSizes.sp14,
-                              color: Colors.grey,
+                              color: ext.subtleText,
                             ),
                             SizedBox(width: AppSizes.w4),
                             Text(
                               order.createdAt.substring(0, 10),
                               style: TextStyle(
-                                color: Colors.grey,
+                                color: ext.subtleText,
                                 fontSize: AppSizes.sp12,
                               ),
                             ),
@@ -223,11 +249,14 @@ class _StatusBadge extends StatelessWidget {
       'completed' => Colors.green,
       'pending' => Colors.orange,
       'cancelled' => Colors.red,
-      _ => Colors.grey,
+      _ => Theme.of(context).colorScheme.onSurfaceVariant,
     };
 
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: AppSizes.w10, vertical: AppSizes.h4),
+      padding: EdgeInsets.symmetric(
+        horizontal: AppSizes.w10,
+        vertical: AppSizes.h4,
+      ),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(AppSizes.r20),
@@ -248,18 +277,38 @@ class _StatusBadge extends StatelessWidget {
 class _InfoItem extends StatelessWidget {
   final IconData icon;
   final String text;
-
   const _InfoItem({required this.icon, required this.text});
 
   @override
   Widget build(BuildContext context) {
+    final ext = context.appTheme;
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(icon, size: AppSizes.sp16, color: Colors.grey),
+        Icon(icon, size: AppSizes.sp16, color: ext.subtleText),
         SizedBox(width: AppSizes.w4),
-        Text(text, style: TextStyle(fontSize: AppSizes.sp12, color: Colors.grey)),
+        Text(
+          text,
+          style: TextStyle(fontSize: AppSizes.sp12, color: ext.subtleText),
+        ),
       ],
     );
   }
+}
+Widget _imagePlaceholder(BuildContext context) {
+  final ext = context.appTheme;
+
+  return Container(
+    width: double.infinity,
+    height: AppSizes.h180,
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(AppSizes.r20),
+      color: AppColors.gray,
+    ),
+    child: Icon(
+      Icons.home,
+      color: ext.subtleText,
+      size: AppSizes.sp48,
+    ),
+  );
 }

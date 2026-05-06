@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -11,6 +12,7 @@ import '../../../../core/shared/custom_textformfield.dart';
 import '../../../../core/shared/snakbar.dart';
 import '../../../../core/utils/app_color.dart';
 import '../../../../core/utils/app_sizes.dart';
+import '../../../../core/utils/app_texts.dart';
 import '../../../../core/utils/app_validation.dart';
 
 class SignupScreen extends StatelessWidget {
@@ -44,7 +46,7 @@ class SignupScreen extends StatelessWidget {
                   ),
                   SizedBox(height: AppSizes.h24),
                   Text(
-                    "Create Account",
+                    AppTexts.createAccount.tr(),
                     style: GoogleFonts.poppins(
                       fontSize: AppSizes.h20,
                       fontWeight: FontWeight.w600,
@@ -55,11 +57,11 @@ class SignupScreen extends StatelessWidget {
 
                   CustomTextformfeild(
                     keyboardType: TextInputType.name,
-                    hintText: "Full Name",
+                    hintText: AppTexts.fullNameFieldLabel.tr(),
                     controller: _nameController,
                     validator: AppValidators.name,
                     formFieldKey: const Key("name"),
-                    labelText: "Full Name",
+                    labelText: AppTexts.fullNameFieldLabel.tr(),
                     labelcolor: AppColors.secondBlack,
                     borderRadius: AppSizes.r10,
                   ),
@@ -67,11 +69,11 @@ class SignupScreen extends StatelessWidget {
 
                   CustomTextformfeild(
                     keyboardType: TextInputType.emailAddress,
-                    hintText: "Email",
+                    hintText: AppTexts.emailFieldLabel.tr(),
                     controller: _emailController,
                     validator: AppValidators.email,
                     formFieldKey: const Key("signup_email"),
-                    labelText: "Email",
+                    labelText: AppTexts.emailFieldLabel.tr(),
                     labelcolor: AppColors.secondBlack,
                     borderRadius: AppSizes.r10,
                   ),
@@ -79,11 +81,11 @@ class SignupScreen extends StatelessWidget {
 
                   CustomTextformfeild(
                     keyboardType: TextInputType.visiblePassword,
-                    hintText: "Password",
+                    hintText: AppTexts.passwordFieldLabel.tr(),
                     controller: _passwordController,
                     validator: AppValidators.password,
                     formFieldKey: const Key("signup_password"),
-                    labelText: "Password",
+                    labelText: AppTexts.passwordFieldLabel.tr(),
                     isPassword: true,
                     labelcolor: AppColors.secondBlack,
                     borderRadius: AppSizes.r10,
@@ -92,12 +94,14 @@ class SignupScreen extends StatelessWidget {
 
                   CustomTextformfeild(
                     keyboardType: TextInputType.visiblePassword,
-                    hintText: "Confirm Password",
+                    hintText: AppTexts.confirmPasswordFieldLabel.tr(),
                     controller: _confirmPasswordController,
-                    validator: (value) =>
-                        AppValidators.confirmPassword(value, _passwordController.text),
+                    validator: (value) => AppValidators.confirmPassword(
+                      value,
+                      _passwordController.text,
+                    ),
                     formFieldKey: const Key("confirm_password"),
-                    labelText: "Confirm Password",
+                    labelText: AppTexts.confirmPasswordFieldLabel.tr(),
                     isPassword: true,
                     labelcolor: AppColors.secondBlack,
                     borderRadius: AppSizes.r10,
@@ -109,7 +113,7 @@ class SignupScreen extends StatelessWidget {
                       if (state is SignUpSuccess) {
                         CustomSnackBar().successBar(
                           context,
-                          "Account created successfully!",
+                          AppTexts.accountCreatedSuccess.tr(),
                         );
                         WidgetsBinding.instance.addPostFrameCallback((_) {
                           context.go(AppRoutes.login);
@@ -153,7 +157,7 @@ class SignupScreen extends StatelessWidget {
                                 ),
                               )
                             : Text(
-                                "Sign Up",
+                                AppTexts.signUp.tr(),
                                 style: GoogleFonts.poppins(
                                   fontSize: AppSizes.sp12,
                                   fontWeight: FontWeight.w500,
@@ -169,7 +173,7 @@ class SignupScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "Already have an account?",
+                        AppTexts.alreadyHaveAccount.tr(),
                         style: GoogleFonts.poppins(
                           fontSize: AppSizes.sp12,
                           color: AppColors.secondBlack,
@@ -179,7 +183,7 @@ class SignupScreen extends StatelessWidget {
                       TextButton(
                         onPressed: () => Navigator.pop(context),
                         child: Text(
-                          "Sign In",
+                          AppTexts.signIn.tr(),
                           style: GoogleFonts.poppins(
                             fontSize: AppSizes.sp12,
                             fontWeight: FontWeight.w500,
