@@ -13,15 +13,16 @@ import '../widgets/search_property_card.dart';
 import '../widgets/section_header.dart';
 import '../../../favorite/presentation/cubit/FavoriteCubit/favorite_cubit_cubit.dart';
 
-List<Widget> homeViewSlivers(BuildContext context, HomeState state, FavoriteCubit favoriteCubit) {
-
+List<Widget> homeViewSlivers(
+  BuildContext context,
+  HomeState state,
+  FavoriteCubit favoriteCubit,
+) {
   if (state is HomeLoading) {
     return [
       SliverFillRemaining(
         child: Center(
-          child: CircularProgressIndicator(
-            color: Theme.of(context).colorScheme.primary,
-          ),
+          child: CircularProgressIndicator(color: Theme.of(context).colorScheme.primary),
         ),
       ),
     ];
@@ -53,10 +54,7 @@ List<Widget> homeViewSlivers(BuildContext context, HomeState state, FavoriteCubi
     }
     return [
       SliverPadding(
-        padding: EdgeInsets.symmetric(
-          horizontal: AppSizes.w16,
-          vertical: AppSizes.h12,
-        ),
+        padding: EdgeInsets.symmetric(horizontal: AppSizes.w16, vertical: AppSizes.h12),
         sliver: SliverList(
           delegate: SliverChildBuilderDelegate(
             (context, index) => Padding(
@@ -83,7 +81,7 @@ List<Widget> homeViewSlivers(BuildContext context, HomeState state, FavoriteCubi
               children: List.generate(
                 tabs.length,
                 (index) => FilterChipItem(
-                  text: tabs[index],
+                  text: tabs[index] ?? "",
                   isSelected: state.selectedTab == index,
                   onTap: () => context.read<HomeCubit>().filterByCategory(index),
                 ),
