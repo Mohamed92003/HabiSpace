@@ -35,6 +35,7 @@ dependencies:
   flutter_map:
   latlong2:
   flutter_map_marker_cluster:
+  model_viewer_plus: ^1.10.0
 
 
 dev_dependencies:
@@ -51,6 +52,7 @@ flutter:
     - assets/images/
     - assets/icons/
     - assets/translations/
+    - assets/images/medium_house.glb
  
 
 flutter_native_splash:

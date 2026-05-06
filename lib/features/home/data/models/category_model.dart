@@ -11,10 +11,10 @@ class CategoryModel extends CategoryEntity {
   });
 
   factory CategoryModel.fromJson(Map<String, dynamic> json) => CategoryModel(
-    id: json['id'],
-    name: json['name'],
-    slug: json['slug'],
-    description: json['description'],
-    sortOrder: json['sort_order'],
+    id: json['id'] as int,
+    name: json['name'] as String,
+    slug: json['slug'] as String,
+    description: json['description'] as String?,
+    sortOrder: json['sort_order'] as int,
   );
 }

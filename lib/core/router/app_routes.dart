@@ -20,4 +20,5 @@ abstract class AppRoutes {
   static const String updateProfile = '/update-profile';
   static const String changePassword = '/change-password';
   static const String deleteAccount = '/delete-account';
+  static const String explore = '/explore';
 }

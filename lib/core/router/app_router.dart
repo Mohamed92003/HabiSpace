@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:habispace/features/details/domain/entities/property_detail_entity.dart';
 import 'package:habispace/features/payment/presentation/ui/payment_view.dart';
+import '../../features/3d/presentation/ui/3d_view.dart';
 import '../../features/auth/domain/entities/user_entity.dart';
 import '../../features/auth/presentation/logic/auth_bloc.dart';
 import '../../features/auth/presentation/screens/forget_password_screen.dart';
@@ -16,6 +17,7 @@ import '../../features/chat/presentation/ui/chat_view.dart';
 import '../../features/chat/presentation/ui/conversations_view.dart';
 import '../../features/details/presentation/cubit/details_cubit.dart';
 import '../../features/details/presentation/ui/details_view.dart';
+import '../../features/payment/presentation/cubit/payment_cubit.dart';
 import '../../features/profile/domain/entities/Profile_Entity.dart';
 import '../../features/profile/presentation/UI/change_password_screen.dart';
 import '../../features/profile/presentation/UI/update_profile_view.dart';
@@ -179,9 +181,34 @@ GoRouter createRouter(String initialLocation) => GoRouter(
       path: AppRoutes.deleteAccount,
       name: AppRoutes.deleteAccount,
       builder: (context, state) => BlocProvider(
-        create: (_) => sl<ProfileCubit>(), // ✅ own cubit now
+        create: (_) => sl<ProfileCubit>(),
         child: const DeleteAccountDialog(),
       ),
+    ),
+
+    GoRoute(
+      path: AppRoutes.payment,
+      name: AppRoutes.payment,
+      builder: (context, state) {
+        final extra = state.extra as Map<String, dynamic>?;
+        if (extra == null) {
+          return const Scaffold(
+            body: Center(child: Text('Something went wrong.')),
+          );
+        }
+        return BlocProvider(
+          create: (_) => sl<PaymentCubit>(),
+          child: PaymentView(
+            property: extra['property'] as PropertyDetailEntity,
+          ),
+        );
+      },
+    ),
+
+    GoRoute(
+      path: AppRoutes.explore,
+      name: AppRoutes.explore,
+      builder: (context, state) => const ExploreView(),
     ),
     GoRoute(
       path: AppRoutes.chat,
@@ -214,7 +241,8 @@ GoRouter createRouter(String initialLocation) => GoRouter(
       path: AppRoutes.favoriteBody,
       name: AppRoutes.favoriteBody,
       builder: (context, state) {
-        final extra = state.extra as Map<String, dynamic>;
+        final extra = state.extra as Map<String, dynamic>?;
+        if (extra == null) return const SizedBox();
         final favoriteCubit = extra['favoriteCubit'] as FavoriteCubit;
         return BlocProvider.value(
           value: favoriteCubit,
@@ -227,14 +255,14 @@ GoRouter createRouter(String initialLocation) => GoRouter(
       path: AppRoutes.favoriteDetails,
       name: AppRoutes.favoriteDetails,
       builder: (context, state) {
-        final extra = state.extra as Map<String, dynamic>;
+        final extra = state.extra as Map<String, dynamic>?;
+        if (extra == null) return const SizedBox();
         final favoriteCubit = extra['favoriteCubit'] as FavoriteCubit;
         return BlocProvider.value(
           value: favoriteCubit,
           child: FavoriteDetailsPage(
             property: extra['property'] as FavoritePropertyEntity,
-            allFavorites:
-                extra['allFavorites'] as List<FavoritePropertyEntity>? ?? const [],
+            allFavorites: extra['allFavorites'] as List<FavoritePropertyEntity>? ?? const [],
           ),
         );
       },
@@ -244,3 +272,6 @@ GoRouter createRouter(String initialLocation) => GoRouter(
   errorBuilder: (context, state) =>
       Scaffold(body: Center(child: Text('${'pageNotFound'.tr()}: ${state.error}'))),
 );
+
+
+
