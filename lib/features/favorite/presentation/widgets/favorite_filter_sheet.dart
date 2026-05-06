@@ -39,9 +39,9 @@ class _FavoriteFilterSheetState extends State<FavoriteFilterSheet> {
         AppSizes.w16,
         AppSizes.h32,
       ),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(AppSizes.r24)),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -50,11 +50,11 @@ class _FavoriteFilterSheetState extends State<FavoriteFilterSheet> {
 
           Center(
             child: Container(
-              width: 40,
+              width: AppSizes.w40,
               height: 4,
               decoration: BoxDecoration(
                 color: Colors.grey[300],
-                borderRadius: BorderRadius.circular(2),
+                borderRadius: BorderRadius.circular(AppSizes.r2),
               ),
             ),
           ),
@@ -105,9 +105,9 @@ class _FavoriteFilterSheetState extends State<FavoriteFilterSheet> {
               Expanded(
                 child: OutlinedButton(
                   style: OutlinedButton.styleFrom(
-                    side: const BorderSide(color: AppColors.blue),
+                    side: BorderSide(color: AppColors.blue),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppSizes.r12),
                     ),
                   ),
                   onPressed: () {
@@ -117,7 +117,7 @@ class _FavoriteFilterSheetState extends State<FavoriteFilterSheet> {
                   },
                   child: Text(
                     AppTexts.clear.tr(),
-                    style: const TextStyle(color: AppColors.blue),
+                    style: TextStyle(color: AppColors.blue),
                   ),
                 ),
               ),
@@ -128,7 +128,7 @@ class _FavoriteFilterSheetState extends State<FavoriteFilterSheet> {
                     backgroundColor: AppColors.blue,
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(AppSizes.r12),
                     ),
                   ),
                   onPressed: () {
@@ -171,7 +171,7 @@ class _CategoryChip extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           color: isSelected ? AppColors.blue : AppColors.bluelight,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(AppSizes.r20),
         ),
         child: Text(
           label,

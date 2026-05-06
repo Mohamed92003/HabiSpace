@@ -47,7 +47,7 @@ class PropertyDetailModel extends PropertyDetailEntity {
             };
 
     return PropertyDetailModel(
-      id: data['id'] as int,
+        id: data['id'] as int? ?? 0 ,
       title: data['title'] as String? ?? '',
       slug: data['slug'] as String? ?? '',
       description: data['description'] as String? ?? '',

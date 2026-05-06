@@ -44,6 +44,9 @@ import '../../features/profile/data/repo/Profile_repo_impl.dart';
 import '../../features/profile/domain/Repository/Profile_repo.dart';
 import '../../features/profile/domain/Use Cases/Delete_Profile_Usecae.dart';
 import '../../features/profile/domain/Use Cases/Get_Profile_Usecase.dart';
+import '../../features/profile/domain/Use Cases/delete_account_use_case.dart';
+import '../../features/profile/domain/Use Cases/change_password_usecase.dart';
+import '../../features/profile/domain/Use Cases/updata_profile_usecase.dart';
 import '../../features/profile/presentation/Cubit/cubit/profile_cubit.dart';
 
 final sl = GetIt.instance;
@@ -124,11 +127,16 @@ void setupLocator() {
   sl.registerLazySingleton(
     () => GetProfileUsecase(repository: sl<ProfileRepo>()),
   );
-  sl.registerLazySingleton(() => DeleteProfileUsecae(sl<ProfileRepo>()));
+  sl.registerLazySingleton(() => DeleteProfileUseCase(repo: sl<ProfileRepo>()));
+
+  sl.registerLazySingleton(() => LogOutProfileUseCase(sl<ProfileRepo>()));
   sl.registerFactory(
     () => ProfileCubit(
       getProfileUsecase: sl<GetProfileUsecase>(),
-      deleteAccount: sl<DeleteProfileUsecae>(),
+      logOut: sl<LogOutProfileUseCase>(),
+      updateProfileUsecase: sl<UpdateProfileUsecase>(),
+      deleteProfileUsecase: sl<DeleteProfileUseCase>(),
+      changePasswordUsecase: sl<ChangePasswordUsecase>(),
     ),
   );
 
@@ -148,4 +156,9 @@ void setupLocator() {
       addReviewUseCase: sl<AddReviewUseCase>(),
     ),
   );
+
+  sl.registerLazySingleton(() => UpdateProfileUsecase(repository: sl<ProfileRepo>()));
+  sl.registerLazySingleton(() => ChangePasswordUsecase(repository: sl<ProfileRepo>()));
+
+
 }

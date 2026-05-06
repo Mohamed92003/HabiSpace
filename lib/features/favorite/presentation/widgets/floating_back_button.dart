@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import '../../../../core/utils/app_sizes.dart';
 
 class FloatingBackButton extends StatelessWidget {
   @override
@@ -7,8 +8,8 @@ class FloatingBackButton extends StatelessWidget {
     return GestureDetector(
       onTap: () => Navigator.pop(context),
       child: Container(
-        width: 40,
-        height: 40,
+        width: AppSizes.w40,
+        height: AppSizes.h40,
         decoration: BoxDecoration(
           color: Colors.white,
           shape: BoxShape.circle,
@@ -20,7 +21,7 @@ class FloatingBackButton extends StatelessWidget {
             ),
           ],
         ),
-        child: const Icon(Icons.arrow_back, color: Colors.black, size: 20),
+        child: Icon(Icons.arrow_back, color: Colors.black, size: AppSizes.sp20),
       ),
     );
   }

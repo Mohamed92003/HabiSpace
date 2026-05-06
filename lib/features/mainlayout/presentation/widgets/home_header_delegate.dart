@@ -34,7 +34,7 @@ class HomeHeaderDelegate extends SliverPersistentHeaderDelegate {
     bool overlapsContent,
   ) {
     return Container(
-      height: 140,
+      height: AppSizes.h140,
       color: Theme.of(context).scaffoldBackgroundColor,
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: AppSizes.w16),
@@ -42,12 +42,12 @@ class HomeHeaderDelegate extends SliverPersistentHeaderDelegate {
           children: [
             Expanded(
               child: Container(
-                height: 52,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                margin: const EdgeInsets.symmetric(horizontal: 10),
+                height: AppSizes.h52,
+                padding: EdgeInsets.symmetric(horizontal: AppSizes.w16),
+                margin: EdgeInsets.symmetric(horizontal: AppSizes.w10),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.surface,
-                  borderRadius: BorderRadius.circular(28),
+                  borderRadius: BorderRadius.circular(AppSizes.r30),
                 ),
                 child: Center(
                   child: TextField(
@@ -57,12 +57,12 @@ class HomeHeaderDelegate extends SliverPersistentHeaderDelegate {
                     cursorWidth: 2,
                     cursorColor: AppColors.blue,
                     decoration: InputDecoration(
-                      contentPadding:  EdgeInsets.zero,
+                      contentPadding: EdgeInsets.zero,
                       border: InputBorder.none,
                       hintText: hint,
-                      hintStyle: const TextStyle(
+                      hintStyle: TextStyle(
                         color: AppColors.textSecondaryColor,
-                        fontSize: 14,
+                        fontSize: AppSizes.sp14,
                         fontWeight: FontWeight.w400,
                       ),
                       prefixIcon: const Icon(
@@ -70,7 +70,7 @@ class HomeHeaderDelegate extends SliverPersistentHeaderDelegate {
                         color: AppColors.textSecondaryColor,
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(28),
+                        borderRadius: BorderRadius.circular(AppSizes.r30),
                         borderSide: BorderSide.none,
                       ),
                     ),

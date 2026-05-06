@@ -8,6 +8,7 @@ import '../cubit/FavoriteCubit/favorite_cubit_state.dart';
 import '../widgets/property_image_widget.dart';
 import '../../../../core/utils/app_texts.dart';
 import 'favoriteMainPage.dart';
+import '../../../../core/utils/app_sizes.dart';
 
 class FavoriteCategoriesPage extends StatelessWidget {
   const FavoriteCategoriesPage({super.key});
@@ -72,7 +73,7 @@ class _CategoriesContent extends StatelessWidget {
         const _PageHeader(),
         Expanded(
           child: GridView.builder(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            padding: EdgeInsets.symmetric(horizontal: AppSizes.w16, vertical: AppSizes.h12),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               crossAxisSpacing: 14,
@@ -109,7 +110,7 @@ class _PageHeader extends StatelessWidget {
           Text(
             AppTexts.yourFavorite.tr(),
             style: TextStyle(
-              fontSize: 22,
+              fontSize: AppSizes.sp22,
               fontWeight: FontWeight.bold,
               color: Theme.of(context).colorScheme.onSurface,
             ),
@@ -119,7 +120,7 @@ class _PageHeader extends StatelessWidget {
             child: Text(
               AppTexts.edit.tr(),
               style: TextStyle(
-                fontSize: 15,
+                fontSize: AppSizes.sp15,
                 fontWeight: FontWeight.w600,
                 color: Theme.of(context).colorScheme.primary,
                 decoration: TextDecoration.underline,
@@ -164,25 +165,25 @@ class _CategoryCard extends StatelessWidget {
         children: [
           Expanded(
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(14),
+              borderRadius: BorderRadius.circular(AppSizes.r14),
               child: _ImageGrid(properties: properties),
             ),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: AppSizes.h8),
           Text(
             categoryName,
             style: TextStyle(
-              fontSize: 15,
+              fontSize: AppSizes.sp15,
               fontWeight: FontWeight.bold,
               color: Theme.of(context).colorScheme.onSurface,
             ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
-          const SizedBox(height: 2),
+          SizedBox(height: AppSizes.h2),
           Text(
             '${properties.length} ${properties.length == 1 ? AppTexts.propertySingularKey.tr() : AppTexts.propertyPluralKey.tr()}',
-            style: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.onSurfaceVariant),
+            style: TextStyle(fontSize: AppSizes.sp12, color: Theme.of(context).colorScheme.onSurfaceVariant),
           ),
         ],
       ),
@@ -218,17 +219,17 @@ class _ImageGrid extends StatelessWidget {
           child: Row(
             children: [
               Expanded(child: _Tile(url: slots[0])),
-              const SizedBox(width: 2),
+              SizedBox(width: AppSizes.w2),
               Expanded(child: _Tile(url: slots[1])),
             ],
           ),
         ),
-        const SizedBox(height: 2),
+        SizedBox(height: AppSizes.h2),
         Expanded(
           child: Row(
             children: [
               Expanded(child: _Tile(url: slots[2])),
-              const SizedBox(width: 2),
+              SizedBox(width: AppSizes.w2),
               Expanded(child: _Tile(url: slots[3])),
             ],
           ),
@@ -260,18 +261,18 @@ class _ErrorView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(24),
+        padding: EdgeInsets.all(AppSizes.h24),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.error_outline, size: 48, color: Colors.red),
-            const SizedBox(height: 12),
+            Icon(Icons.error_outline, size: AppSizes.sp48, color: Colors.red),
+            SizedBox(height: AppSizes.h12),
             Text(
               message,
               textAlign: TextAlign.center,
               style: const TextStyle(color: Colors.red),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: AppSizes.h16),
             ElevatedButton(
               onPressed: onRetry,
               child: Text(AppTexts.retry.tr()),
@@ -292,11 +293,11 @@ class _EmptyView extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Icons.favorite_border, size: 64, color: Colors.grey),
-          const SizedBox(height: 16),
+          Icon(Icons.favorite_border, size: AppSizes.sp64, color: Colors.grey),
+          SizedBox(height: AppSizes.h16),
           Text(
             AppTexts.noFavoritesYet.tr(),
-            style: const TextStyle(fontSize: 16, color: Colors.grey),
+            style: TextStyle(fontSize: AppSizes.sp16, color: Colors.grey),
           ),
         ],
       ),
@@ -313,11 +314,11 @@ class _NoResultsView extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Icons.search_off, size: 64, color: Colors.grey),
-          const SizedBox(height: 16),
+          Icon(Icons.search_off, size: AppSizes.sp64, color: Colors.grey),
+          SizedBox(height: AppSizes.h16),
           Text(
             AppTexts.noResultsFound.tr(),
-            style: const TextStyle(fontSize: 16, color: Colors.grey),
+            style: TextStyle(fontSize: AppSizes.sp16, color: Colors.grey),
           ),
         ],
       ),

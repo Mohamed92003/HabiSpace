@@ -13,12 +13,14 @@ class AgentModel extends AgentEntity {
   });
 
   factory AgentModel.fromJson(Map<String, dynamic> json) => AgentModel(
-    id: json['id'],
-    title: json['title'],
-    bio: json['bio'],
-    licenseNumber: json['license_number'],
-    company: json['company'],
-    user: AgentUserModel.fromJson(json['user']),
-    phone: json['phone'],
+    id: (json['id'] as num?)?.toInt() ?? 0,
+    licenseNumber: json['license_number'] as String?,
+    user: AgentUserModel.fromJson(
+      (json['user'] as Map<String, dynamic>?) ?? {},
+    ),
+    phone: json['phone'] as String?,
+    title: json['title'] as String? ?? '',
+    bio: json['bio'] as String? ?? '',
+    company: json['company'] as String? ?? '',
   );
 }

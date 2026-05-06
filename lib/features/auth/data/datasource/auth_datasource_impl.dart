@@ -46,8 +46,7 @@ class AuthDatasourceImpl implements AuthDatasource {
 
       final GoogleSignInAccount googleUser = await _googleSignIn.authenticate();
 
-      final GoogleSignInAuthentication googleAuth =
-      await googleUser.authentication;
+      final GoogleSignInAuthentication googleAuth = googleUser.authentication;
 
       final idToken = googleAuth.idToken;
 
@@ -65,6 +64,12 @@ class AuthDatasourceImpl implements AuthDatasource {
       rethrow;
     } on ServerException {
       rethrow;
+    } on GoogleSignInException catch (e) {
+      // User cancelled the sign-in dialog — not an error
+      if (e.code == GoogleSignInExceptionCode.canceled) {
+        throw CanceledException();
+      }
+      throw ServerException('Google sign in failed: ${e.toString()}');
     } catch (e) {
       throw ServerException('Google sign in failed: ${e.toString()}');
     }

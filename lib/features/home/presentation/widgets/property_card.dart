@@ -12,7 +12,6 @@ import '../../domain/entities/home_property_entity.dart';
 
 class PropertyCard extends StatelessWidget {
   final HomePropertyEntity property;
-
   const PropertyCard({super.key, required this.property});
 
   @override
@@ -58,7 +57,9 @@ class PropertyCard extends StatelessWidget {
                   borderRadius: const BorderRadius.vertical(
                     top: Radius.circular(16),
                   ),
-                  child: property.images.isNotEmpty
+                  child:
+                      property.images.isNotEmpty &&
+                          property.images[0].isNotEmpty
                       ? SizedBox(
                           height: AppSizes.h140,
                           width: AppSizes.w220,
@@ -67,24 +68,22 @@ class PropertyCard extends StatelessWidget {
                             fit: BoxFit.cover,
                             loadingBuilder: (context, child, progress) {
                               if (progress == null) return child;
-                              return Container(
-                                color: Colors.grey.shade200,
-                                child: const Center(
-                                  child: CircularProgressIndicator(),
-                                ),
+                              return _PropertyImagePlaceholder(
+                                width: AppSizes.w220,
+                                height: AppSizes.h140,
+                                showShimmer: true,
                               );
                             },
-                            errorBuilder: (context, error, stackTrace) => Image.asset(
-                              'assets/images/logo_other.png',
-                              fit: BoxFit.cover,
-                            ),
+                            errorBuilder: (context, error, stackTrace) =>
+                                _PropertyImagePlaceholder(
+                                  width: AppSizes.w220,
+                                  height: AppSizes.h140,
+                                ),
                           ),
                         )
-                      : Image.asset(
-                          'assets/images/Frame 2147228697.png',
-                          fit: BoxFit.cover,
-                          height: AppSizes.h140,
+                      : _PropertyImagePlaceholder(
                           width: AppSizes.w220,
+                          height: AppSizes.h140,
                         ),
                 ),
                 Positioned(
@@ -227,6 +226,53 @@ class PropertyCard extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+// ── Shared image placeholder ──────────────────────────────────────────────────
+class _PropertyImagePlaceholder extends StatelessWidget {
+  final double width;
+  final double height;
+  final bool showShimmer;
+
+  const _PropertyImagePlaceholder({
+    required this.width,
+    required this.height,
+    this.showShimmer = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: width,
+      height: height,
+      color: Colors.grey.shade200,
+      child: showShimmer
+          ? Center(
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                color: AppColors.blue,
+              ),
+            )
+          : Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.home_outlined,
+                  size: AppSizes.sp40,
+                  color: Colors.grey.shade400,
+                ),
+                SizedBox(height: AppSizes.h6),
+                Text(
+                  'No Image',
+                  style: TextStyle(
+                    fontSize: AppSizes.sp11,
+                    color: Colors.grey.shade400,
+                  ),
+                ),
+              ],
+            ),
     );
   }
 }

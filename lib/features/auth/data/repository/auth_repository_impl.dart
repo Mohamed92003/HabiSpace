@@ -132,6 +132,9 @@ class AuthRepositoryImpl implements AuthRepository {
         await AuthStorage().init();
       }
       return Right(user);
+    } on CanceledException {
+      // User dismissed the Google sign-in dialog — do nothing
+      return Left(const CanceledFailure());
     } on AuthException catch (e) {
       return Left(AuthFailure(e.message));
     } on ServerException catch (e) {

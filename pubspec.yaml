@@ -35,7 +35,12 @@ dependencies:
   firebase_core: ^4.7.0
   firebase_auth: ^6.4.0
   firebase_messaging: ^16.2.0
-  
+  app_links: ^7.0.0
+  share_plus: ^10.1.4
+  model_viewer_plus: ^1.10.0
+  flutter_map: ^8.3.0
+  latlong2: ^0.9.1
+  flutter_map_marker_cluster: ^8.2.2
 
 
 dev_dependencies:
@@ -52,12 +57,13 @@ flutter:
     - assets/images/
     - assets/icons/
     - assets/translations/
+    - assets/images/medium_house.glb
  
 
 flutter_native_splash:
   color: "#1597A8"
   image: assets/images/logo_other.png
-  android_gravity: fill
+  android_gravity: scaleAspectFit
   ios_content_mode: scaleAspectFit
   android: true
   ios: true

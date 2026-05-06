@@ -5,8 +5,8 @@ import 'package:habispace/features/profile/data/models/user_model.dart';
 
 class ProfileDataSourceImpl implements ProfileDataSource{
   @override
-  Future<void> deleteAccount() async{
-    await DioHelper.post(path: ApiConstant.deleteAccount, withAuth: true);
+  Future<void> logOut() async{
+    await DioHelper.post(path: ApiConstant.logout, withAuth: true);
 
   }
 
@@ -28,4 +28,47 @@ class ProfileDataSourceImpl implements ProfileDataSource{
     return UserModel.fromJson(data);
   }
 
+  @override
+  Future<UserModel> updateProfile({
+    required String name,
+    required String phone,
+    required String location,
+  }) async {
+    final response = await DioHelper.put(
+      path: ApiConstant.updateProfile,
+      withAuth: true,
+      data: {'name': name, 'phone': phone, 'location': location},
+    );
+    final data = response.data is Map && response.data['data'] != null
+        ? response.data['data']
+        : response.data;
+    return UserModel.fromJson(data);
+  }
+
+  @override
+  Future<void> deleteProfile() {
+    return DioHelper.delete(
+      path: ApiConstant.deleteAccount,
+      withAuth: true,
+    );
+
+  }
+
+  @override
+  Future<String> changePassword({
+    required String currentPassword,
+    required String password,
+    required String passwordConfirmation,
+  }) async {
+    final response = await DioHelper.put(
+      path: ApiConstant.changePassword,
+      withAuth: true,
+      data: {
+        'current_password': currentPassword,
+        'password': password,
+        'password_confirmation': passwordConfirmation,
+      },
+    );
+    return response.data['message'] ?? 'Password updated.';
+  }
 }

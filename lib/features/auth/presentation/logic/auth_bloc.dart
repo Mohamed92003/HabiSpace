@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:habispace/core/error/failures.dart';
 import 'package:habispace/features/auth/domain/repository/auth_repository.dart';
 
 import 'auth_state.dart';
@@ -94,8 +95,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(AuthLoading());
     final result = await authRepository.signInWithGoogle();
     result.fold(
-          (failure) => emit(AuthError(message: failure.message)),
-          (user) => emit(AuthSuccess(user: user)),
+      (failure) {
+        // User cancelled the dialog — go back to initial state silently
+        if (failure is CanceledFailure) {
+          emit(AuthInitial());
+          return;
+        }
+        emit(AuthError(message: failure.message));
+      },
+      (user) => emit(AuthSuccess(user: user)),
     );
   }
 }

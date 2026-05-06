@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:habispace/features/details/domain/entities/property_detail_entity.dart';
 import 'package:habispace/features/payment/presentation/ui/payment_view.dart';
+import '../../features/3d/presentation/ui/3d_view.dart';
+import '../../features/auth/domain/entities/user_entity.dart';
 import '../../features/auth/presentation/logic/auth_bloc.dart';
 import '../../features/auth/presentation/screens/forget_password_screen.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
@@ -15,6 +17,11 @@ import '../../features/chat/presentation/ui/chat_view.dart';
 import '../../features/chat/presentation/ui/conversations_view.dart';
 import '../../features/details/presentation/cubit/details_cubit.dart';
 import '../../features/details/presentation/ui/details_view.dart';
+import '../../features/payment/presentation/cubit/payment_cubit.dart';
+import '../../features/profile/domain/entities/Profile_Entity.dart';
+import '../../features/profile/presentation/UI/change_password_screen.dart';
+import '../../features/profile/presentation/UI/update_profile_view.dart';
+import '../../features/profile/presentation/widgets/delete_my_account_widget.dart';
 import '../../features/reviews/presentation/ui/reviews_view.dart';
 import '../../features/favorite/domain/entities/favorite_property_entity.dart';
 import '../../features/favorite/presentation/cubit/FavoriteCubit/favorite_cubit_cubit.dart';
@@ -26,12 +33,13 @@ import '../../features/home/presentation/cubit/home_cubit.dart';
 import '../../features/home/presentation/widgets/all_properties_page.dart';
 import '../../features/mainlayout/presentation/ui/main_layout.dart';
 import '../../features/notifications/presentation/ui/notification_view.dart';
-import '../../features/on_boarding/on_boarding.dart';
+import '../../features/on_boarding/presentation/ui/on_boarding.dart';
 import '../../features/profile/presentation/Cubit/cubit/profile_cubit.dart';
 import '../di/get_it.dart';
+
 part 'app_routes.dart';
 
-PropertyDetailEntity ?pr;
+PropertyDetailEntity? pr;
 
 GoRouter createRouter(String initialLocation) => GoRouter(
   initialLocation: initialLocation,
@@ -159,7 +167,70 @@ GoRouter createRouter(String initialLocation) => GoRouter(
         child: const ConversationsView(),
       ),
     ),
+    GoRoute(
+      path: AppRoutes.updateProfile,
+      name: AppRoutes.updateProfile,
+      builder: (context, state) {
+        final extra = state.extra as Map<String, dynamic>;
+        final user = extra['user'] as ProfileEntity?;
+        final profileCubit = extra['profileCubit'] as ProfileCubit;
+        // If user is null the profile hasn't loaded yet — go back gracefully
+        if (user == null) {
+          return Scaffold(
+            appBar: AppBar(title: const Text('Personal Information')),
+            body: const Center(child: CircularProgressIndicator()),
+          );
+        }
+        return BlocProvider.value(
+          value: profileCubit,
+          child: UpdateProfileView(user: user),
+        );
+      },
+    ),
+    GoRoute(
+      path: AppRoutes.changePassword,
+      name: AppRoutes.changePassword,
+      builder: (context, state) {
+        return BlocProvider.value(
+          value: sl<ProfileCubit>(),
+          child: ChangePasswordScreen(),
+        );
+      },
+    ),
 
+    GoRoute(
+      path: AppRoutes.deleteAccount,
+      name: AppRoutes.deleteAccount,
+      builder: (context, state) => BlocProvider(
+        create: (_) => sl<ProfileCubit>(),
+        child: const DeleteAccountDialog(),
+      ),
+    ),
+
+    GoRoute(
+      path: AppRoutes.payment,
+      name: AppRoutes.payment,
+      builder: (context, state) {
+        final extra = state.extra as Map<String, dynamic>?;
+        if (extra == null) {
+          return const Scaffold(
+            body: Center(child: Text('Something went wrong.')),
+          );
+        }
+        return BlocProvider(
+          create: (_) => sl<PaymentCubit>(),
+          child: PaymentView(
+            property: extra['property'] as PropertyDetailEntity,
+          ),
+        );
+      },
+    ),
+
+    GoRoute(
+      path: AppRoutes.explore,
+      name: AppRoutes.explore,
+      builder: (context, state) => const ExploreView(),
+    ),
     GoRoute(
       path: AppRoutes.chat,
       name: AppRoutes.chat,
@@ -191,7 +262,8 @@ GoRouter createRouter(String initialLocation) => GoRouter(
       path: AppRoutes.favoriteBody,
       name: AppRoutes.favoriteBody,
       builder: (context, state) {
-        final extra = state.extra as Map<String, dynamic>;
+        final extra = state.extra as Map<String, dynamic>?;
+        if (extra == null) return const SizedBox();
         final favoriteCubit = extra['favoriteCubit'] as FavoriteCubit;
         return BlocProvider.value(
           value: favoriteCubit,
@@ -206,7 +278,8 @@ GoRouter createRouter(String initialLocation) => GoRouter(
       path: AppRoutes.favoriteDetails,
       name: AppRoutes.favoriteDetails,
       builder: (context, state) {
-        final extra = state.extra as Map<String, dynamic>;
+        final extra = state.extra as Map<String, dynamic>?;
+        if (extra == null) return const SizedBox();
         final favoriteCubit = extra['favoriteCubit'] as FavoriteCubit;
         return BlocProvider.value(
           value: favoriteCubit,
@@ -219,8 +292,6 @@ GoRouter createRouter(String initialLocation) => GoRouter(
         );
       },
     ),
- 
-    
   ],
 
   errorBuilder: (context, state) => Scaffold(

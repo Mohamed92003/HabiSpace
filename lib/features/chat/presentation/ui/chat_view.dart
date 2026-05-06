@@ -1,9 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../../core/utils/app_color.dart';
 import '../../../../core/utils/app_sizes.dart';
 import '../../../../core/utils/app_texts.dart';
 import '../cubit/chat_cubit.dart';
@@ -75,15 +73,24 @@ class _ChatViewState extends State<ChatView> {
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
         titleSpacing: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Theme.of(context).colorScheme.onSurface),
-          onPressed: () => Navigator.pop(context),
+        centerTitle: false,
+        leading: Center(
+          child: IconButton(
+            icon: Icon(
+              Icons.arrow_back_ios_new_rounded,
+              color: Theme.of(context).colorScheme.onSurface,
+              size: 18,
+            ),
+            onPressed: () => Navigator.pop(context),
+          ),
         ),
         title: Row(
           children: [
             CircleAvatar(
               radius: 18,
-              backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.2),
+              backgroundColor: Theme.of(
+                context,
+              ).colorScheme.primary.withValues(alpha: 0.2),
               child: Text(
                 widget.agentName.isNotEmpty
                     ? widget.agentName[0].toUpperCase()
@@ -99,7 +106,7 @@ class _ChatViewState extends State<ChatView> {
               widget.agentName,
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onSurface,
-                fontSize: 16,
+                fontSize: AppSizes.sp16,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -110,9 +117,9 @@ class _ChatViewState extends State<ChatView> {
         listener: (context, state) {
           if (state is ChatLoaded) _scrollToBottom();
           if (state is ChatError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message)),
-            );
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.message)));
           }
         },
         builder: (context, state) {
@@ -131,28 +138,29 @@ class _ChatViewState extends State<ChatView> {
                 Expanded(
                   child: messages.isEmpty
                       ? Center(
-                    child: Text(
-                      AppTexts.noMessagesYet.tr(),
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
-                    ),
-                  )
+                          child: Text(
+                            AppTexts.noMessagesYet.tr(),
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onSurfaceVariant,
+                            ),
+                          ),
+                        )
                       : ListView.builder(
-                    controller: _scrollController,
-                    padding: EdgeInsets.symmetric(
-                      horizontal: AppSizes.w16,
-                      vertical: AppSizes.h12,
-                    ),
-                    itemCount: messages.length,
-                    itemBuilder: (context, index) {
-                      final message = messages[index];
-                      final isMe = message.senderId == _currentUserId;
-                      return ChatBubble(
-                        message: message,
-                        isMe: isMe,
-                      );
-                    },
-                  ),
+                          controller: _scrollController,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: AppSizes.w16,
+                            vertical: AppSizes.h12,
+                          ),
+                          itemCount: messages.length,
+                          itemBuilder: (context, index) {
+                            final message = messages[index];
+                            final isMe = message.senderId == _currentUserId;
+                            return ChatBubble(message: message, isMe: isMe);
+                          },
+                        ),
                 ),
                 ChatInput(
                   controller: _messageController,

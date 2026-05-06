@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../core/di/get_it.dart';
 import '../../../../core/router/app_router.dart';
@@ -20,25 +21,29 @@ class DetailsListingAgent extends StatefulWidget {
 }
 
 class _DetailsListingAgentState extends State<DetailsListingAgent> {
-
   Future<void> callNumber(String? phone) async {
-    final Uri url;
+    final number = phone?.trim() ?? '';
 
-    if (phone != null && phone.trim().isNotEmpty) {
-      // Open dialer with number
-      url = Uri(
-        scheme: 'tel',
-        path: phone.trim(),
-      );
+    Uri url;
+    if (number.isNotEmpty) {
+      url = Uri(scheme: 'tel', path: number);
     } else {
-      // Open empty keypad
-      url = Uri(
-        scheme: 'tel',
-      );
+      url = Uri(scheme: 'tel', path: '');
     }
 
-    if (!await launchUrl(url)) {
-      throw Exception('Could not open dialer');
+    try {
+      final launched = await launchUrl(url);
+      if (!launched && context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Could not open phone dialer')),
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Error: $e')));
+      }
     }
   }
 
@@ -62,18 +67,16 @@ class _DetailsListingAgentState extends State<DetailsListingAgent> {
             CircleAvatar(
               radius: AppSizes.w24,
               backgroundColor: AppColors.textLightColor,
-              backgroundImage:
-                  (agent.company != null && agent.company!.startsWith('http'))
-                  ? NetworkImage(agent.company!)
+              backgroundImage: agent.company.startsWith('http')
+                  ? NetworkImage(agent.company)
                   : null,
-              child:
-                  (agent.company == null || !agent.company!.startsWith('http'))
-                  ? Icon(
+              child: agent.company.startsWith('http')
+                  ? null
+                  : Icon(
                       Icons.person,
                       color: AppColors.light,
                       size: AppSizes.h24,
-                    )
-                  : null,
+                    ),
             ),
             SizedBox(width: AppSizes.w12),
             Expanded(
@@ -99,19 +102,46 @@ class _DetailsListingAgentState extends State<DetailsListingAgent> {
               ),
             ),
             _ContactButton(
-                onTap: (){
-                  callNumber(agent.phone);
-                },
-                icon: Icons.call_outlined),
+              onTap: () {
+                callNumber(agent.phone);
+              },
+              icon: Icons.call_outlined,
+            ),
             SizedBox(width: AppSizes.w8),
             _ContactButton(
               icon: Icons.chat_bubble_outline_rounded,
               onTap: () async {
+                final prefs = await SharedPreferences.getInstance();
+                final existingId = prefs.getInt('agent_conv_${agent.user.id}');
+                if (existingId != null) {
+                  if (!context.mounted) return;
+                  context.pushNamed(
+                    AppRoutes.chat,
+                    extra: {
+                      'conversationId': existingId,
+                      'agentName': agent.user.name,
+                    },
+                  );
+                  return;
+                }
                 final chatCubit = sl<ChatCubit>();
-                await chatCubit.startConversation(agent.user.id, widget.property.id);
+                await chatCubit.startConversation(
+                  agent.user.id,
+                  widget.property.id,
+                  agentName: agent.user.name,
+                );
                 if (!context.mounted) return;
                 final state = chatCubit.state;
                 if (state is ChatLoaded) {
+                  await prefs.setString(
+                    'agent_name_${state.conversation.id}',
+                    agent.user.name,
+                  );
+                  await prefs.setInt(
+                    'agent_conv_${agent.user.id}',
+                    state.conversation.id,
+                  );
+                  if (!context.mounted) return;
                   context.pushNamed(
                     AppRoutes.chat,
                     extra: {
@@ -145,10 +175,7 @@ class _ContactButton extends StatelessWidget {
           color: AppColors.primaryContact,
           shape: BoxShape.circle,
         ),
-        child: Icon(
-            icon,
-            size: AppSizes.h18,
-            color: AppColors.blue),
+        child: Icon(icon, size: AppSizes.h18, color: AppColors.blue),
       ),
     );
   }

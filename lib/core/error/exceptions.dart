@@ -27,3 +27,9 @@ class NetworkException extends AppException {
 class CacheException extends AppException {
   CacheException(super.message, [super.code]);
 }
+
+/// Thrown when the user cancels a sign-in flow (e.g. closes Google picker).
+/// Should be silently ignored — not shown as an error to the user.
+class CanceledException extends AppException {
+  CanceledException() : super('canceled');
+}

@@ -28,3 +28,9 @@ class NetworkFailure extends Failure {
 class CacheFailure extends Failure {
   const CacheFailure(super.message);
 }
+
+/// Returned when the user cancels a sign-in flow.
+/// The UI should silently ignore this — no error message shown.
+class CanceledFailure extends Failure {
+  const CanceledFailure() : super('canceled');
+}

@@ -148,11 +148,11 @@ class _DetailsViewState extends State<DetailsView> {
                 left: 0,
                 right: 0,
                 child: DetailsAppBar(
-                  
                   blurAmount: _blurAmount,
                   bgColor: _appBarBg,
                   iconColor: _iconColor,
                   isGlass: _scrollFraction < 0.5,
+                  property: state is DetailsLoaded ? state.property : null,
                 ),
               ),
 

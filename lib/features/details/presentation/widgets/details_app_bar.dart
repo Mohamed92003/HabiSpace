@@ -2,15 +2,19 @@ import 'dart:ui';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:share_plus/share_plus.dart';
 import '../../../../core/utils/app_color.dart';
 import '../../../../core/utils/app_sizes.dart';
 import '../../../../core/utils/app_texts.dart';
+import '../../domain/entities/property_detail_entity.dart';
 
 class DetailsAppBar extends StatelessWidget {
   final double blurAmount;
   final Color bgColor;
   final Color iconColor;
   final bool isGlass;
+  // passed from DetailsView once state is DetailsLoaded
+  final PropertyDetailEntity? property;
 
   const DetailsAppBar({
     super.key,
@@ -18,7 +22,17 @@ class DetailsAppBar extends StatelessWidget {
     required this.bgColor,
     required this.iconColor,
     required this.isGlass,
+    this.property,
   });
+
+  void _onShare() {
+    if (property == null) return;
+    final link = 'https://real.newcinderella.online/details/${property!.slug}';
+    Share.share(
+      '${property!.title}\n$link',
+      subject: property!.title,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,10 +72,14 @@ class DetailsAppBar extends StatelessWidget {
                       ),
                     ),
                   ),
-                  DetailsAppBarButton(
-                    icon: Icons.share_rounded,
-                    color: iconColor,
-                    isGlass: isGlass,
+                  GestureDetector(
+                    onTap: _onShare,
+                    behavior: HitTestBehavior.opaque,
+                    child: DetailsAppBarButton(
+                      icon: Icons.share_rounded,
+                      color: iconColor,
+                      isGlass: isGlass,
+                    ),
                   ),
                 ],
               ),
