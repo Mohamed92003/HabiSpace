@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import '../../../../../core/utils/app_color.dart';
 
@@ -35,16 +36,21 @@ class ProfileAvatar extends StatelessWidget {
             : null,
       ),
       child: ClipOval(
-
         child: imageUrl != null && imageUrl!.isNotEmpty
-            ? Image.network(
-                imageUrl!,
+            ? CachedNetworkImage(
+                imageUrl: imageUrl!,
                 fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => _buildInitial(),
+                width: radius * 2,
+                height: radius * 2,
+                errorWidget: (_, __, ___) => _buildInitial(),
               )
-            : Image.network('https://i.pinimg.com/474x/7a/24/75/7a247579a370259119ed42b4bdddeea1.jpg',
-                fit: BoxFit.cover
-        ),
+            : CachedNetworkImage(
+                imageUrl: 'https://i.pinimg.com/474x/7a/24/75/7a247579a370259119ed42b4bdddeea1.jpg',
+                fit: BoxFit.cover,
+                width: radius * 2,
+                height: radius * 2,
+                errorWidget: (_, __, ___) => _buildInitial(),
+              ),
       ),
     );
   }

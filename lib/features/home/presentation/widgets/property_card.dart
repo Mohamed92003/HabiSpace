@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -67,21 +68,44 @@ class PropertyCard extends StatelessWidget {
                       ? SizedBox(
                           height: AppSizes.h140,
                           width: AppSizes.w220,
-                          child: Image.network(
-                            property.images[0],
+
+                          // child: Image.network(
+                          //   property.images[0],
+                          //   fit: BoxFit.cover,
+                          //   loadingBuilder: (context, child, progress) {
+                          //     if (progress == null) return child;
+                          //     return _PropertyImagePlaceholder(
+                          //       width: AppSizes.w220,
+                          //       height: AppSizes.h140,
+                          //       showShimmer: true,
+                          //     );
+                          //   },
+                          //   errorBuilder: (context, error, stackTrace) =>
+                          //       _PropertyImagePlaceholder(
+                          //         width: AppSizes.w220,
+                          //         height: AppSizes.h140,
+                          //       ),
+                          // ),
+                          child: CachedNetworkImage(
+                            imageUrl: property.images[0],
                             fit: BoxFit.cover,
-                            loadingBuilder: (context, child, progress) {
-                              if (progress == null) return child;
-                              return _PropertyImagePlaceholder(
-                                width: AppSizes.w220,
-                                height: AppSizes.h140,
-                                showShimmer: true,
-                              );
-                            },
-                            errorBuilder: (context, error, stackTrace) =>
+                            width: double.infinity, // أو العرض اللي تحبه
+                            height: AppSizes.h140, // نفس الارتفاع اللي بتستخدمه
+                            // الـ Placeholder هو الـ Shimmer بتاعك اللي بيظهر والصورة بتتحمل
+                            placeholder: (context, url) =>
                                 _PropertyImagePlaceholder(
                                   width: AppSizes.w220,
                                   height: AppSizes.h140,
+                                  showShimmer: true,
+                                ),
+
+                            // الـ errorWidget بيظهر لو اللينك بايظ أو مفيش نت
+                            errorWidget: (context, url, error) =>
+                                _PropertyImagePlaceholder(
+                                  width: AppSizes.w220,
+                                  height: AppSizes.h140,
+                                  showShimmer:
+                                      false, // هنا مش محتاج شيمر لأنه خلاص فشل
                                 ),
                           ),
                         )

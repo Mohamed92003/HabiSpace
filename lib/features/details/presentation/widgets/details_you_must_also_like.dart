@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -76,11 +77,11 @@ class DetailsYouMustAlsoLike extends StatelessWidget {
                           height: AppSizes.h180,
                           width: double.infinity,
                           child: p.images.isNotEmpty
-                              ? Image.network(
-                                  p.images[0],
+                              ? CachedNetworkImage(
+                               imageUrl:    p.images[0],
                                   fit: BoxFit.cover,
-                                  errorBuilder: (_, __, ___) =>
-                                      Container(color: AppColors.borderColor),
+                                  // errorBuilder: (_, __, ___) =>
+                                  //     Container(color: AppColors.borderColor),
                                 )
                               : Container(color: AppColors.borderColor),
                         ),

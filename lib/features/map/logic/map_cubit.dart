@@ -1,7 +1,6 @@
 // features/map/presentation/cubit/map_cubit.dart
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:equatable/equatable.dart';
 import 'package:habispace/features/map/entity/entity.dart';
 
 import 'map_state.dart';

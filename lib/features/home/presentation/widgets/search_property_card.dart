@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -61,18 +62,16 @@ class SearchPropertyCard extends StatelessWidget {
                     ? SizedBox(
                         height: AppSizes.h140,
                         width: AppSizes.w360,
-                        child: Image.network(
-                          property.images[0],
+                        child: CachedNetworkImage(
+                          imageUrl: property.images[0],
                           fit: BoxFit.cover,
-                          loadingBuilder: (context, child, progress) {
-                            if (progress == null) return child;
-                            return _PropertyImagePlaceholder(
-                              width: AppSizes.w360,
-                              height: AppSizes.h140,
-                              showShimmer: true,
-                            );
-                          },
-                          errorBuilder: (context, error, stackTrace) =>
+                          placeholder: (context, url) =>
+                              _PropertyImagePlaceholder(
+                                width: AppSizes.w360,
+                                height: AppSizes.h140,
+                                showShimmer: true,
+                              ),
+                          errorWidget: (context, url, error) =>
                               _PropertyImagePlaceholder(
                                 width: AppSizes.w360,
                                 height: AppSizes.h140,

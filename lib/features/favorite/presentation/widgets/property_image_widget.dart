@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:habispace/core/constants/api_constant.dart';
@@ -54,21 +55,18 @@ class PropertyImageWidget extends StatelessWidget {
         child: image,
       );
     } else {
-
-      image = Image.network(
-        resolved,
+      image = CachedNetworkImage(
+        imageUrl: resolved,
         width: double.infinity,
         height: height,
         fit: BoxFit.cover,
-        headers: const {'User-Agent': 'Mozilla/5.0'},
-        errorBuilder: (context, error, _) {
+        httpHeaders: const {'User-Agent': 'Mozilla/5.0'},
+        errorWidget: (context, url, error) {
           debugPrint('Image error: $error | URL: $resolved');
           return _Placeholder(height: height ?? 200);
         },
-        loadingBuilder: (context, child, progress) {
-          if (progress == null) return child;
-          return _Placeholder(height: height ?? 200, loading: true);
-        },
+        placeholder: (context, url) =>
+            _Placeholder(height: height ?? 200, loading: true),
       );
     }
 

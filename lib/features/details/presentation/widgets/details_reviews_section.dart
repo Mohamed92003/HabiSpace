@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -179,10 +180,10 @@ class _ImageThumbnails extends StatelessWidget {
                 children: [
                   AspectRatio(
                     aspectRatio: 1,
-                    child: Image.network(
-                      shown[i],
+                    child: CachedNetworkImage(
+                      imageUrl: shown[i],
                       fit: BoxFit.cover,
-                      errorBuilder: (_, __, ___) => Container(
+                      errorWidget: (_, __, ___) => Container(
                         color: AppColors.borderColor,
                         child: Icon(
                           Icons.image_outlined,

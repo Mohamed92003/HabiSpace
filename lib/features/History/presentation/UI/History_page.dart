@@ -1,19 +1,21 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:habispace/core/shared/error_view.dart';
+import 'package:habispace/core/shared/history_skeleton.dart';
+import 'package:habispace/core/shared/skelton/shimmer.dart';
 import 'package:habispace/features/History/presentation/Cubit/cubit/history_cubit.dart';
-import '../../../../core/theme/app_theme.dart';
+ import '../../../../core/theme/app_theme.dart';
 import '../../../../core/utils/app_color.dart';
 import '../../../../core/utils/app_sizes.dart';
 import '../../../../core/utils/app_texts.dart';
-
 List<Widget> historyViewSlivers(BuildContext context, HistoryState state) {
   if (state is HistoryLoading || state is HistoryInitial) {
     return [
-      const SliverFillRemaining(
-        child: Center(child: CircularProgressIndicator()),
-      ),
+         SliverToBoxAdapter(
+          child: AppSkeleton(isLoading: true, skeleton:   HistorySkeleton(), child: const SizedBox()),
+         )
     ];
   }
 
@@ -93,26 +95,22 @@ List<Widget> historyViewSlivers(BuildContext context, HistoryState state) {
                       top: Radius.circular(AppSizes.r20),
                     ),
                     child: property.images.isNotEmpty
-                        ? Image.network(
-                      property.images[0],
-                      width: double.infinity,
-                      height: AppSizes.h180,
-                      fit: BoxFit.cover,
-                      loadingBuilder: (context, child, progress) {
-                        if (progress == null) return child;
-                        return Container(
-                          width: double.infinity,
-                          height: AppSizes.h180,
-                          color: AppColors.gray,
-                          child: const Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        );
-                      },
-                      errorBuilder: (context, error, stackTrace) {
-                        return _imagePlaceholder(context);
-                      },
-                    )
+                        ? CachedNetworkImage(
+                            imageUrl: property.images[0],
+                            width: double.infinity,
+                            height: AppSizes.h180,
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) => Container(
+                              width: double.infinity,
+                              height: AppSizes.h180,
+                              color: AppColors.gray,
+                              child: const Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                            ),
+                            errorWidget: (context, url, error) =>
+                                _imagePlaceholder(context),
+                          )
                         : Container(
                             width: double.infinity,
                             height: AppSizes.h180,

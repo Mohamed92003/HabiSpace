@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../core/shared/skelton/shimmer.dart';
+import '../../../../core/shared/home_skeleton.dart';
 import '../../../../core/shared/error_view.dart';
 import '../../../../core/utils/app_sizes.dart';
 import '../../../../core/utils/app_texts.dart';
@@ -21,10 +23,10 @@ List<Widget> homeViewSlivers(
   if (state is HomeLoading) {
     return [
       SliverFillRemaining(
-        child: Center(
-          child: CircularProgressIndicator(
-            color: Theme.of(context).colorScheme.primary,
-          ),
+        child: AppSkeleton(
+          isLoading: true,
+          skeleton: const HomeSkeleton(),
+          child: const SizedBox(),
         ),
       ),
     ];

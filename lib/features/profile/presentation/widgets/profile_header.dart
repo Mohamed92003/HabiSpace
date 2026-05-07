@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:habispace/features/profile/presentation/widgets/profile_avatar.dart';
 import '../../../../core/utils/app_color.dart';
@@ -21,10 +22,10 @@ class ProfileHeaderSliver extends StatelessWidget {
           clipBehavior: Clip.none,
           children: [
             Positioned.fill(
-              child: Image.network(
-                _fallbackCover,
+              child: CachedNetworkImage(
+                imageUrl: _fallbackCover,
                 fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) =>
+                errorWidget: (_, __, ___) =>
                     Container(color: Colors.grey.shade300),
               ),
             ),

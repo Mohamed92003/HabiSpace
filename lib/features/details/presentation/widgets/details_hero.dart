@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import '../../../../core/utils/app_color.dart';
 import '../../../../core/utils/app_sizes.dart';
@@ -41,12 +42,13 @@ class _DetailsHeroState extends State<DetailsHero> {
               controller: _pageController,
               itemCount: images.length,
               onPageChanged: (i) => setState(() => _currentImageIndex = i),
-              itemBuilder: (_, i) => Image.network(
-                images[i],
+              itemBuilder: (_, i) => CachedNetworkImage(
+               imageUrl:  images[i],
                 fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) =>
-                    CustomPaint(painter: HousePainter()),
+                // errorBuilder: (_, __, ___) =>
+                //     CustomPaint(painter: HousePainter()),
               ),
+              
             )
           else
             Container(

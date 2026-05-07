@@ -5,6 +5,9 @@ import 'package:go_router/go_router.dart';
 import 'package:habispace/core/error/app_exception.dart';
 import 'package:habispace/core/router/app_router.dart';
 import 'package:habispace/core/shared/error_view.dart';
+import 'package:habispace/core/shared/profile_skelton.dart';
+import 'package:habispace/core/shared/skelton/shimmer.dart';
+import 'package:habispace/core/shared/skelton/skelton_widget.dart';
 import 'package:habispace/core/theme/theme_cubit.dart';
 import 'package:habispace/core/utils/app_color.dart';
 import 'package:habispace/core/utils/app_texts.dart';
@@ -20,9 +23,9 @@ import '../widgets/profile_menu_item_widget.dart';
 List<Widget> profileViewSlivers(BuildContext context, ProfileState state) {
   if (state is ProfileInitial || state is ProfileLoading) {
     return [
-      const SliverFillRemaining(
-        child: Center(child: CircularProgressIndicator()),
-      ),
+        SliverToBoxAdapter(
+          child: AppSkeleton(isLoading: true, skeleton: ProfileSkeleton(), child: SkeletonWidget()),
+        )
     ];
   }
 

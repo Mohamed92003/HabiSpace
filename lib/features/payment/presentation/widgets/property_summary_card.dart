@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:habispace/features/details/domain/entities/property_detail_entity.dart';
 import 'package:habispace/core/utils/app_color.dart';
@@ -33,10 +34,12 @@ class PropertySummaryCard extends StatelessWidget {
               height: AppSizes.h60,
               color: Colors.grey.shade200,
               child: property.images.isNotEmpty
-                  ? Image.network(
-                      property.images.first,
+                  ? CachedNetworkImage(
+                      imageUrl: property.images.first,
+                      width: AppSizes.w56,
+                      height: AppSizes.h60,
                       fit: BoxFit.cover,
-                      errorBuilder: (_, __, ___) => const Icon(
+                      errorWidget: (_, __, ___) => const Icon(
                         Icons.home,
                         color: Colors.grey,
                       ),
