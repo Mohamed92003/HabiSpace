@@ -33,71 +33,73 @@ class HomeHeaderDelegate extends SliverPersistentHeaderDelegate {
     double shrinkOffset,
     bool overlapsContent,
   ) {
-    return Container(
-      height: AppSizes.h140,
-      color: Theme.of(context).scaffoldBackgroundColor,
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: AppSizes.w16),
-        child: Row(
-          children: [
-            Expanded(
-              child: Container(
-                height: AppSizes.h52,
-                padding: EdgeInsets.symmetric(horizontal: AppSizes.w16),
-                margin: EdgeInsets.symmetric(horizontal: AppSizes.w10),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surface,
-                  borderRadius: BorderRadius.circular(AppSizes.r30),
-                ),
-                child: Center(
-                  child: TextField(
-                    controller: searchController,
-                    onChanged: onSearch,
-                    cursorHeight: 15,
-                    cursorWidth: 2,
-                    cursorColor: AppColors.blue,
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.zero,
-                      border: InputBorder.none,
-                      hintText: hint,
-                      hintStyle: TextStyle(
-                        color: AppColors.textSecondaryColor,
-                        fontSize: AppSizes.sp14,
-                        fontWeight: FontWeight.w400,
-                      ),
-                      prefixIcon: const Icon(
-                        CupertinoIcons.search,
-                        color: AppColors.textSecondaryColor,
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(AppSizes.r30),
-                        borderSide: BorderSide.none,
+    return RepaintBoundary(
+      child: Container(
+        height: AppSizes.h140,
+        color: Theme.of(context).scaffoldBackgroundColor,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: AppSizes.w16),
+          child: Row(
+            children: [
+              Expanded(
+                child: Container(
+                  height: AppSizes.h52,
+                  padding: EdgeInsets.symmetric(horizontal: AppSizes.w16),
+                  margin: EdgeInsets.symmetric(horizontal: AppSizes.w10),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surface,
+                    borderRadius: BorderRadius.circular(AppSizes.r30),
+                  ),
+                  child: Center(
+                    child: TextField(
+                      controller: searchController,
+                      onChanged: onSearch,
+                      cursorHeight: 15,
+                      cursorWidth: 2,
+                      cursorColor: AppColors.blue,
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.zero,
+                        border: InputBorder.none,
+                        hintText: hint,
+                        hintStyle: TextStyle(
+                          color: AppColors.textSecondaryColor,
+                          fontSize: AppSizes.sp14,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        prefixIcon: const Icon(
+                          CupertinoIcons.search,
+                          color: AppColors.textSecondaryColor,
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(AppSizes.r30),
+                          borderSide: BorderSide.none,
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
-            ),
-            if (showFilter)
-              HeaderIconButton(
-                path: 'assets/icons/mi_filter.svg',
-                onTap: () {
-                  showModalBottomSheet(
-                    context: context,
-                    isScrollControlled: true,
-                    backgroundColor: Colors.transparent,
-                    builder: (_) => BlocProvider.value(
-                      value: context.read<HomeCubit>(),
-                      child: FilterBottomSheet(
-                        initialFilter: context.read<HomeCubit>().activeFilter,
+              if (showFilter)
+                HeaderIconButton(
+                  path: 'assets/icons/mi_filter.svg',
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      backgroundColor: Colors.transparent,
+                      builder: (_) => BlocProvider.value(
+                        value: context.read<HomeCubit>(),
+                        child: FilterBottomSheet(
+                          initialFilter: context.read<HomeCubit>().activeFilter,
+                        ),
                       ),
-                    ),
-                  );
-                },
-                width: AppSizes.w16,
-                height: AppSizes.h16,
-              ),
-          ],
+                    );
+                  },
+                  width: AppSizes.w16,
+                  height: AppSizes.h16,
+                ),
+            ],
+          ),
         ),
       ),
     );
