@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/theme/app_theme.dart';
 import '../../../../core/utils/app_color.dart';
 import '../../../../core/utils/app_sizes.dart';
 import '../../../../core/utils/app_texts.dart';
@@ -23,13 +23,11 @@ class _FavoriteFilterSheetState extends State<FavoriteFilterSheet> {
   @override
   Widget build(BuildContext context) {
     final state = context.read<FavoriteCubit>().state;
-    final List<FavoritePropertyEntity> allFavorites =
-        state is FavoriteLoaded ? state.favorites : [];
+    final List<FavoritePropertyEntity> allFavorites = state is FavoriteLoaded
+        ? state.favorites
+        : [];
 
-    final categories = allFavorites
-        .map((p) => p.categoryName)
-        .toSet()
-        .toList()
+    final categories = allFavorites.map((p) => p.categoryName).toSet().toList()
       ..sort();
 
     return Container(
@@ -40,26 +38,24 @@ class _FavoriteFilterSheetState extends State<FavoriteFilterSheet> {
         AppSizes.h32,
       ),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.vertical(top: Radius.circular(AppSizes.r24)),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
           Center(
             child: Container(
               width: AppSizes.w40,
               height: 4,
               decoration: BoxDecoration(
-                color: Colors.grey[300],
+                color: context.appTheme.divider,
                 borderRadius: BorderRadius.circular(AppSizes.r2),
               ),
             ),
           ),
           SizedBox(height: AppSizes.h16),
-
           Text(
             AppTexts.filterFavorites.tr(),
             style: TextStyle(
@@ -68,17 +64,15 @@ class _FavoriteFilterSheetState extends State<FavoriteFilterSheet> {
             ),
           ),
           SizedBox(height: AppSizes.h20),
-
           Text(
             AppTexts.category.tr(),
             style: TextStyle(
               fontSize: AppSizes.sp14,
               fontWeight: FontWeight.w600,
-              color: AppColors.secondaryColor,
+              color: context.appTheme.subtleText,
             ),
           ),
           SizedBox(height: AppSizes.h12),
-
           Wrap(
             spacing: AppSizes.w8,
             runSpacing: AppSizes.h8,
@@ -97,9 +91,7 @@ class _FavoriteFilterSheetState extends State<FavoriteFilterSheet> {
               ),
             ],
           ),
-
           SizedBox(height: AppSizes.h28),
-
           Row(
             children: [
               Expanded(
@@ -111,7 +103,6 @@ class _FavoriteFilterSheetState extends State<FavoriteFilterSheet> {
                     ),
                   ),
                   onPressed: () {
-
                     context.read<FavoriteCubit>().search('');
                     Navigator.pop(context);
                   },
@@ -132,10 +123,9 @@ class _FavoriteFilterSheetState extends State<FavoriteFilterSheet> {
                     ),
                   ),
                   onPressed: () {
-
-                    context
-                        .read<FavoriteCubit>()
-                        .search(_selectedCategory ?? '');
+                    context.read<FavoriteCubit>().search(
+                      _selectedCategory ?? '',
+                    );
                     Navigator.pop(context);
                   },
                   child: Text(AppTexts.apply.tr()),
@@ -170,15 +160,14 @@ class _CategoryChip extends StatelessWidget {
           vertical: AppSizes.h8,
         ),
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.blue : AppColors.bluelight,
+          color: isSelected ? AppColors.blue : context.appTheme.chipBg,
           borderRadius: BorderRadius.circular(AppSizes.r20),
         ),
         child: Text(
           label,
           style: TextStyle(
             color: isSelected ? Colors.white : AppColors.blue,
-            fontWeight:
-                isSelected ? FontWeight.w600 : FontWeight.normal,
+            fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
             fontSize: AppSizes.sp12,
           ),
         ),

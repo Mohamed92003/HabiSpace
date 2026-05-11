@@ -1,4 +1,3 @@
-
 class FilterEntity {
   final String? listingType;
   final double? latitude;
@@ -13,5 +12,8 @@ class FilterEntity {
   });
 
   bool get isEmpty =>
-      listingType == null && latitude == null && radiusKm == null;
+      listingType == null &&
+      latitude == null &&
+      longitude == null &&
+      radiusKm == null;
 }

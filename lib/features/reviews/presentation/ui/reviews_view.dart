@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../core/theme/app_theme.dart';
 import '../../../../core/utils/app_color.dart';
 import '../../../../core/utils/app_sizes.dart';
 import '../../../../core/utils/app_texts.dart';
@@ -52,7 +53,7 @@ class _ReviewsViewState extends State<ReviewsView> {
               right: AppSizes.w20,
             ),
             decoration: BoxDecoration(
-              color: AppColors.light,
+              color: Theme.of(ctx).colorScheme.surface,
               borderRadius: BorderRadius.vertical(
                 top: Radius.circular(AppSizes.r24),
               ),
@@ -66,7 +67,7 @@ class _ReviewsViewState extends State<ReviewsView> {
                     width: AppSizes.w40,
                     height: AppSizes.h4,
                     decoration: BoxDecoration(
-                      color: AppColors.borderColor,
+                      color: ctx.appTheme.divider,
                       borderRadius: BorderRadius.circular(AppSizes.r2),
                     ),
                   ),
@@ -77,7 +78,7 @@ class _ReviewsViewState extends State<ReviewsView> {
                   style: TextStyle(
                     fontSize: AppSizes.sp18,
                     fontWeight: FontWeight.w700,
-                    color: AppColors.secondBlack,
+                    color: ctx.appTheme.titleText,
                   ),
                 ),
                 SizedBox(height: AppSizes.h16),
@@ -86,7 +87,7 @@ class _ReviewsViewState extends State<ReviewsView> {
                   style: TextStyle(
                     fontSize: AppSizes.sp13,
                     fontWeight: FontWeight.w600,
-                    color: AppColors.textSecondaryColor,
+                    color: ctx.appTheme.subtleText,
                   ),
                 ),
                 SizedBox(height: AppSizes.h8),
@@ -115,7 +116,7 @@ class _ReviewsViewState extends State<ReviewsView> {
                   style: TextStyle(
                     fontSize: AppSizes.sp13,
                     fontWeight: FontWeight.w600,
-                    color: AppColors.textSecondaryColor,
+                    color: ctx.appTheme.subtleText,
                   ),
                 ),
                 SizedBox(height: AppSizes.h8),
@@ -129,7 +130,7 @@ class _ReviewsViewState extends State<ReviewsView> {
                       fontSize: AppSizes.sp13,
                     ),
                     filled: true,
-                    fillColor: AppColors.lightGrayColor,
+                    fillColor: ctx.appTheme.inputFill,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(AppSizes.r12),
                       borderSide: BorderSide.none,
@@ -215,14 +216,14 @@ class _ReviewsViewState extends State<ReviewsView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.lightBackground,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: AppColors.lightBackground,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios_new_rounded,
-            color: AppColors.secondBlack,
+            color: context.appTheme.titleText,
             size: AppSizes.h18,
           ),
           onPressed: () => context.pop(),
@@ -235,7 +236,7 @@ class _ReviewsViewState extends State<ReviewsView> {
               style: TextStyle(
                 fontSize: AppSizes.sp16,
                 fontWeight: FontWeight.w700,
-                color: AppColors.secondBlack,
+                color: context.appTheme.titleText,
               ),
             ),
             if (widget.propertyTitle.isNotEmpty)
@@ -340,7 +341,7 @@ class _ReviewsViewState extends State<ReviewsView> {
                     margin: EdgeInsets.all(AppSizes.w16),
                     padding: EdgeInsets.all(AppSizes.w16),
                     decoration: BoxDecoration(
-                      color: AppColors.light,
+                      color: context.appTheme.cardBg,
                       borderRadius: BorderRadius.circular(AppSizes.r16),
                       boxShadow: [
                         BoxShadow(
@@ -359,7 +360,7 @@ class _ReviewsViewState extends State<ReviewsView> {
                               style: TextStyle(
                                 fontSize: AppSizes.sp48,
                                 fontWeight: FontWeight.w800,
-                                color: AppColors.secondBlack,
+                                color: context.appTheme.titleText,
                               ),
                             ),
                             Row(
@@ -405,7 +406,7 @@ class _ReviewsViewState extends State<ReviewsView> {
                                       '$star',
                                       style: TextStyle(
                                         fontSize: AppSizes.sp11,
-                                        color: AppColors.textSecondaryColor,
+                                        color: context.appTheme.subtleText,
                                       ),
                                     ),
                                     SizedBox(width: AppSizes.w4),
@@ -424,7 +425,7 @@ class _ReviewsViewState extends State<ReviewsView> {
                                           value: fraction,
                                           minHeight: 6,
                                           backgroundColor:
-                                              AppColors.borderColor,
+                                              context.appTheme.divider,
                                           valueColor:
                                               const AlwaysStoppedAnimation(
                                                 Colors.amber,
@@ -437,7 +438,7 @@ class _ReviewsViewState extends State<ReviewsView> {
                                       '$count',
                                       style: TextStyle(
                                         fontSize: AppSizes.sp11,
-                                        color: AppColors.textLightColor,
+                                        color: context.appTheme.subtleText,
                                       ),
                                     ),
                                   ],

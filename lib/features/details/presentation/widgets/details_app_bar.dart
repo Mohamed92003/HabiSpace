@@ -3,7 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:share_plus/share_plus.dart';
-import '../../../../core/utils/app_color.dart';
+import '../../../../core/theme/app_theme.dart';
 import '../../../../core/utils/app_sizes.dart';
 import '../../../../core/utils/app_texts.dart';
 import '../../domain/entities/property_detail_entity.dart';
@@ -33,13 +33,11 @@ class DetailsAppBar extends StatelessWidget {
   //     subject: property!.title,
   //   );
   // }
-   void _onShare(){
+  void _onShare() {
     final link = 'https://real.newcinderella.online/details/${property!.slug}';
-    Share.share(
-    '${property!.title}\n$link',
-    subject: property!.title,
-  );
-   }
+    Share.share('${property!.title}\n$link', subject: property!.title);
+  }
+
   @override
   Widget build(BuildContext context) {
     return ClipRect(
@@ -70,7 +68,7 @@ class DetailsAppBar extends StatelessWidget {
                       child: Text(
                         AppTexts.propertyDetail.tr(),
                         style: TextStyle(
-                          color: AppColors.secondBlack,
+                          color: context.appTheme.titleText,
                           fontSize: AppSizes.sp16,
                           fontWeight: FontWeight.w600,
                           letterSpacing: 0.2,

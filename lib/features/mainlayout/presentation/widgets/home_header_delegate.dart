@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:habispace/features/mainlayout/presentation/widgets/header_icon_button.dart';
 
+import '../../../../core/location/location_cubit.dart';
 import '../../../../core/utils/app_color.dart';
 import '../../../../core/utils/app_sizes.dart';
 import '../../../home/presentation/cubit/home_cubit.dart';
@@ -86,8 +87,13 @@ class HomeHeaderDelegate extends SliverPersistentHeaderDelegate {
                     context: context,
                     isScrollControlled: true,
                     backgroundColor: Colors.transparent,
-                    builder: (_) => BlocProvider.value(
-                      value: context.read<HomeCubit>(),
+                    builder: (_) => MultiBlocProvider(
+                      providers: [
+                        BlocProvider.value(value: context.read<HomeCubit>()),
+                        BlocProvider.value(
+                          value: context.read<LocationCubit>(),
+                        ),
+                      ],
                       child: FilterBottomSheet(
                         initialFilter: context.read<HomeCubit>().activeFilter,
                       ),

@@ -20,6 +20,8 @@ class HomePropertyEntity {
   final CategoryEntity category;
   final List<String> images;
   final AgentEntity agent;
+  final double? rating;
+  final int reviewsCount;
 
   HomePropertyEntity({
     required this.id,
@@ -40,5 +42,32 @@ class HomePropertyEntity {
     required this.category,
     required this.images,
     required this.agent,
+    this.rating,
+    this.reviewsCount = 0,
   });
+
+  HomePropertyEntity copyWithRating(double rating, int reviewsCount) {
+    return HomePropertyEntity(
+      id: id,
+      title: title,
+      slug: slug,
+      description: description,
+      price: price,
+      listingType: listingType,
+      status: status,
+      bedrooms: bedrooms,
+      bathrooms: bathrooms,
+      kitchens: kitchens,
+      isFeatured: isFeatured,
+      salesCount: salesCount,
+      latitude: latitude,
+      longitude: longitude,
+      address: address,
+      category: category,
+      images: images,
+      agent: agent,
+      rating: rating,
+      reviewsCount: reviewsCount,
+    );
+  }
 }

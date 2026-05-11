@@ -26,6 +26,7 @@ class SignupScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final onSurface = Theme.of(context).colorScheme.onSurface;
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Padding(
@@ -38,7 +39,6 @@ class SignupScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(height: AppSizes.h80),
-
                   CustomSvgImage(
                     path: "assets/images/logo2.svg",
                     height: AppSizes.h50,
@@ -50,11 +50,10 @@ class SignupScreen extends StatelessWidget {
                     style: GoogleFonts.poppins(
                       fontSize: AppSizes.h20,
                       fontWeight: FontWeight.w600,
-                      color: AppColors.secondBlack,
+                      color: onSurface,
                     ),
                   ),
                   SizedBox(height: AppSizes.h24),
-
                   CustomTextformfeild(
                     keyboardType: TextInputType.name,
                     hintText: AppTexts.fullNameFieldLabel.tr(),
@@ -62,11 +61,11 @@ class SignupScreen extends StatelessWidget {
                     validator: AppValidators.name,
                     formFieldKey: const Key("name"),
                     labelText: AppTexts.fullNameFieldLabel.tr(),
-                    labelcolor: AppColors.secondBlack,
+                    labelcolor: onSurface,
                     borderRadius: AppSizes.r10,
+                    maxLength: 10,
                   ),
                   SizedBox(height: AppSizes.h16),
-
                   CustomTextformfeild(
                     keyboardType: TextInputType.emailAddress,
                     hintText: AppTexts.emailFieldLabel.tr(),
@@ -74,24 +73,24 @@ class SignupScreen extends StatelessWidget {
                     validator: AppValidators.email,
                     formFieldKey: const Key("signup_email"),
                     labelText: AppTexts.emailFieldLabel.tr(),
-                    labelcolor: AppColors.secondBlack,
+                    labelcolor: onSurface,
                     borderRadius: AppSizes.r10,
+                    maxLength: 100,
                   ),
                   SizedBox(height: AppSizes.h16),
-
                   CustomTextformfeild(
                     keyboardType: TextInputType.visiblePassword,
                     hintText: AppTexts.passwordFieldLabel.tr(),
                     controller: _passwordController,
-                    validator: AppValidators.password,
+                    validator: AppValidators.strongPassword,
                     formFieldKey: const Key("signup_password"),
                     labelText: AppTexts.passwordFieldLabel.tr(),
                     isPassword: true,
-                    labelcolor: AppColors.secondBlack,
+                    labelcolor: onSurface,
                     borderRadius: AppSizes.r10,
+                    maxLength: 30,
                   ),
                   SizedBox(height: AppSizes.h16),
-
                   CustomTextformfeild(
                     keyboardType: TextInputType.visiblePassword,
                     hintText: AppTexts.confirmPasswordFieldLabel.tr(),
@@ -103,11 +102,11 @@ class SignupScreen extends StatelessWidget {
                     formFieldKey: const Key("confirm_password"),
                     labelText: AppTexts.confirmPasswordFieldLabel.tr(),
                     isPassword: true,
-                    labelcolor: AppColors.secondBlack,
+                    labelcolor: onSurface,
                     borderRadius: AppSizes.r10,
+                    maxLength: 30,
                   ),
                   SizedBox(height: AppSizes.h24),
-
                   BlocConsumer<AuthBloc, AuthState>(
                     listener: (context, state) {
                       if (state is SignUpSuccess) {
@@ -161,14 +160,13 @@ class SignupScreen extends StatelessWidget {
                                 style: GoogleFonts.poppins(
                                   fontSize: AppSizes.sp12,
                                   fontWeight: FontWeight.w500,
-                                  color: AppColors.light,
+                                  color: Colors.white,
                                 ),
                               ),
                       );
                     },
                   ),
                   SizedBox(height: AppSizes.h24),
-
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -176,7 +174,7 @@ class SignupScreen extends StatelessWidget {
                         AppTexts.alreadyHaveAccount.tr(),
                         style: GoogleFonts.poppins(
                           fontSize: AppSizes.sp12,
-                          color: AppColors.secondBlack,
+                          color: onSurface,
                           fontWeight: FontWeight.w500,
                         ),
                       ),

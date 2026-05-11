@@ -8,13 +8,16 @@ abstract class HomeRemoteDataSource {
   Future<HomeModel> getHome();
   Future<List<HomePropertyModel>> searchProperties(String query);
   Future<List<HomePropertyModel>> filterProperties(FilterEntity filter);
-
 }
 
 class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
   @override
   Future<HomeModel> getHome() async {
-    final response = await DioHelper.get(path: ApiConstant.home);
+    final response = await DioHelper.get(
+      path: ApiConstant.home,
+      withAuth:
+          true, // send auth token so API returns user-specific data including ratings
+    );
     return HomeModel.fromJson(response.data);
   }
 
@@ -22,11 +25,7 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
   Future<List<HomePropertyModel>> searchProperties(String query) async {
     final response = await DioHelper.get(
       path: ApiConstant.properties,
-      query: {
-        'search': query,
-        'page': 1,
-        'per_page': 15,
-      },
+      query: {'search': query, 'page': 1, 'per_page': 15},
     );
     final data = response.data['data'];
 
@@ -41,25 +40,50 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
     return list.map((e) => HomePropertyModel.fromJson(e)).toList();
   }
 
+  @override
   Future<List<HomePropertyModel>> filterProperties(FilterEntity filter) async {
     final queryParams = <String, dynamic>{};
 
-    if (filter.listingType != null) queryParams['listing_type'] = filter.listingType;
-    if (filter.radiusKm != null)    queryParams['radius_km']    = filter.radiusKm.toString();
-    if (filter.latitude != null)    queryParams['latitude']     = filter.latitude.toString();
-    if (filter.longitude != null)   queryParams['longitude']    = filter.longitude.toString();
+    if (filter.listingType != null) {
+      queryParams['listing_type'] = filter.listingType;
+    }
+    if (filter.radiusKm != null) {
+      queryParams['radius_km'] = filter.radiusKm.toString();
+    }
+    if (filter.latitude != null) {
+      queryParams['latitude'] = filter.latitude.toString();
+    }
+    if (filter.longitude != null) {
+      queryParams['longitude'] = filter.longitude.toString();
+    }
 
     final response = await DioHelper.get(
       path: ApiConstant.properties,
       query: queryParams,
+      withAuth: true,
     );
-    final data = response.data['data']
-        ?? response.data['properties']
-        ?? response.data;
 
-    return (data as List)
+    // Handle all common API response shapes
+    final raw = response.data;
+    List<dynamic> list;
+
+    if (raw is Map) {
+      final inner = raw['data'] ?? raw['properties'] ?? raw['results'];
+      if (inner is Map && inner['data'] is List) {
+        list = inner['data'] as List<dynamic>;
+      } else if (inner is List) {
+        list = inner;
+      } else {
+        list = [];
+      }
+    } else if (raw is List) {
+      list = raw;
+    } else {
+      list = [];
+    }
+
+    return list
         .map((e) => HomePropertyModel.fromJson(e as Map<String, dynamic>))
         .toList();
   }
-
 }

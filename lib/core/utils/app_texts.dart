@@ -148,6 +148,9 @@ class AppTexts {
   static const String onboardingDescription = 'onboardingDescription';
   static const String onboardingContinue = 'onboardingContinue';
   static const String onboardingNext = 'onboardingNext';
+  static const String onboardingSkip = 'onboardingSkip';
+  static const String passwordMaxChars = 'passwordMaxChars';
+  static const String nameMaxChars = 'nameMaxChars';
 
   static const String forgotPasswordAppBar = 'forgotPasswordTitle';
   static const String resetPasswordAppBar = 'resetPasswordAppBar';

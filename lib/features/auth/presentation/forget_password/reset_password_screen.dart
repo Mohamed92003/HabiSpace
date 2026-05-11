@@ -17,11 +17,7 @@ class ResetPasswordScreen extends StatelessWidget {
   final String otp;
   final String email;
 
-  ResetPasswordScreen({
-    super.key,
-    required this.otp,
-    required this.email,
-  });
+  ResetPasswordScreen({super.key, required this.otp, required this.email});
 
   final _formKey = GlobalKey<FormState>();
   final _passwordController = TextEditingController();
@@ -76,12 +72,22 @@ class ResetPasswordScreen extends StatelessWidget {
                     labelText: AppTexts.newPasswordLabel.tr(),
                     labelcolor: AppColors.secondBlack,
                     borderRadius: AppSizes.r10,
+                    maxLength: 30,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return AppTexts.pleaseEnterAPassword.tr();
                       }
                       if (value.length < 8) {
                         return AppTexts.passwordMinEightChars.tr();
+                      }
+                      if (value.length > 30) {
+                        return 'Password must be at most 30 characters';
+                      }
+                      if (!value.contains(RegExp(r'[A-Z]'))) {
+                        return AppTexts.addAtLeastOneUppercase.tr();
+                      }
+                      if (!value.contains(RegExp(r'[0-9]'))) {
+                        return AppTexts.addAtLeastOneNumber.tr();
                       }
                       return null;
                     },
@@ -96,7 +102,11 @@ class ResetPasswordScreen extends StatelessWidget {
                     labelText: AppTexts.confirmPasswordLabel.tr(),
                     labelcolor: AppColors.secondBlack,
                     borderRadius: AppSizes.r10,
+                    maxLength: 30,
                     validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return AppTexts.pleaseConfirmPassword.tr();
+                      }
                       if (value != _passwordController.text) {
                         return AppTexts.passwordsDoNotMatch.tr();
                       }
@@ -108,17 +118,17 @@ class ResetPasswordScreen extends StatelessWidget {
                     onPressed: state is AuthLoading
                         ? null
                         : () {
-                      if (_formKey.currentState!.validate()) {
-                        context.read<AuthBloc>().add(
-                          ResetPasswordEvent(
-                            email: email,
-                            otp: otp,
-                            password: _passwordController.text,
-                            passwordConfirmation: _confirmController.text,
-                          ),
-                        );
-                      }
-                    },
+                            if (_formKey.currentState!.validate()) {
+                              context.read<AuthBloc>().add(
+                                ResetPasswordEvent(
+                                  email: email,
+                                  otp: otp,
+                                  password: _passwordController.text,
+                                  passwordConfirmation: _confirmController.text,
+                                ),
+                              );
+                            }
+                          },
                     style: ElevatedButton.styleFrom(
                       minimumSize: Size(double.infinity, AppSizes.h50),
                       backgroundColor: AppColors.blue,
@@ -128,20 +138,20 @@ class ResetPasswordScreen extends StatelessWidget {
                     ),
                     child: state is AuthLoading
                         ? const SizedBox(
-                      height: 20,
-                      width: 20,
-                      child: CircularProgressIndicator(
-                        color: Colors.white,
-                        strokeWidth: 2,
-                      ),
-                    )
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                              strokeWidth: 2,
+                            ),
+                          )
                         : Text(
-                      AppTexts.resetPasswordButton.tr(),
-                      style: GoogleFonts.poppins(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
+                            AppTexts.resetPasswordButton.tr(),
+                            style: GoogleFonts.poppins(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
                   ),
                 ],
               ),

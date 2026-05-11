@@ -14,14 +14,15 @@ class DetailsSliverAppBar extends StatelessWidget {
       pinned: true,
       automaticallyImplyLeading: false,
       leading: const SizedBox.shrink(),
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       flexibleSpace: FlexibleSpaceBar(
         background: Stack(
           fit: StackFit.expand,
           children: [
             PropertyImageWidget(
-              imageUrl:
-              property.images.isNotEmpty ? property.images.first : null,
+              imageUrl: property.images.isNotEmpty
+                  ? property.images.first
+                  : null,
             ),
             const DecoratedBox(
               decoration: BoxDecoration(

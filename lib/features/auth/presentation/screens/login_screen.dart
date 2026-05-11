@@ -15,7 +15,6 @@ import '../../../../core/shared/snakbar.dart';
 import '../../../../core/utils/app_color.dart';
 import '../../../../core/utils/app_sizes.dart';
 import '../../../../core/utils/app_texts.dart';
-import '../../../../core/utils/app_validation.dart';
 import 'in_our_privacy_policy_screen.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -68,7 +67,7 @@ class LoginScreen extends StatelessWidget {
                       style: GoogleFonts.poppins(
                         fontSize: AppSizes.h20,
                         fontWeight: FontWeight.w600,
-                        color: AppColors.secondBlack,
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
                     SizedBox(height: AppSizes.h24),
@@ -76,23 +75,23 @@ class LoginScreen extends StatelessWidget {
                       keyboardType: TextInputType.emailAddress,
                       hintText: AppTexts.emailFieldLabel.tr(),
                       controller: _emailController,
-                      validator: AppValidators.email,
                       formFieldKey: const Key("email"),
                       labelText: AppTexts.emailFieldLabel.tr(),
-                      labelcolor: AppColors.secondBlack,
+                      labelcolor: Theme.of(context).colorScheme.onSurface,
                       borderRadius: AppSizes.r10,
+                      maxLength: 100,
                     ),
                     SizedBox(height: AppSizes.h16),
                     CustomTextformfeild(
                       keyboardType: TextInputType.visiblePassword,
                       hintText: AppTexts.passwordFieldLabel.tr(),
                       controller: _passwordController,
-                      validator: AppValidators.password,
                       formFieldKey: const Key("password"),
                       labelText: AppTexts.passwordFieldLabel.tr(),
                       isPassword: true,
-                      labelcolor: AppColors.secondBlack,
+                      labelcolor: Theme.of(context).colorScheme.onSurface,
                       borderRadius: AppSizes.r10,
+                      maxLength: 30,
                     ),
                     Align(
                       alignment: Alignment.centerRight,
@@ -176,20 +175,20 @@ class LoginScreen extends StatelessWidget {
                           Container(
                             height: 2,
                             width: AppSizes.w120,
-                            color: AppColors.borderColor,
+                            color: Theme.of(context).colorScheme.outline,
                           ),
                           Text(
                             AppTexts.orLoginWith.tr(),
                             style: GoogleFonts.inter(
                               fontSize: AppSizes.sp16,
                               fontWeight: FontWeight.w400,
-                              color: AppColors.secondBlack,
+                              color: Theme.of(context).colorScheme.onSurface,
                             ),
                           ),
                           Container(
                             height: 2,
                             width: AppSizes.w120,
-                            color: AppColors.borderColor,
+                            color: Theme.of(context).colorScheme.outline,
                           ),
                         ],
                       ),
@@ -255,7 +254,7 @@ class LoginScreen extends StatelessWidget {
                           AppTexts.dontHaveAccount.tr(),
                           style: GoogleFonts.poppins(
                             fontSize: AppSizes.sp12,
-                            color: AppColors.secondBlack,
+                            color: Theme.of(context).colorScheme.onSurface,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -280,7 +279,7 @@ class LoginScreen extends StatelessWidget {
                           AppTexts.bySigningInAgree.tr(),
                           style: GoogleFonts.poppins(
                             fontSize: AppSizes.sp12,
-                            color: AppColors.secondBlack,
+                            color: Theme.of(context).colorScheme.onSurface,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -314,7 +313,7 @@ class LoginScreen extends StatelessWidget {
                           AppTexts.learnHowWeUseData.tr(),
                           style: GoogleFonts.poppins(
                             fontSize: AppSizes.sp12,
-                            color: AppColors.secondBlack,
+                            color: Theme.of(context).colorScheme.onSurface,
                             fontWeight: FontWeight.w500,
                           ),
                         ),

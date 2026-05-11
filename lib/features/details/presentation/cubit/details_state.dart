@@ -17,6 +17,12 @@ class DetailsLoaded extends DetailsState {
     this.isSubmittingReview = false,
   });
 
+  /// Always calculated from the live reviews list so it updates immediately
+  /// after a review is submitted — no need to reload from the API.
+  double get liveRating => reviews.isEmpty
+      ? 0.0
+      : reviews.map((r) => r.rating).reduce((a, b) => a + b) / reviews.length;
+
   DetailsLoaded copyWith({
     PropertyDetailEntity? property,
     List<ReviewEntity>? reviews,

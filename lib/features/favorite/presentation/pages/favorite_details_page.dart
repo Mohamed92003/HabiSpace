@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/router/app_router.dart';
 import '../../../favorite/domain/entities/favorite_property_entity.dart';
+import '../../../home/domain/entities/home_property_entity.dart';
 import '../cubit/FavoriteCubit/favorite_cubit_cubit.dart';
 import '../cubit/FavoriteCubit/favorite_cubit_state.dart';
 import '../widgets/details_content.dart';
@@ -23,9 +24,12 @@ class FavoriteDetailsPage extends StatelessWidget {
   });
 
   List<FavoritePropertyEntity> _relatedProperties(
-      List<FavoritePropertyEntity> currentFavorites) {
+    List<FavoritePropertyEntity> currentFavorites,
+  ) {
     return currentFavorites
-        .where((p) => p.categoryId == property.categoryId && p.id != property.id)
+        .where(
+          (p) => p.categoryId == property.categoryId && p.id != property.id,
+        )
         .toList();
   }
 
@@ -44,10 +48,10 @@ class FavoriteDetailsPage extends StatelessWidget {
         builder: (context, state) {
           final List<FavoritePropertyEntity> liveFavorites =
               state is FavoriteLoaded
-                  ? state.favorites
-                  : state is FavoriteRemoving
-                      ? state.favorites
-                      : allFavorites;
+              ? state.favorites
+              : state is FavoriteRemoving
+              ? state.favorites
+              : allFavorites;
 
           final related = _relatedProperties(liveFavorites);
 
@@ -71,13 +75,12 @@ class FavoriteDetailsPage extends StatelessWidget {
                               const SizedBox(height: 16),
                           itemBuilder: (context, index) => FavoriteCardWidget(
                             property: related[index],
-                            onTap: () => context.pushReplacementNamed(
-                              AppRoutes.favoriteDetails,
+                            onTap: () => context.pushNamed(
+                              AppRoutes.details,
                               extra: {
-                                'favoriteCubit':
-                                    context.read<FavoriteCubit>(),
-                                'property': related[index],
-                                'allFavorites': liveFavorites,
+                                'propertyId': related[index].id,
+                                'favoriteCubit': context.read<FavoriteCubit>(),
+                                'similarProperties': <HomePropertyEntity>[],
                               },
                             ),
                             onFavoriteTap: () {},

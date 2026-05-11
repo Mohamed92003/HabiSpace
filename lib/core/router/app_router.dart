@@ -20,6 +20,7 @@ import '../../features/payment/presentation/cubit/payment_cubit.dart';
 import '../../features/payment/presentation/ui/payment_view.dart';
 import '../../features/profile/domain/entities/Profile_Entity.dart';
 import '../../features/profile/presentation/UI/change_password_screen.dart';
+import '../../features/profile/presentation/UI/my_account_screen.dart';
 import '../../features/profile/presentation/UI/update_profile_view.dart';
 import '../../features/reviews/presentation/ui/reviews_view.dart';
 import '../../features/favorite/domain/entities/favorite_property_entity.dart';
@@ -58,9 +59,12 @@ GoRouter createRouter(String initialLocation) => GoRouter(
         final favoriteCubit = extra['favoriteCubit'] as FavoriteCubit;
         final similar =
             (extra['similarProperties'] as List<HomePropertyEntity>?) ?? [];
+        // Use a pre-created cubit if provided (so caller can read liveRating after pop)
+        final detailsCubit =
+            extra['detailsCubit'] as DetailsCubit? ?? sl<DetailsCubit>();
         return MultiBlocProvider(
           providers: [
-            BlocProvider<DetailsCubit>(create: (_) => sl<DetailsCubit>()),
+            BlocProvider<DetailsCubit>.value(value: detailsCubit),
             BlocProvider<FavoriteCubit>.value(value: favoriteCubit),
           ],
           child: DetailsView(
@@ -186,7 +190,8 @@ GoRouter createRouter(String initialLocation) => GoRouter(
       ),
     ),
 
-    GoRoute(path: AppRoutes.explore,
+    GoRoute(
+      path: AppRoutes.explore,
       name: AppRoutes.explore,
       builder: (context, state) => const ExploreView(),
     ),
@@ -218,6 +223,20 @@ GoRouter createRouter(String initialLocation) => GoRouter(
         return BlocProvider.value(
           value: sl<ProfileCubit>(),
           child: ChangePasswordScreen(),
+        );
+      },
+    ),
+
+    GoRoute(
+      path: AppRoutes.myAccount,
+      name: AppRoutes.myAccount,
+      builder: (context, state) {
+        final extra = state.extra as Map<String, dynamic>?;
+        final user = extra?['user'] as ProfileEntity?;
+        final profileCubit = extra?['profileCubit'] as ProfileCubit?;
+        return BlocProvider.value(
+          value: profileCubit ?? sl<ProfileCubit>(),
+          child: MyAccountScreen(user: user),
         );
       },
     ),

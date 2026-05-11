@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:habispace/core/constants/api_constant.dart';
+import 'package:habispace/core/shared/image_shimmer.dart';
 
 class PropertyImageWidget extends StatelessWidget {
   final String? imageUrl;
@@ -39,21 +40,17 @@ class PropertyImageWidget extends StatelessWidget {
     if (resolved == null) {
       image = _Placeholder(height: height ?? 200);
     } else if (_isSvg(resolved)) {
-
       image = SvgPicture.network(
         resolved,
         width: double.infinity,
         height: height,
         fit: BoxFit.cover,
         headers: const {'User-Agent': 'Mozilla/5.0'},
-        placeholderBuilder: (_) => _Placeholder(height: height ?? 200, loading: true),
+        placeholderBuilder: (_) =>
+            _Placeholder(height: height ?? 200, loading: true),
       );
 
-      image = SizedBox(
-        width: double.infinity,
-        height: height,
-        child: image,
-      );
+      image = SizedBox(width: double.infinity, height: height, child: image);
     } else {
       image = CachedNetworkImage(
         imageUrl: resolved,
@@ -85,17 +82,19 @@ class _Placeholder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (loading) {
+      return SizedBox(
+        width: double.infinity,
+        height: height,
+        child: const ImageShimmer(),
+      );
+    }
     return Container(
       height: height,
       width: double.infinity,
       color: Colors.grey.shade200,
-      child: Center(
-        child: loading
-            ? const CircularProgressIndicator(
-                strokeWidth: 2,
-                color: Color(0xFF2BBFB3),
-              )
-            : const Icon(Icons.image_outlined, size: 48, color: Colors.grey),
+      child: const Center(
+        child: Icon(Icons.image_outlined, size: 48, color: Colors.grey),
       ),
     );
   }

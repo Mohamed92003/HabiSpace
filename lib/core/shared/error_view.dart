@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../error/app_exception.dart';
+import '../theme/app_theme.dart';
 import '../utils/app_color.dart';
 import '../utils/app_texts.dart';
 
@@ -9,12 +10,7 @@ class ErrorView extends StatelessWidget {
   final AppExceptionType? type;
   final VoidCallback? onRetry;
 
-  const ErrorView({
-    super.key,
-    required this.message,
-    this.type,
-    this.onRetry,
-  });
+  const ErrorView({super.key, required this.message, this.type, this.onRetry});
 
   IconData get _icon {
     switch (type) {
@@ -41,14 +37,14 @@ class ErrorView extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(_icon, size: 64, color: Colors.grey.shade400),
+            Icon(_icon, size: 64, color: context.appTheme.subtleText),
             const SizedBox(height: 16),
             Text(
               message,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 15,
-                color: Colors.grey.shade600,
+                color: context.appTheme.bodyText,
                 height: 1.5,
               ),
             ),

@@ -1,13 +1,13 @@
- import 'package:habispace/core/constants/api_constant.dart';
+import 'package:dio/dio.dart';
+import 'package:habispace/core/constants/api_constant.dart';
 import 'package:habispace/core/constants/dio_helper.dart';
 import 'package:habispace/features/profile/data/datasource/Profile_data_source.dart';
 import 'package:habispace/features/profile/data/models/user_model.dart';
 
-class ProfileDataSourceImpl implements ProfileDataSource{
+class ProfileDataSourceImpl implements ProfileDataSource {
   @override
-  Future<void> logOut() async{
+  Future<void> logOut() async {
     await DioHelper.post(path: ApiConstant.logout, withAuth: true);
-
   }
 
   @override
@@ -17,13 +17,9 @@ class ProfileDataSourceImpl implements ProfileDataSource{
       withAuth: true,
     );
 
-    print('Profile API Response: ${response.data}');
-
     final data = response.data is Map && response.data['data'] != null
         ? response.data['data']
         : response.data;
-
-    print('Profile data to parse: $data');
 
     return UserModel.fromJson(data);
   }
@@ -33,25 +29,51 @@ class ProfileDataSourceImpl implements ProfileDataSource{
     required String name,
     required String phone,
     required String location,
+    String? imagePath,
   }) async {
-    final response = await DioHelper.put(
-      path: ApiConstant.updateProfile,
-      withAuth: true,
-      data: {'name': name, 'phone': phone, 'location': location},
-    );
+    final Response response;
+
+    if (imagePath != null) {
+      final formData = FormData.fromMap({
+        'name': name,
+        'phone': phone,
+        'location': location,
+        'image': await MultipartFile.fromFile(imagePath),
+        '_method': 'PUT',
+      });
+      response = await DioHelper.postFormData(
+        path: ApiConstant.updateProfile,
+        formData: formData,
+        withAuth: true,
+      );
+    } else {
+      response = await DioHelper.put(
+        path: ApiConstant.updateProfile,
+        withAuth: true,
+        data: {'name': name, 'phone': phone, 'location': location},
+      );
+    }
+
+    // validateStatus accepts all codes — check manually
+    final status = response.statusCode ?? 0;
+    if (status < 200 || status >= 300) {
+      final msg = response.data is Map
+          ? (response.data['message'] ??
+                response.data['error'] ??
+                'Update failed (status $status)')
+          : 'Update failed (status $status)';
+      throw Exception(msg.toString());
+    }
+
     final data = response.data is Map && response.data['data'] != null
         ? response.data['data']
         : response.data;
-    return UserModel.fromJson(data);
+    return UserModel.fromJson(data as Map<String, dynamic>);
   }
 
   @override
   Future<void> deleteProfile() {
-    return DioHelper.delete(
-      path: ApiConstant.deleteAccount,
-      withAuth: true,
-    );
-
+    return DioHelper.delete(path: ApiConstant.deleteAccount, withAuth: true);
   }
 
   @override

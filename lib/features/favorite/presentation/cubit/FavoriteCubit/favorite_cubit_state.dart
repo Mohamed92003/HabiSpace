@@ -60,11 +60,11 @@ class FavoriteLoaded extends FavoriteState {
 
   @override
   List<Object?> get props => [
-        favorites,
-        isEditMode,
-        searchQuery,
-        pendingFavoriteIds,
-      ];
+    favorites,
+    isEditMode,
+    searchQuery,
+    pendingFavoriteIds,
+  ];
 }
 
 class FavoriteError extends FavoriteState {
@@ -83,7 +83,7 @@ class FavoriteRemoving extends FavoriteState {
   const FavoriteRemoving(
     this.favorites,
     this.removingId, {
-    this.isEditMode = true,
+    this.isEditMode = false,
     this.searchQuery = '',
   });
 

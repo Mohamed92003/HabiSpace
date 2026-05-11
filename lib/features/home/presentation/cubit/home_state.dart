@@ -1,9 +1,9 @@
 part of 'home_cubit.dart';
 
-@immutable
 sealed class HomeState {}
 
 final class HomeInitial extends HomeState {}
+
 class HomeLoading extends HomeState {}
 
 class HomeSuccess extends HomeState {
@@ -27,8 +27,6 @@ class HomeError extends HomeState {
 
   HomeError(this.message);
 }
-
-class HomeSearchLoading extends HomeState {}
 
 class HomeSearchSuccess extends HomeState {
   final List<HomePropertyEntity> results;

@@ -9,10 +9,11 @@ class UpdateProfileUsecase {
     required String name,
     required String phone,
     required String location,
-  }) =>
-      repository.updateProfile(
-        name: name,
-        phone: phone,
-        location: location,
-      );
+    String? imagePath,
+  }) => repository.updateProfile(
+    name: name,
+    phone: phone,
+    location: location,
+    imagePath: imagePath,
+  );
 }

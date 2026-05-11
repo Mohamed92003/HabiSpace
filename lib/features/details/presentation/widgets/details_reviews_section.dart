@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/router/app_router.dart';
+import '../../../../core/theme/app_theme.dart';
 import '../../../../core/utils/app_color.dart';
 import '../../../../core/utils/app_sizes.dart';
 import '../../../../core/utils/app_texts.dart';
@@ -24,134 +25,141 @@ class DetailsReviewsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final avgRating = reviews.isEmpty
-        ? 0.0
-        : reviews.map((r) => r.rating).reduce((a, b) => a + b) / reviews.length;
+    return BlocBuilder<DetailsCubit, DetailsState>(
+      builder: (context, state) {
+        final liveReviews = state is DetailsLoaded ? state.reviews : reviews;
+        final avgRating = state is DetailsLoaded
+            ? state.liveRating
+            : (reviews.isEmpty
+                  ? 0.0
+                  : reviews.map((r) => r.rating).reduce((a, b) => a + b) /
+                        reviews.length);
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              AppTexts.userReviews.tr(),
-              style: TextStyle(
-                fontSize: AppSizes.sp16,
-                fontWeight: FontWeight.w700,
-                color: AppColors.secondBlack,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  AppTexts.userReviews.tr(),
+                  style: TextStyle(
+                    fontSize: AppSizes.sp16,
+                    fontWeight: FontWeight.w700,
+                    color: context.appTheme.titleText,
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () => context.pushNamed(
+                    AppRoutes.reviews,
+                    extra: {
+                      'propertyId': propertyId,
+                      'propertyTitle': '',
+                      'detailsCubit': context.read<DetailsCubit>(),
+                    },
+                  ),
+                  child: Text(
+                    AppTexts.seeAll.tr(),
+                    style: TextStyle(
+                      fontSize: AppSizes.sp13,
+                      color: AppColors.blue,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ],
             ),
-            GestureDetector(
-              onTap: () => context.pushNamed(
-                AppRoutes.reviews,
-                extra: {
-                  'propertyId': propertyId,
-                  'propertyTitle': '',
-                  'detailsCubit': context.read<DetailsCubit>(),
-                },
-              ),
-              child: Text(
-                AppTexts.seeAll.tr(),
-                style: TextStyle(
-                  fontSize: AppSizes.sp13,
-                  color: AppColors.blue,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-          ],
-        ),
-        SizedBox(height: AppSizes.h8),
-        if (reviews.isNotEmpty) ...[
-
-          Row(
-            children: [
-              Icon(
-                Icons.star_rounded,
-                color: AppColors.yellow,
-                size: AppSizes.h18,
-              ),
-              SizedBox(width: AppSizes.w4),
-              Text(
-                '${avgRating.toStringAsFixed(1)} (${reviews.length} ${AppTexts.rating.tr()})',
-                style: TextStyle(
-                  fontSize: AppSizes.sp13,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.secondBlack,
-                ),
-              ),
-              SizedBox(width: AppSizes.w8),
-              Container(
-                width: 4,
-                height: 4,
-                decoration: const BoxDecoration(
-                  color: AppColors.textLightColor,
-                  shape: BoxShape.circle,
-                ),
-              ),
-              SizedBox(width: AppSizes.w8),
-              Text(
-                '${reviews.length} ${AppTexts.reviews.tr()}',
-                style: TextStyle(
-                  fontSize: AppSizes.sp13,
-                  color: AppColors.textSecondaryColor,
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: AppSizes.h12),
-          if (images.isNotEmpty) ...[
-            _ImageThumbnails(images: images),
-            SizedBox(height: AppSizes.h16),
-          ],
-          ...reviews
-              .take(2)
-              .map(
-                (r) => Padding(
-                  padding: EdgeInsets.only(bottom: AppSizes.h16),
-                  child: ReviewCard(review: r),
-                ),
-              ),
-        ] else
-          GestureDetector(
-            onTap: () => context.pushNamed(
-              AppRoutes.reviews,
-              extra: {
-                'propertyId': propertyId,
-                'propertyTitle': '',
-                'detailsCubit': context.read<DetailsCubit>(),
-              },
-            ),
-            child: Container(
-              width: double.infinity,
-              padding: EdgeInsets.symmetric(vertical: AppSizes.h14),
-              decoration: BoxDecoration(
-                color: AppColors.bluelight,
-                borderRadius: BorderRadius.circular(AppSizes.r14),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+            SizedBox(height: AppSizes.h8),
+            if (liveReviews.isNotEmpty) ...[
+              Row(
                 children: [
                   Icon(
-                    Icons.rate_review_outlined,
-                    color: AppColors.blue,
+                    Icons.star_rounded,
+                    color: AppColors.yellow,
                     size: AppSizes.h18,
+                  ),
+                  SizedBox(width: AppSizes.w4),
+                  Text(
+                    '${avgRating.toStringAsFixed(1)} (${liveReviews.length} ${AppTexts.rating.tr()})',
+                    style: TextStyle(
+                      fontSize: AppSizes.sp13,
+                      fontWeight: FontWeight.w600,
+                      color: context.appTheme.titleText,
+                    ),
+                  ),
+                  SizedBox(width: AppSizes.w8),
+                  Container(
+                    width: 4,
+                    height: 4,
+                    decoration: const BoxDecoration(
+                      color: AppColors.textLightColor,
+                      shape: BoxShape.circle,
+                    ),
                   ),
                   SizedBox(width: AppSizes.w8),
                   Text(
-                    AppTexts.beFirstToReview.tr(),
+                    '${liveReviews.length} ${AppTexts.reviews.tr()}',
                     style: TextStyle(
-                      fontSize: AppSizes.sp14,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.blue,
+                      fontSize: AppSizes.sp13,
+                      color: context.appTheme.subtleText,
                     ),
                   ),
                 ],
               ),
-            ),
-          ),
-      ],
+              SizedBox(height: AppSizes.h12),
+              if (images.isNotEmpty) ...[
+                _ImageThumbnails(images: images),
+                SizedBox(height: AppSizes.h16),
+              ],
+              ...liveReviews
+                  .take(2)
+                  .map(
+                    (r) => Padding(
+                      padding: EdgeInsets.only(bottom: AppSizes.h16),
+                      child: ReviewCard(review: r),
+                    ),
+                  ),
+            ] else
+              GestureDetector(
+                onTap: () => context.pushNamed(
+                  AppRoutes.reviews,
+                  extra: {
+                    'propertyId': propertyId,
+                    'propertyTitle': '',
+                    'detailsCubit': context.read<DetailsCubit>(),
+                  },
+                ),
+                child: Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.symmetric(vertical: AppSizes.h14),
+                  decoration: BoxDecoration(
+                    color: AppColors.bluelight,
+                    borderRadius: BorderRadius.circular(AppSizes.r14),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.rate_review_outlined,
+                        color: AppColors.blue,
+                        size: AppSizes.h18,
+                      ),
+                      SizedBox(width: AppSizes.w8),
+                      Text(
+                        AppTexts.beFirstToReview.tr(),
+                        style: TextStyle(
+                          fontSize: AppSizes.sp14,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.blue,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+          ],
+        );
+      }, // BlocBuilder
     );
   }
 }
@@ -223,6 +231,30 @@ class ReviewCard extends StatelessWidget {
   final ReviewEntity review;
   const ReviewCard({super.key, required this.review});
 
+  String _formatDate(String raw) {
+    try {
+      final dt = DateTime.parse(raw);
+      const months = [
+        'Jan',
+        'Feb',
+        'Mar',
+        'Apr',
+        'May',
+        'Jun',
+        'Jul',
+        'Aug',
+        'Sep',
+        'Oct',
+        'Nov',
+        'Dec',
+      ];
+      return '${months[dt.month - 1]} ${dt.day}, ${dt.year}';
+    } catch (_) {
+      // If it's already short (e.g. "2026-05-10"), just return as-is
+      return raw.length > 10 ? raw.substring(0, 10) : raw;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -255,59 +287,87 @@ class ReviewCard extends StatelessWidget {
             ),
             SizedBox(width: AppSizes.w10),
             Expanded(
-              child: Text(
-                review.userName,
-                style: TextStyle(
-                  fontSize: AppSizes.sp14,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.secondBlack,
-                ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    review.userName,
+                    style: TextStyle(
+                      fontSize: AppSizes.sp14,
+                      fontWeight: FontWeight.w600,
+                      color: context.appTheme.titleText,
+                    ),
+                  ),
+                  SizedBox(height: AppSizes.h2),
+                  Text(
+                    _formatDate(review.createdAt),
+                    style: TextStyle(
+                      fontSize: AppSizes.sp11,
+                      color: AppColors.textLightColor,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // Rating badge — top right
+            Container(
+              padding: EdgeInsets.symmetric(
+                horizontal: AppSizes.w8,
+                vertical: AppSizes.h4,
+              ),
+              decoration: BoxDecoration(
+                color: AppColors.yellow.withValues(alpha: 0.12),
+                borderRadius: BorderRadius.circular(AppSizes.r20),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.star_rounded,
+                    size: AppSizes.sp13,
+                    color: AppColors.yellow,
+                  ),
+                  SizedBox(width: AppSizes.w2),
+                  Text(
+                    '${review.rating}',
+                    style: TextStyle(
+                      fontSize: AppSizes.sp12,
+                      fontWeight: FontWeight.w700,
+                      color: context.appTheme.titleText,
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
         ),
         SizedBox(height: AppSizes.h8),
+        // Star row
         Row(
-          children: [
-            ...List.generate(
-              5,
-              (i) => Icon(
-                i < review.rating
-                    ? Icons.star_rounded
-                    : Icons.star_border_rounded,
-                size: AppSizes.h16,
-                color: AppColors.yellow,
-              ),
+          children: List.generate(
+            5,
+            (i) => Icon(
+              i < review.rating
+                  ? Icons.star_rounded
+                  : Icons.star_border_rounded,
+              size: AppSizes.h16,
+              color: AppColors.yellow,
             ),
-            SizedBox(width: AppSizes.w6),
-            Text(
-              '${review.rating}/5',
-              style: TextStyle(
-                fontSize: AppSizes.sp12,
-                fontWeight: FontWeight.w600,
-                color: AppColors.secondBlack,
-              ),
-            ),
-            SizedBox(width: AppSizes.w8),
-            Text(
-              review.createdAt,
-              style: TextStyle(
-                fontSize: AppSizes.sp12,
-                color: AppColors.textLightColor,
-              ),
-            ),
-          ],
+          ),
         ),
         SizedBox(height: AppSizes.h8),
         Text(
           review.comment,
           style: TextStyle(
             fontSize: AppSizes.sp13,
-            color: AppColors.textSecondaryColor,
+            color: context.appTheme.bodyText,
             height: 1.6,
           ),
           textAlign: TextAlign.justify,
         ),
+        SizedBox(height: AppSizes.h16),
+        Divider(color: context.appTheme.divider, height: 1),
+        SizedBox(height: AppSizes.h8),
       ],
     );
   }

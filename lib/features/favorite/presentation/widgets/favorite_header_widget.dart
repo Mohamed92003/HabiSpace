@@ -9,6 +9,7 @@ class FavoriteHeaderWidget extends StatelessWidget {
   final VoidCallback onEdit;
   final bool isEditMode;
   final bool showBackButton;
+  final bool hasItems;
 
   const FavoriteHeaderWidget({
     super.key,
@@ -17,6 +18,7 @@ class FavoriteHeaderWidget extends StatelessWidget {
     required this.onEdit,
     this.isEditMode = false,
     this.showBackButton = true,
+    this.hasItems = true,
   });
 
   @override
@@ -53,19 +55,19 @@ class FavoriteHeaderWidget extends StatelessWidget {
               ),
             ),
           ),
-          GestureDetector(
-            onTap: onEdit,
-            child: Text(
-              isEditMode ? AppTexts.done.tr() : AppTexts.edit.tr(),
-              style: TextStyle(
-                fontSize: AppSizes.sp15,
-                fontWeight: FontWeight.w600,
-                color: cs.primary,
-                decoration: TextDecoration.underline,
-                decorationColor: cs.primary,
+          if (hasItems)
+            GestureDetector(
+              onTap: onEdit,
+              child: Text(
+                isEditMode ? AppTexts.done.tr() : AppTexts.edit.tr(),
+                style: TextStyle(
+                  fontSize: AppSizes.sp15,
+                  fontWeight: FontWeight.w600,
+                  color: cs.primary,
+                  decoration: TextDecoration.none,
+                ),
               ),
             ),
-          ),
         ],
       ),
     );

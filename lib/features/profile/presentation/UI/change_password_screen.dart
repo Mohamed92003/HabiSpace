@@ -1,7 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:habispace/core/theme/app_theme.dart';
 import 'package:habispace/core/utils/app_color.dart';
+import 'package:habispace/core/utils/app_validation.dart';
 import 'package:habispace/features/profile/presentation/Cubit/cubit/profile_cubit.dart';
 import '../../../../core/shared/snakbar.dart';
 import '../../../../core/utils/app_sizes.dart';
@@ -57,15 +59,15 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         }
       },
       child: Scaffold(
-        backgroundColor: AppColors.lightBackground,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          backgroundColor: Theme.of(context).colorScheme.surface,
           elevation: 0,
-          leading: const BackButton(color: AppColors.secondBlack),
+          leading: BackButton(color: context.appTheme.titleText),
           title: Text(
             AppTexts.changePasswordTitle.tr(),
             style: TextStyle(
-              color: AppColors.secondBlack,
+              color: context.appTheme.titleText,
               fontSize: AppSizes.sp18,
               fontWeight: FontWeight.w600,
             ),
@@ -82,9 +84,11 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 Container(
                   padding: EdgeInsets.all(AppSizes.h16),
                   decoration: BoxDecoration(
-                    color: AppColors.blue.withOpacity(0.07),
+                    color: AppColors.blue.withValues(alpha: 0.07),
                     borderRadius: BorderRadius.circular(AppSizes.r12),
-                    border: Border.all(color: AppColors.blue.withOpacity(0.2)),
+                    border: Border.all(
+                      color: AppColors.blue.withValues(alpha: 0.2),
+                    ),
                   ),
                   child: Row(
                     children: [
@@ -130,24 +134,10 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   hint: AppTexts.newPasswordHint,
                   showPassword: _showNew,
                   onToggle: () => setState(() => _showNew = !_showNew),
-                  validator: (v) {
-                    if (v == null || v.isEmpty) {
-                      return AppTexts.newPasswordRequired.tr();
-                    }
-                    if (v.length < 8) {
-                      return AppTexts.atLeast8CharsRequired.tr();
-                    }
-                    if (!v.contains(RegExp(r'[A-Z]'))) {
-                      return AppTexts.addAtLeastOneUppercase.tr();
-                    }
-                    if (!v.contains(RegExp(r'[0-9]'))) {
-                      return AppTexts.addAtLeastOneNumber.tr();
-                    }
-                    return null;
-                  },
+                  validator: AppValidators.strongPassword,
                 ),
                 SizedBox(height: AppSizes.h8),
-                _StrengthIndicator(password: _newCtrl.text),
+                _StrengthIndicator(controller: _newCtrl),
                 SizedBox(height: AppSizes.h20),
 
                 const _FieldLabel(label: AppTexts.confirmNewPassword),
@@ -156,15 +146,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   hint: AppTexts.confirmNewPasswordHint,
                   showPassword: _showConfirm,
                   onToggle: () => setState(() => _showConfirm = !_showConfirm),
-                  validator: (v) {
-                    if (v == null || v.isEmpty) {
-                      return AppTexts.pleaseConfirmPassword.tr();
-                    }
-                    if (v != _newCtrl.text) {
-                      return AppTexts.passwordsDoNotMatch.tr();
-                    }
-                    return null;
-                  },
+                  validator: (v) =>
+                      AppValidators.confirmPassword(v, _newCtrl.text),
                 ),
                 SizedBox(height: AppSizes.h36),
 
@@ -178,8 +161,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                         onPressed: isLoading ? null : _submit,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.blue,
-                          disabledBackgroundColor: AppColors.blue.withOpacity(
-                            0.5,
+                          disabledBackgroundColor: AppColors.blue.withValues(
+                            alpha: 0.5,
                           ),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(AppSizes.r14),
@@ -229,7 +212,7 @@ class _FieldLabel extends StatelessWidget {
       child: Text(
         label.tr(),
         style: TextStyle(
-          color: AppColors.textSecondaryColor,
+          color: context.appTheme.subtleText,
           fontSize: AppSizes.sp13,
           fontWeight: FontWeight.w500,
         ),
@@ -261,19 +244,19 @@ class _PasswordField extends StatelessWidget {
       validator: validator,
       style: TextStyle(
         fontSize: AppSizes.sp15,
-        color: AppColors.secondBlack,
+        color: context.appTheme.titleText,
         fontWeight: FontWeight.w500,
       ),
       decoration: InputDecoration(
         hintText: hint.tr(),
         hintStyle: TextStyle(
-          color: Colors.grey.shade400,
+          color: context.appTheme.subtleText,
           fontSize: AppSizes.sp14,
         ),
         prefixIcon: Icon(
           Icons.lock_outline_rounded,
           size: AppSizes.sp20,
-          color: Colors.grey.shade400,
+          color: context.appTheme.subtleText,
         ),
         suffixIcon: IconButton(
           style: IconButton.styleFrom(
@@ -286,23 +269,23 @@ class _PasswordField extends StatelessWidget {
                 ? Icons.visibility_off_outlined
                 : Icons.visibility_outlined,
             size: AppSizes.sp20,
-            color: Colors.grey.shade400,
+            color: context.appTheme.subtleText,
           ),
           onPressed: onToggle,
         ),
         filled: true,
-        fillColor: Colors.white,
+        fillColor: context.appTheme.inputFill,
         contentPadding: EdgeInsets.symmetric(
           horizontal: AppSizes.w16,
           vertical: AppSizes.h14,
         ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppSizes.r12),
-          borderSide: BorderSide(color: AppColors.borderColor, width: 0.8),
+          borderSide: BorderSide(color: context.appTheme.divider, width: 0.8),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppSizes.r12),
-          borderSide: BorderSide(color: AppColors.borderColor, width: 0.8),
+          borderSide: BorderSide(color: context.appTheme.divider, width: 0.8),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppSizes.r12),
@@ -321,16 +304,43 @@ class _PasswordField extends StatelessWidget {
   }
 }
 
-class _StrengthIndicator extends StatelessWidget {
-  final String password;
-  const _StrengthIndicator({required this.password});
+class _StrengthIndicator extends StatefulWidget {
+  final TextEditingController controller;
+  const _StrengthIndicator({required this.controller});
+
+  @override
+  State<_StrengthIndicator> createState() => _StrengthIndicatorState();
+}
+
+class _StrengthIndicatorState extends State<_StrengthIndicator> {
+  late String _password;
+
+  @override
+  void initState() {
+    super.initState();
+    _password = widget.controller.text;
+    widget.controller.addListener(_onTextChanged);
+  }
+
+  void _onTextChanged() {
+    final newText = widget.controller.text;
+    if (newText != _password) {
+      setState(() => _password = newText);
+    }
+  }
+
+  @override
+  void dispose() {
+    widget.controller.removeListener(_onTextChanged);
+    super.dispose();
+  }
 
   int get _strength {
     int score = 0;
-    if (password.length >= 8) score++;
-    if (password.contains(RegExp(r'[A-Z]'))) score++;
-    if (password.contains(RegExp(r'[0-9]'))) score++;
-    if (password.contains(RegExp(r'[!@#\$&*~%^]'))) score++;
+    if (_password.length >= 8) score++;
+    if (_password.contains(RegExp(r'[A-Z]'))) score++;
+    if (_password.contains(RegExp(r'[0-9]'))) score++;
+    if (_password.contains(RegExp(r'[!@#\$&*~%^]'))) score++;
     return score;
   }
 
@@ -366,7 +376,7 @@ class _StrengthIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (password.isEmpty) return SizedBox.shrink();
+    if (_password.isEmpty) return const SizedBox.shrink();
     return Row(
       children: [
         ...List.generate(4, (i) {
@@ -375,7 +385,7 @@ class _StrengthIndicator extends StatelessWidget {
               height: 4,
               margin: EdgeInsets.only(right: i < 3 ? 4 : 0),
               decoration: BoxDecoration(
-                color: i < _strength ? _color : Colors.grey.shade200,
+                color: i < _strength ? _color : context.appTheme.divider,
                 borderRadius: BorderRadius.circular(AppSizes.r4),
               ),
             ),

@@ -1,6 +1,6 @@
-
 import 'package:flutter/material.dart';
 
+import '../../../../core/theme/app_theme.dart';
 import '../../../../core/utils/app_color.dart';
 import '../../../../core/utils/app_sizes.dart';
 
@@ -21,8 +21,10 @@ class ProfileMenuItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = isDestructive ? AppColors.error : AppColors.secondBlack;
-    final iconColor = isDestructive ? AppColors.error : Colors.black87;
+    final color = isDestructive ? AppColors.error : context.appTheme.titleText;
+    final iconColor = isDestructive
+        ? AppColors.error
+        : context.appTheme.titleText;
 
     return Column(
       children: [
@@ -30,7 +32,10 @@ class ProfileMenuItem extends StatelessWidget {
           onTap: onTap,
           borderRadius: BorderRadius.circular(AppSizes.r14),
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: AppSizes.w16, vertical: AppSizes.h14),
+            padding: EdgeInsets.symmetric(
+              horizontal: AppSizes.w16,
+              vertical: AppSizes.h14,
+            ),
             child: Row(
               children: [
                 Icon(icon, color: iconColor, size: AppSizes.sp22),
@@ -45,11 +50,14 @@ class ProfileMenuItem extends StatelessWidget {
                     ),
                   ),
                 ),
-                Icon(
-                  Icons.arrow_forward_ios_rounded,
-                  size: AppSizes.sp15,
-                  color: isDestructive ? AppColors.error : Colors.grey.shade400,
-                ),
+                if (onTap != null)
+                  Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    size: AppSizes.sp15,
+                    color: isDestructive
+                        ? AppColors.error
+                        : context.appTheme.subtleText,
+                  ),
               ],
             ),
           ),
@@ -59,7 +67,7 @@ class ProfileMenuItem extends StatelessWidget {
             height: 1,
             thickness: 0.8,
             indent: 52,
-            color: AppColors.borderColor,
+            color: context.appTheme.divider,
           ),
       ],
     );

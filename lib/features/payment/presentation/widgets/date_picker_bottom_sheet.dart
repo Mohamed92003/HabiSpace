@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:habispace/core/theme/app_theme.dart';
 import 'package:habispace/core/utils/app_color.dart';
 import 'package:habispace/core/utils/app_sizes.dart';
- 
+
 class DatePickerBottomSheet extends StatefulWidget {
   final DateTime? initialDate;
   final Function(DateTime) onDateSelected;
@@ -22,7 +23,8 @@ class _DatePickerBottomSheetState extends State<DatePickerBottomSheet> {
   @override
   void initState() {
     super.initState();
-    selectedDate = widget.initialDate ?? DateTime.now().add(const Duration(days: 1));
+    selectedDate =
+        widget.initialDate ?? DateTime.now().add(const Duration(days: 1));
   }
 
   @override
@@ -30,50 +32,37 @@ class _DatePickerBottomSheetState extends State<DatePickerBottomSheet> {
     return Container(
       padding: EdgeInsets.all(AppSizes.w20),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(AppSizes.r20),
-        ),
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(AppSizes.r20)),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Handle bar
           Container(
             width: 40,
             height: 4,
             decoration: BoxDecoration(
-              color: Colors.grey.shade300,
+              color: context.appTheme.divider,
               borderRadius: BorderRadius.circular(2),
             ),
           ),
-          
           SizedBox(height: AppSizes.h20),
-          
           Text(
             'Select Appointment Date',
             style: TextStyle(
               fontSize: AppSizes.sp18,
               fontWeight: FontWeight.w600,
-              color: AppColors.black,
+              color: context.appTheme.titleText,
             ),
           ),
-          
           SizedBox(height: AppSizes.h20),
-          
           CalendarDatePicker(
             initialDate: selectedDate,
             firstDate: DateTime.now(),
             lastDate: DateTime.now().add(const Duration(days: 365)),
-            onDateChanged: (date) {
-              setState(() {
-                selectedDate = date;
-              });
-            },
+            onDateChanged: (date) => setState(() => selectedDate = date),
           ),
-          
           SizedBox(height: AppSizes.h20),
-          
           Row(
             children: [
               Expanded(
@@ -84,20 +73,18 @@ class _DatePickerBottomSheetState extends State<DatePickerBottomSheet> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(AppSizes.r12),
                     ),
-                    side: BorderSide(color: Colors.grey.shade300),
+                    side: BorderSide(color: context.appTheme.divider),
                   ),
                   child: Text(
                     'Cancel',
                     style: TextStyle(
                       fontSize: AppSizes.sp16,
-                      color: Colors.grey.shade600,
+                      color: context.appTheme.subtleText,
                     ),
                   ),
                 ),
               ),
-              
               SizedBox(width: AppSizes.w12),
-              
               Expanded(
                 child: ElevatedButton(
                   onPressed: () {
@@ -122,7 +109,6 @@ class _DatePickerBottomSheetState extends State<DatePickerBottomSheet> {
               ),
             ],
           ),
-          
           SizedBox(height: MediaQuery.of(context).viewInsets.bottom),
         ],
       ),

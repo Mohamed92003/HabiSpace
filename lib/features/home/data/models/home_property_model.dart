@@ -22,6 +22,8 @@ class HomePropertyModel extends HomePropertyEntity {
     required super.category,
     required super.images,
     required super.agent,
+    super.rating,
+    super.reviewsCount = 0,
   });
 
   factory HomePropertyModel.fromJson(Map<String, dynamic> json) =>
@@ -41,6 +43,16 @@ class HomePropertyModel extends HomePropertyEntity {
         latitude: (json['latitude'] as num?)?.toDouble() ?? 0.0,
         longitude: (json['longitude'] as num?)?.toDouble() ?? 0.0,
         address: json['address'] as String? ?? '',
+        rating:
+            (json['rate'] as num?)?.toDouble() ??
+            (json['rating'] as num?)?.toDouble() ??
+            (json['average_rating'] as num?)?.toDouble() ??
+            (json['avg_rating'] as num?)?.toDouble() ??
+            (json['reviews_avg_rating'] as num?)?.toDouble(),
+        reviewsCount:
+            (json['reviews_count'] as num?)?.toInt() ??
+            (json['ratings_count'] as num?)?.toInt() ??
+            0,
         category: CategoryModel.fromJson(
           (json['category'] as Map<String, dynamic>?) ?? {},
         ),

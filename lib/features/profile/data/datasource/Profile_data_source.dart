@@ -1,22 +1,22 @@
-  import 'package:habispace/features/profile/data/models/user_model.dart';
+import 'package:habispace/features/profile/data/models/user_model.dart';
 
 abstract class ProfileDataSource {
-    Future<UserModel> getProfileData();
+  Future<UserModel> getProfileData();
 
-    Future<void> logOut();
+  Future<void> logOut();
 
-    Future<UserModel> updateProfile({
-        required String name,
-        required String phone,
-        required String location,
-    });
+  Future<UserModel> updateProfile({
+    required String name,
+    required String phone,
+    required String location,
+    String? imagePath,
+  });
 
-    Future<void> deleteProfile();
+  Future<void> deleteProfile();
 
-
-    Future<String> changePassword({
-        required String currentPassword,
-        required String password,
-        required String passwordConfirmation,
-    });
+  Future<String> changePassword({
+    required String currentPassword,
+    required String password,
+    required String passwordConfirmation,
+  });
 }

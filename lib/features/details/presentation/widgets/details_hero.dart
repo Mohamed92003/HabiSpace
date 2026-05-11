@@ -1,8 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../core/shared/image_shimmer.dart';
 import '../../../../core/utils/app_color.dart';
 import '../../../../core/utils/app_sizes.dart';
 import '../../domain/entities/property_detail_entity.dart';
+import '../cubit/details_cubit.dart';
 import 'details_painters.dart';
 
 class DetailsHero extends StatefulWidget {
@@ -43,12 +46,16 @@ class _DetailsHeroState extends State<DetailsHero> {
               itemCount: images.length,
               onPageChanged: (i) => setState(() => _currentImageIndex = i),
               itemBuilder: (_, i) => CachedNetworkImage(
-               imageUrl:  images[i],
+                imageUrl: images[i],
                 fit: BoxFit.cover,
+                placeholder: (context, url) => SizedBox(
+                  width: double.infinity,
+                  height: widget.heroHeight,
+                  child: const ImageShimmer(),
+                ),
                 // errorBuilder: (_, __, ___) =>
                 //     CustomPaint(painter: HousePainter()),
               ),
-              
             )
           else
             Container(
@@ -145,7 +152,8 @@ class _DetailsHeroState extends State<DetailsHero> {
                         ],
                       ),
                     ),
-                    if (widget.property.rating != null) ...[
+                    // Always show rating — 0.0 if no reviews yet
+                    ...[
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: Text(
@@ -157,20 +165,28 @@ class _DetailsHeroState extends State<DetailsHero> {
                         ),
                       ),
                       const Icon(
-                        Icons.star_border_rounded,
+                        Icons.star_rounded,
                         size: 14,
-                        color: Colors.white70,
+                        color: Colors.amber,
                       ),
                       const SizedBox(width: 3),
-                      Text(
-                        widget.property.rating!.toStringAsFixed(1),
-                        style: TextStyle(
-                          color: Colors.white70,
-                          fontSize: AppSizes.sp12,
-                          shadows: const [
-                            Shadow(blurRadius: 8, color: Colors.black54),
-                          ],
-                        ),
+                      BlocBuilder<DetailsCubit, DetailsState>(
+                        builder: (context, state) {
+                          final rating = state is DetailsLoaded
+                              ? state.liveRating
+                              : widget.property.rating ?? 0.0;
+                          return Text(
+                            rating.toStringAsFixed(1),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                              fontSize: AppSizes.sp12,
+                              shadows: const [
+                                Shadow(blurRadius: 8, color: Colors.black54),
+                              ],
+                            ),
+                          );
+                        },
                       ),
                     ],
                   ],

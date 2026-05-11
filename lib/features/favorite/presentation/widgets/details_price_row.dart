@@ -33,21 +33,24 @@ class DetailsPriceRow extends StatelessWidget {
             ],
           ),
         ),
-        if (property.rating > 0)
-          Row(
-            children: [
-              Icon(Icons.star, color: Color(0xFFFFC107), size: AppSizes.sp20),
-              SizedBox(width: AppSizes.w4),
-              Text(
-                property.rating.toStringAsFixed(1),
-                style: TextStyle(
-                  fontSize: AppSizes.sp16,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black87,
-                ),
+        Row(
+          children: [
+            Icon(
+              Icons.star_rounded,
+              color: Color(0xFFFFC107),
+              size: AppSizes.sp20,
+            ),
+            SizedBox(width: AppSizes.w4),
+            Text(
+              property.rating.toStringAsFixed(1),
+              style: TextStyle(
+                fontSize: AppSizes.sp16,
+                fontWeight: FontWeight.w600,
+                color: Colors.black87,
               ),
-            ],
-          ),
+            ),
+          ],
+        ),
       ],
     );
   }

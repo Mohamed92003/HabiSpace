@@ -2,20 +2,30 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:habispace/core/shared/error_view.dart';
 import 'package:habispace/core/shared/history_skeleton.dart';
+import 'package:habispace/core/shared/image_shimmer.dart';
 import 'package:habispace/core/shared/skelton/shimmer.dart';
 import 'package:habispace/features/History/presentation/Cubit/cubit/history_cubit.dart';
- import '../../../../core/theme/app_theme.dart';
+import 'package:habispace/features/favorite/presentation/cubit/FavoriteCubit/favorite_cubit_cubit.dart';
+import 'package:habispace/features/home/domain/entities/home_property_entity.dart';
+import '../../../../core/router/app_router.dart';
+import '../../../../core/theme/app_theme.dart';
 import '../../../../core/utils/app_color.dart';
 import '../../../../core/utils/app_sizes.dart';
 import '../../../../core/utils/app_texts.dart';
+
 List<Widget> historyViewSlivers(BuildContext context, HistoryState state) {
   if (state is HistoryLoading || state is HistoryInitial) {
     return [
-         SliverToBoxAdapter(
-          child: AppSkeleton(isLoading: true, skeleton:   HistorySkeleton(), child: const SizedBox()),
-         )
+      SliverToBoxAdapter(
+        child: AppSkeleton(
+          isLoading: true,
+          skeleton: HistorySkeleton(),
+          child: const SizedBox(),
+        ),
+      ),
     ];
   }
 
@@ -73,161 +83,170 @@ List<Widget> historyViewSlivers(BuildContext context, HistoryState state) {
             final property = order.property;
             final ext = context.appTheme;
 
-            return Container(
-              width: double.infinity,
-              margin: EdgeInsets.symmetric(vertical: AppSizes.h4),
-              decoration: BoxDecoration(
-                color: ext.cardBg,
-                borderRadius: BorderRadius.circular(AppSizes.r20),
-                boxShadow: [
-                  BoxShadow(
-                    color: ext.cardShadow,
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
+            return GestureDetector(
+              onTap: () => context.pushNamed(
+                AppRoutes.details,
+                extra: {
+                  'propertyId': property.id,
+                  'favoriteCubit': context.read<FavoriteCubit>(),
+                  'similarProperties': <HomePropertyEntity>[],
+                },
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(AppSizes.r20),
+              child: Container(
+                width: double.infinity,
+                margin: EdgeInsets.symmetric(vertical: AppSizes.h4),
+                decoration: BoxDecoration(
+                  color: ext.cardBg,
+                  borderRadius: BorderRadius.circular(AppSizes.r20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: ext.cardShadow,
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
                     ),
-                    child: property.images.isNotEmpty
-                        ? CachedNetworkImage(
-                            imageUrl: property.images[0],
-                            width: double.infinity,
-                            height: AppSizes.h180,
-                            fit: BoxFit.cover,
-                            placeholder: (context, url) => Container(
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(AppSizes.r20),
+                      ),
+                      child: property.images.isNotEmpty
+                          ? CachedNetworkImage(
+                              imageUrl: property.images[0],
                               width: double.infinity,
                               height: AppSizes.h180,
-                              color: AppColors.gray,
-                              child: const Center(
-                                child: CircularProgressIndicator(),
+                              fit: BoxFit.cover,
+                              placeholder: (context, url) => SizedBox(
+                                width: double.infinity,
+                                height: AppSizes.h180,
+                                child: const ImageShimmer(),
+                              ),
+                              errorWidget: (context, url, error) =>
+                                  _imagePlaceholder(context),
+                            )
+                          : Container(
+                              width: double.infinity,
+                              height: AppSizes.h180,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(
+                                  AppSizes.r20,
+                                ),
+                                color: AppColors.gray,
+                              ),
+                              child: Icon(
+                                Icons.home,
+                                color: ext.subtleText,
+                                size: AppSizes.sp48,
                               ),
                             ),
-                            errorWidget: (context, url, error) =>
-                                _imagePlaceholder(context),
-                          )
-                        : Container(
-                            width: double.infinity,
-                            height: AppSizes.h180,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(AppSizes.r20),
-                              color: AppColors.gray
-                            ),
-                            child: Icon(
-                              Icons.home,
-                              color: ext.subtleText,
-                              size: AppSizes.sp48,
-                            ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(AppSizes.h12),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  property.title,
+                                  style: TextStyle(
+                                    fontSize: AppSizes.sp16,
+                                    fontWeight: FontWeight.bold,
+                                    color: ext.titleText,
+                                  ),
+                                ),
+                              ),
+                              _StatusBadge(status: order.status),
+                            ],
                           ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(AppSizes.h12),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Text(
-                                property.title,
+                          SizedBox(height: AppSizes.h6),
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.location_on_outlined,
+                                size: AppSizes.sp16,
+                                color: ext.subtleText,
+                              ),
+                              SizedBox(width: AppSizes.w4),
+                              Expanded(
+                                child: Text(
+                                  property.address,
+                                  style: TextStyle(
+                                    color: ext.subtleText,
+                                    fontSize: AppSizes.sp12,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: AppSizes.h10),
+                          Wrap(
+                            spacing: AppSizes.w12,
+                            runSpacing: AppSizes.h8,
+                            children: [
+                              _InfoItem(
+                                icon: Icons.bed,
+                                text:
+                                    '${property.bedrooms} Bedroom${property.bedrooms != 1 ? 's' : ''}',
+                              ),
+                              _InfoItem(
+                                icon: Icons.bathtub,
+                                text:
+                                    '${property.bathrooms} Bathroom${property.bathrooms != 1 ? 's' : ''}',
+                              ),
+                              _InfoItem(
+                                icon: Icons.category_outlined,
+                                text: property.categoryName,
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: AppSizes.h12),
+                          Row(
+                            children: [
+                              Text(
+                                '\$${order.amount}',
                                 style: TextStyle(
                                   fontSize: AppSizes.sp16,
                                   fontWeight: FontWeight.bold,
                                   color: ext.titleText,
                                 ),
                               ),
-                            ),
-                            _StatusBadge(status: order.status),
-                          ],
-                        ),
-                        SizedBox(height: AppSizes.h6),
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.location_on_outlined,
-                              size: AppSizes.sp16,
-                              color: ext.subtleText,
-                            ),
-                            SizedBox(width: AppSizes.w4),
-                            Expanded(
-                              child: Text(
-                                property.address,
+                              SizedBox(width: AppSizes.w4),
+                              Text(
+                                order.currency.toUpperCase(),
                                 style: TextStyle(
                                   color: ext.subtleText,
                                   fontSize: AppSizes.sp12,
                                 ),
-                                overflow: TextOverflow.ellipsis,
                               ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: AppSizes.h10),
-                        Wrap(
-                          spacing: AppSizes.w12,
-                          runSpacing: AppSizes.h8,
-                          children: [
-                            _InfoItem(
-                              icon: Icons.bed,
-                              text:
-                                  '${property.bedrooms} Bedroom${property.bedrooms != 1 ? 's' : ''}',
-                            ),
-                            _InfoItem(
-                              icon: Icons.bathtub,
-                              text:
-                                  '${property.bathrooms} Bathroom${property.bathrooms != 1 ? 's' : ''}',
-                            ),
-                            _InfoItem(
-                              icon: Icons.category_outlined,
-                              text: property.categoryName,
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: AppSizes.h12),
-                        Row(
-                          children: [
-                            Text(
-                              '\$${order.amount}',
-                              style: TextStyle(
-                                fontSize: AppSizes.sp16,
-                                fontWeight: FontWeight.bold,
-                                color: ext.titleText,
-                              ),
-                            ),
-                            SizedBox(width: AppSizes.w4),
-                            Text(
-                              order.currency.toUpperCase(),
-                              style: TextStyle(
+                              const Spacer(),
+                              Icon(
+                                Icons.calendar_today_outlined,
+                                size: AppSizes.sp14,
                                 color: ext.subtleText,
-                                fontSize: AppSizes.sp12,
                               ),
-                            ),
-                            const Spacer(),
-                            Icon(
-                              Icons.calendar_today_outlined,
-                              size: AppSizes.sp14,
-                              color: ext.subtleText,
-                            ),
-                            SizedBox(width: AppSizes.w4),
-                            Text(
-                              order.createdAt.substring(0, 10),
-                              style: TextStyle(
-                                color: ext.subtleText,
-                                fontSize: AppSizes.sp12,
+                              SizedBox(width: AppSizes.w4),
+                              Text(
+                                order.createdAt.substring(0, 10),
+                                style: TextStyle(
+                                  color: ext.subtleText,
+                                  fontSize: AppSizes.sp12,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            );
+                  ],
+                ),
+              ), // Container
+            ); // GestureDetector
           },
         ),
       ),
@@ -293,6 +312,7 @@ class _InfoItem extends StatelessWidget {
     );
   }
 }
+
 Widget _imagePlaceholder(BuildContext context) {
   final ext = context.appTheme;
 
@@ -303,10 +323,6 @@ Widget _imagePlaceholder(BuildContext context) {
       borderRadius: BorderRadius.circular(AppSizes.r20),
       color: AppColors.gray,
     ),
-    child: Icon(
-      Icons.home,
-      color: ext.subtleText,
-      size: AppSizes.sp48,
-    ),
+    child: Icon(Icons.home, color: ext.subtleText, size: AppSizes.sp48),
   );
 }

@@ -1,5 +1,8 @@
 class AppValidators {
-  static String? required(String? value, {String message = 'This field is required'}) {
+  static String? required(
+    String? value, {
+    String message = 'This field is required',
+  }) {
     if (value == null || value.trim().isEmpty) {
       return message;
     }
@@ -11,10 +14,52 @@ class AppValidators {
       return 'Email is required';
     }
 
-    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    final trimmed = value.trim().toLowerCase();
 
-    if (!emailRegex.hasMatch(value.trim())) {
+    // Basic structural checks
+    if (trimmed.endsWith('.') ||
+        trimmed.endsWith('@') ||
+        trimmed.startsWith('.')) {
       return 'Enter valid email';
+    }
+
+    // Must contain exactly one @
+    final atIndex = trimmed.indexOf('@');
+    if (atIndex < 0 || atIndex != trimmed.lastIndexOf('@')) {
+      return 'Enter valid email';
+    }
+
+    final local = trimmed.substring(0, atIndex); // part before @
+    final domain = trimmed.substring(atIndex + 1); // part after @
+
+    // Local part: 1–64 chars, no consecutive dots, no leading/trailing dot
+    if (local.isEmpty || local.length > 64) return 'Enter valid email';
+    if (local.startsWith('.') || local.endsWith('.'))
+      return 'Enter valid email';
+    if (local.contains('..')) return 'Enter valid email';
+    if (!RegExp(r'^[a-z0-9._%+\-]+$').hasMatch(local))
+      return 'Enter valid email';
+
+    // Domain: must have at least one dot
+    if (!domain.contains('.')) return 'Enter valid email';
+    if (domain.startsWith('.') || domain.endsWith('.'))
+      return 'Enter valid email';
+    if (domain.contains('..')) return 'Enter valid email';
+
+    final domainParts = domain.split('.');
+    // TLD (last part) must be 2–63 alpha chars only
+    final tld = domainParts.last;
+    if (tld.length < 2 || tld.length > 63) return 'Enter valid email';
+    if (!RegExp(r'^[a-z]+$').hasMatch(tld)) return 'Enter valid email';
+
+    // Every domain label before the TLD must be at least 2 chars
+    // e.g. "g" in "g.com" is rejected; "gmail" in "gmail.com" is fine
+    for (int i = 0; i < domainParts.length - 1; i++) {
+      final label = domainParts[i];
+      if (label.length < 2) return 'Enter valid email';
+      if (!RegExp(r'^[a-z0-9\-]+$').hasMatch(label)) return 'Enter valid email';
+      if (label.startsWith('-') || label.endsWith('-'))
+        return 'Enter valid email';
     }
 
     return null;
@@ -27,12 +72,11 @@ class AppValidators {
 
     final input = value.trim().replaceAll(' ', '').replaceAll('-', '');
 
-    final emailRegex = RegExp(r'^[\w\.\-]+@([\w\-]+\.)+[a-zA-Z]{2,}$');
+    // Try email validation first
+    if (email(input) == null) return null;
 
+    // Try Egyptian phone
     final phoneRegex = RegExp(r'^(\+20|0)?1[0125][0-9]{8}$');
-
-    if (emailRegex.hasMatch(input)) return null;
-
     if (phoneRegex.hasMatch(input)) return null;
 
     return 'Enter valid email or phone';
@@ -56,27 +100,44 @@ class AppValidators {
     if (value == null || value.trim().isEmpty) {
       return 'Phone is required';
     }
-    if (value.length != 11) {
+    final trimmed = value.trim();
+    if (trimmed.length != 11) {
       return 'Phone number must be 11 digits';
     }
-    final phoneRegex = RegExp(r'^(\+20|0)?1[0-5][0-9]{8}$');
-
-    if (!phoneRegex.hasMatch(value.trim())) {
-      return 'Enter valid phone number';
+    // Egyptian mobile: 010, 011, 012, 015
+    if (!RegExp(r'^01[0125][0-9]{8}$').hasMatch(trimmed)) {
+      return 'Enter valid Egyptian phone number';
     }
-
     return null;
   }
 
+  /// Login password — only checks that the field is not empty.
+  /// Length and complexity rules are NOT enforced here — the backend
+  /// returns the appropriate error if credentials are wrong.
   static String? password(String? value) {
     if (value == null || value.isEmpty) {
       return 'Password is required';
     }
+    return null;
+  }
 
+  /// Sign-up / reset password — enforces full complexity rules.
+  static String? strongPassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Password is required';
+    }
     if (value.length < 8) {
       return 'At least 8 characters';
     }
-
+    if (value.length > 30) {
+      return 'Password must be at most 30 characters';
+    }
+    if (!value.contains(RegExp(r'[A-Z]'))) {
+      return 'Add uppercase letter';
+    }
+    if (!value.contains(RegExp(r'[0-9]'))) {
+      return 'Add a number';
+    }
     return null;
   }
 
@@ -103,6 +164,9 @@ class AppValidators {
     }
     if (value.trim().length < 3) {
       return 'Name must be at least 3 characters';
+    }
+    if (value.trim().length > 10) {
+      return 'Name must be at most 10 characters';
     }
     if (!RegExp(r'^[a-zA-Z\s]+$').hasMatch(value.trim())) {
       return 'Name can only contain letters';

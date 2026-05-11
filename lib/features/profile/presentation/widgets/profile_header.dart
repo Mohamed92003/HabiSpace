@@ -7,8 +7,14 @@ import '../../../../core/utils/app_sizes.dart';
 class ProfileHeaderSliver extends StatelessWidget {
   final String? imageUrl;
   final String name;
+  final int imageVersion;
 
-  const ProfileHeaderSliver({this.imageUrl, required this.name});
+  const ProfileHeaderSliver({
+    super.key,
+    this.imageUrl,
+    required this.name,
+    this.imageVersion = 0,
+  });
 
   static const String _fallbackCover =
       'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800';
@@ -46,26 +52,10 @@ class ProfileHeaderSliver extends StatelessWidget {
                       name: name,
                       radius: AppSizes.h50,
                       showBorder: false,
+                      cacheVersion: imageVersion,
                     ),
                   ),
-                  Positioned(
-                    bottom: AppSizes.h4,
-                    right: AppSizes.w4,
-                    child: Container(
-                      width: AppSizes.w26,
-                      height: AppSizes.h26,
-                      decoration: BoxDecoration(
-                        color: AppColors.blue,
-                        shape: BoxShape.circle,
-                        border: Border.all(color: Colors.white, width: 2),
-                      ),
-                      child: Icon(
-                        Icons.edit_outlined,
-                        size: AppSizes.sp13,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
+
                 ],
               ),
             ),

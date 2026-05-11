@@ -2,23 +2,23 @@ import 'dart:ui';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
- import 'package:habispace/features/details/domain/entities/property_detail_entity.dart';
- import 'package:habispace/features/payment/presentation/ui/payment_view.dart';
+import 'package:habispace/core/theme/app_theme.dart';
+import 'package:habispace/features/details/domain/entities/property_detail_entity.dart';
 import '../../../../core/router/app_router.dart';
 import '../../../../core/utils/app_color.dart';
 import '../../../../core/utils/app_sizes.dart';
 import '../../../../core/utils/app_texts.dart';
 
 class DetailsBottomBar extends StatelessWidget {
- final  PropertyDetailEntity property;
-  const DetailsBottomBar({super.key,required this.property});
+  final PropertyDetailEntity property;
+  const DetailsBottomBar({super.key, required this.property});
   @override
   Widget build(BuildContext context) {
     return ClipRect(
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
         child: Container(
-          color: AppColors.light.withValues(alpha: 0.92),
+          color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.92),
           padding: EdgeInsets.fromLTRB(
             AppSizes.w18,
             AppSizes.h12,

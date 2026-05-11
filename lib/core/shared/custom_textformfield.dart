@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../theme/app_theme.dart';
 import '../utils/app_color.dart';
 
 class CustomTextformfeild extends StatefulWidget {
   const CustomTextformfeild({
     required this.keyboardType,
     required this.controller,
-     this.validator,
-     this.formFieldKey,
+    this.validator,
+    this.formFieldKey,
     this.borderRadius,
     this.hintText,
     this.labelText,
@@ -20,6 +22,8 @@ class CustomTextformfeild extends StatefulWidget {
     this.isPhoneField = false,
     this.errorText,
     this.onChanged,
+    this.maxLength,
+    this.inputFormatters,
     super.key,
   });
 
@@ -38,6 +42,8 @@ class CustomTextformfeild extends StatefulWidget {
   final double? borderRadius;
   final String? errorText;
   final void Function(String)? onChanged;
+  final int? maxLength;
+  final List<TextInputFormatter>? inputFormatters;
 
   @override
   State<CustomTextformfeild> createState() => _CustomTextformfeildState();
@@ -73,14 +79,17 @@ class _CustomTextformfeildState extends State<CustomTextformfeild> {
                 width: 55.w,
                 height: 55.h,
                 decoration: BoxDecoration(
-                  border: Border.all(color: AppColors.borderColor),
+                  border: Border.all(color: context.appTheme.divider),
                   shape: BoxShape.circle,
-                  color: AppColors.light,
+                  color: context.appTheme.cardBg,
                 ),
                 child: Center(
                   child: Text(
                     widget.prefixText!,
-                    style: TextStyle(fontSize: 14.sp, color: AppColors.textSecondaryColor),
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      color: AppColors.textSecondaryColor,
+                    ),
                   ),
                 ),
               ),
@@ -105,21 +114,23 @@ class _CustomTextformfeildState extends State<CustomTextformfeild> {
       textAlign: isRTL ? TextAlign.right : TextAlign.left,
       onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
 
-      style: TextStyle(
-        fontSize: 16.sp,
-        color: AppColors.black,
-      ),
+      inputFormatters: [
+        if (widget.isPassword)
+          FilteringTextInputFormatter.allow(RegExp(r'[\x20-\x7E]')),
+        if (widget.maxLength != null)
+          LengthLimitingTextInputFormatter(widget.maxLength),
+        if (widget.inputFormatters != null) ...widget.inputFormatters!,
+      ],
+
+      style: TextStyle(fontSize: 16.sp, color: context.appTheme.titleText),
       keyboardType: widget.keyboardType,
       decoration: InputDecoration(
         errorText: widget.errorText,
         hintText: widget.hintText,
 
-        hintStyle: TextStyle(
-          fontSize: 14.sp,
-          color: AppColors.textLightColor,
-        ),
+        hintStyle: TextStyle(fontSize: 14.sp, color: AppColors.textLightColor),
         filled: true,
-        fillColor: AppColors.lightGrayColor,
+        fillColor: context.appTheme.inputFill,
         contentPadding: EdgeInsetsDirectional.symmetric(
           horizontal: 16.w,
           vertical: 14.h,
@@ -130,20 +141,32 @@ class _CustomTextformfeildState extends State<CustomTextformfeild> {
           color: AppColors.error,
           height: 1,
         ),
-        border: _buildOutlineBorder(),
-        enabledBorder: _buildOutlineBorder(),
-        focusedBorder: _buildOutlineBorder(color: AppColors.blue, width: 1.5),
-        errorBorder: _buildOutlineBorder(color: AppColors.error, width: 1.5),
-        focusedErrorBorder: _buildOutlineBorder(color: AppColors.error, width: 1.5),
+        border: _buildOutlineBorder(context),
+        enabledBorder: _buildOutlineBorder(context),
+        focusedBorder: _buildOutlineBorder(
+          context,
+          color: AppColors.blue,
+          width: 1.5,
+        ),
+        errorBorder: _buildOutlineBorder(
+          context,
+          color: AppColors.error,
+          width: 1.5,
+        ),
+        focusedErrorBorder: _buildOutlineBorder(
+          context,
+          color: AppColors.error,
+          width: 1.5,
+        ),
         prefixIcon: widget.prefixIcon,
         suffixIcon: widget.isPassword
             ? IconButton(
                 padding: EdgeInsets.zero,
-              style: IconButton.styleFrom(
-                 backgroundColor: Colors.transparent,
-                 highlightColor: Colors.transparent,
-                 splashFactory: NoSplash.splashFactory,
-                    ),
+                style: IconButton.styleFrom(
+                  backgroundColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  splashFactory: NoSplash.splashFactory,
+                ),
                 icon: Icon(
                   _obscureText ? Icons.visibility_off : Icons.visibility,
                   color: AppColors.textSecondaryColor,
@@ -156,10 +179,17 @@ class _CustomTextformfeildState extends State<CustomTextformfeild> {
     );
   }
 
-  OutlineInputBorder _buildOutlineBorder({Color color = AppColors.borderColor, double width = 1}) {
+  OutlineInputBorder _buildOutlineBorder(
+    BuildContext context, {
+    Color? color,
+    double width = 1,
+  }) {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(widget.borderRadius ?? 12.r),
-      borderSide: BorderSide(color: color, width: width),
+      borderSide: BorderSide(
+        color: color ?? context.appTheme.divider,
+        width: width,
+      ),
     );
   }
 }

@@ -2,11 +2,12 @@ import 'package:habispace/features/profile/domain/entities/Profile_Entity.dart';
 
 abstract class ProfileRepo {
   Future<ProfileEntity> getProfileData();
-   Future<void> logOut();
+  Future<void> logOut();
   Future<ProfileEntity> updateProfile({
     required String name,
     required String phone,
     required String location,
+    String? imagePath,
   });
   Future<void> deleteAccount();
 

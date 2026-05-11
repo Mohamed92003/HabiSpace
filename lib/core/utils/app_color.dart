@@ -24,5 +24,5 @@ class AppColors {
 
   static const Color primaryLight = Color(0xFFBFF8FF);
   static const Color primaryContact = Color(0xFFD6F4F8);
-
+  static const Color navUnselected = Color(0xffBDBDBD);
 }

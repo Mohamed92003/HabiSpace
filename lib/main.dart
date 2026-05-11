@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:app_links/app_links.dart';
 import 'package:habispace/core/constants/api_constant.dart';
 import 'package:habispace/core/constants/bloc_abserver.dart';
 import 'package:habispace/core/constants/dio_helper.dart';
@@ -13,6 +14,7 @@ import 'package:habispace/core/router/app_router.dart';
 import 'package:habispace/core/theme/app_theme.dart';
 import 'package:habispace/core/theme/theme_cubit.dart';
 import 'package:habispace/firebase_options.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'core/di/get_it.dart';
 
 @pragma('vm:entry-point')
@@ -39,8 +41,8 @@ void main() async {
     debugPrint('⚠️ Firebase initialization failed: $e');
   }
 
-  ScreenUtil.ensureScreenSize;
   await AuthStorage().init();
+  await _clearStorageOnFreshInstall();
   Bloc.observer = AppBlocObserver();
   setupLocator();
   DioHelper.init(baseUrl: ApiConstant.baseUrl);
@@ -61,11 +63,9 @@ void main() async {
   );
 }
 
-/// Request notification permission and set up FCM listeners
 Future<void> _setupFCM() async {
   final messaging = FirebaseMessaging.instance;
 
-  // Request permission — required on iOS & Android 13+
   final settings = await messaging.requestPermission(
     alert: true,
     badge: true,
@@ -88,6 +88,22 @@ Future<void> _setupFCM() async {
   FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
     debugPrint('📬 Opened from notification: ${message.notification?.title}');
   });
+}
+
+/// On iOS, FlutterSecureStorage persists data across app reinstalls because
+/// it uses the keychain. SharedPreferences does NOT persist on reinstall.
+/// We use a SharedPreferences flag to detect a fresh install and clear the
+/// keychain so onboarding shows correctly.
+Future<void> _clearStorageOnFreshInstall() async {
+  final prefs = await SharedPreferences.getInstance();
+  const installedKey = 'app_installed';
+
+  if (prefs.getBool(installedKey) != true) {
+    // First launch after install — wipe stale keychain data
+    await SecureStorage().clear();
+    await AuthStorage().init(); // re-init after clearing
+    await prefs.setBool(installedKey, true);
+  }
 }
 
 String _getInitialRoute() {
@@ -115,11 +131,53 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   late final GoRouter _router;
+  late final AppLinks _appLinks;
 
   @override
   void initState() {
     super.initState();
     _router = createRouter(widget.initialRoute);
+    _initDeepLinks();
+  }
+
+  void _initDeepLinks() async {
+    _appLinks = AppLinks();
+
+    // App was cold-started from a deep link
+    final initialUri = await _appLinks.getInitialLink();
+    if (initialUri != null) {
+      _handleDeepLink(initialUri);
+    }
+
+    // App was already running and received a deep link
+    _appLinks.uriLinkStream.listen((uri) {
+      _handleDeepLink(uri);
+    });
+  }
+
+  void _handleDeepLink(Uri uri) {
+    // Supports:
+    //   habispace://details/123
+    //   https://real.newcinderella.online/details/123
+    final segments = uri.pathSegments;
+    final detailsIndex = segments.indexOf('details');
+    if (detailsIndex != -1 && detailsIndex + 1 < segments.length) {
+      final idOrSlug = segments[detailsIndex + 1];
+      final propertyId = int.tryParse(idOrSlug);
+      if (propertyId != null) {
+        // Navigate using GoRouter so the full navigation stack is correct
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          _router.push(
+            AppRoutes.details,
+            extra: {
+              'propertyId': propertyId,
+              'favoriteCubit': sl(),
+              'similarProperties': <dynamic>[],
+            },
+          );
+        });
+      }
+    }
   }
 
   @override

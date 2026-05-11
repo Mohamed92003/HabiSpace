@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../favorite/domain/entities/favorite_property_entity.dart';
+import '../../../home/domain/entities/home_property_entity.dart';
 import '../cubit/FavoriteCubit/favorite_cubit_cubit.dart';
 import '../cubit/FavoriteCubit/favorite_cubit_state.dart';
 import '../widgets/favorite_card_widget.dart';
@@ -76,6 +77,7 @@ List<Widget> _buildCategoryGridSlivers({
         title: AppTexts.yourFavorite.tr(),
         isEditMode: state.isEditMode,
         showBackButton: false,
+        hasItems: favorites.isNotEmpty,
         onEdit: () => context.read<FavoriteCubit>().toggleEditMode(),
       ),
     ),
@@ -145,13 +147,18 @@ class _CategoryCard extends StatelessWidget {
     return GestureDetector(
       onTap: isEditMode
           ? null
-          : () => context.pushNamed(
-              AppRoutes.favoriteBody,
-              extra: {
-                'favoriteCubit': context.read<FavoriteCubit>(),
-                'categoryFilter': categoryName,
-              },
-            ),
+          : () {
+              // Always exit edit mode before entering a category so the
+              // detail page never opens in edit mode
+              context.read<FavoriteCubit>().exitEditMode();
+              context.pushNamed(
+                AppRoutes.favoriteBody,
+                extra: {
+                  'favoriteCubit': context.read<FavoriteCubit>(),
+                  'categoryFilter': categoryName,
+                },
+              );
+            },
       child: Stack(
         clipBehavior: Clip.none,
         children: [
@@ -363,94 +370,102 @@ class FavoriteBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      body: SafeArea(
-        child: BlocBuilder<FavoriteCubit, FavoriteState>(
-          buildWhen: (prev, curr) {
-            final prevList = prev is FavoriteLoaded
-                ? prev.favorites
-                : prev is FavoriteRemoving
-                ? prev.favorites
-                : <FavoritePropertyEntity>[];
-            final currList = curr is FavoriteLoaded
-                ? curr.favorites
-                : curr is FavoriteRemoving
-                ? curr.favorites
-                : <FavoritePropertyEntity>[];
-            final prevEdit = prev is FavoriteLoaded ? prev.isEditMode : false;
-            final currEdit = curr is FavoriteLoaded ? curr.isEditMode : false;
-            return prevList.length != currList.length || prevEdit != currEdit;
-          },
-          builder: (context, state) {
-            final List<FavoritePropertyEntity> liveFavorites;
-            final bool isEditMode;
+    return PopScope(
+      onPopInvokedWithResult: (didPop, _) {
+        if (didPop) {
+          context.read<FavoriteCubit>().exitEditMode();
+        }
+      },
+      child: Scaffold(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        body: SafeArea(
+          child: BlocBuilder<FavoriteCubit, FavoriteState>(
+            buildWhen: (prev, curr) {
+              final prevList = prev is FavoriteLoaded
+                  ? prev.favorites
+                  : prev is FavoriteRemoving
+                  ? prev.favorites
+                  : <FavoritePropertyEntity>[];
+              final currList = curr is FavoriteLoaded
+                  ? curr.favorites
+                  : curr is FavoriteRemoving
+                  ? curr.favorites
+                  : <FavoritePropertyEntity>[];
+              final prevEdit = prev is FavoriteLoaded ? prev.isEditMode : false;
+              final currEdit = curr is FavoriteLoaded ? curr.isEditMode : false;
+              return prevList.length != currList.length || prevEdit != currEdit;
+            },
+            builder: (context, state) {
+              final List<FavoritePropertyEntity> liveFavorites;
+              final bool isEditMode;
 
-            if (state is FavoriteLoaded) {
-              liveFavorites = state.favorites;
-              isEditMode = state.isEditMode;
-            } else if (state is FavoriteRemoving) {
-              liveFavorites = state.favorites;
-              isEditMode = state.isEditMode;
-            } else {
-              liveFavorites = [];
-              isEditMode = false;
-            }
+              if (state is FavoriteLoaded) {
+                liveFavorites = state.favorites;
+                isEditMode = state.isEditMode;
+              } else if (state is FavoriteRemoving) {
+                liveFavorites = state.favorites;
+                isEditMode = state.isEditMode;
+              } else {
+                liveFavorites = [];
+                isEditMode = false;
+              }
 
-            final displayed = categoryFilter != null
-                ? liveFavorites
-                      .where((p) => p.categoryName == categoryFilter)
-                      .toList()
-                : liveFavorites;
+              final displayed = categoryFilter != null
+                  ? liveFavorites
+                        .where((p) => p.categoryName == categoryFilter)
+                        .toList()
+                  : liveFavorites;
 
-            return CustomScrollView(
-              slivers: [
-                SliverToBoxAdapter(
-                  child: FavoriteHeaderWidget(
-                    title: categoryFilter ?? AppTexts.yourFavorite.tr(),
-                    isEditMode: isEditMode,
-                    onEdit: () =>
-                        context.read<FavoriteCubit>().toggleEditMode(),
+              return CustomScrollView(
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: FavoriteHeaderWidget(
+                      title: categoryFilter ?? AppTexts.yourFavorite.tr(),
+                      isEditMode: isEditMode,
+                      hasItems: displayed.isNotEmpty,
+                      onEdit: () =>
+                          context.read<FavoriteCubit>().toggleEditMode(),
+                    ),
                   ),
-                ),
-                if (displayed.isEmpty)
-                  SliverFillRemaining(
-                    child: Center(
-                      child: Text(
-                        AppTexts.noFavoritesYet.tr(),
-                        style: TextStyle(
-                          fontSize: AppSizes.sp16,
-                          color: Colors.grey,
+                  if (displayed.isEmpty)
+                    SliverFillRemaining(
+                      child: Center(
+                        child: Text(
+                          AppTexts.noFavoritesYet.tr(),
+                          style: TextStyle(
+                            fontSize: AppSizes.sp16,
+                            color: Colors.grey,
+                          ),
                         ),
                       ),
+                    )
+                  else
+                    SliverPadding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: AppSizes.w16,
+                        vertical: AppSizes.h12,
+                      ),
+                      sliver: SliverList.separated(
+                        itemCount: displayed.length,
+                        separatorBuilder: (_, _) =>
+                            SizedBox(height: AppSizes.h16),
+                        itemBuilder: (context, index) {
+                          final property = displayed[index];
+                          return _EditableCard(
+                            key: ValueKey(property.id),
+                            property: property,
+                            isEditMode: isEditMode,
+                            allFavorites: liveFavorites,
+                          );
+                        },
+                      ),
                     ),
-                  )
-                else
-                  SliverPadding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: AppSizes.w16,
-                      vertical: AppSizes.h12,
-                    ),
-                    sliver: SliverList.separated(
-                      itemCount: displayed.length,
-                      separatorBuilder: (_, _) =>
-                          SizedBox(height: AppSizes.h16),
-                      itemBuilder: (context, index) {
-                        final property = displayed[index];
-                        return _EditableCard(
-                          key: ValueKey(property.id),
-                          property: property,
-                          isEditMode: isEditMode,
-                          allFavorites: liveFavorites,
-                        );
-                      },
-                    ),
-                  ),
-              ],
-            );
-          },
+                ],
+              );
+            },
+          ),
         ),
-      ),
+      ), // PopScope
     );
   }
 }
@@ -492,11 +507,11 @@ class _EditableCard extends StatelessWidget {
                 onTap: isEditMode
                     ? null
                     : () => context.pushNamed(
-                        AppRoutes.favoriteDetails,
+                        AppRoutes.details,
                         extra: {
+                          'propertyId': property.id,
                           'favoriteCubit': context.read<FavoriteCubit>(),
-                          'property': property,
-                          'allFavorites': allFavorites,
+                          'similarProperties': <HomePropertyEntity>[],
                         },
                       ),
                 onFavoriteTap: () {},

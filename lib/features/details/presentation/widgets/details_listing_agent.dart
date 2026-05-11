@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../core/di/get_it.dart';
 import '../../../../core/router/app_router.dart';
+import '../../../../core/theme/app_theme.dart';
 import '../../../../core/utils/app_color.dart';
 import '../../../../core/utils/app_sizes.dart';
 import '../../../../core/utils/app_texts.dart';
@@ -62,7 +63,7 @@ class _DetailsListingAgentState extends State<DetailsListingAgent> {
           style: TextStyle(
             fontSize: AppSizes.sp16,
             fontWeight: FontWeight.w700,
-            color: AppColors.secondBlack,
+            color: context.appTheme.titleText,
           ),
         ),
         SizedBox(height: AppSizes.h12),
@@ -92,7 +93,7 @@ class _DetailsListingAgentState extends State<DetailsListingAgent> {
                     style: TextStyle(
                       fontSize: AppSizes.sp14,
                       fontWeight: FontWeight.w600,
-                      color: AppColors.secondBlack,
+                      color: context.appTheme.titleText,
                     ),
                   ),
                   Text(

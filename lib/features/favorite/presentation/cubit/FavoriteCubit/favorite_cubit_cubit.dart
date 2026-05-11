@@ -45,9 +45,11 @@ class FavoriteCubit extends Cubit<FavoriteState> {
     _pendingAddIds.add(propertyId);
     if (current is FavoriteLoaded) {
       if (isClosed) return;
-      emit(current.copyWith(
-        pendingFavoriteIds: {..._pendingAddIds, ..._confirmedAddIds},
-      ));
+      emit(
+        current.copyWith(
+          pendingFavoriteIds: {..._pendingAddIds, ..._confirmedAddIds},
+        ),
+      );
     }
 
     try {
@@ -59,22 +61,21 @@ class FavoriteCubit extends Cubit<FavoriteState> {
       final favorites = await getListFavoriteUseCase.call();
       _pendingAddIds.clear();
       _confirmedAddIds.clear();
-      final curr = state;
       if (isClosed) return;
-      emit(FavoriteLoaded(
-        favorites,
-        isEditMode: curr is FavoriteLoaded ? curr.isEditMode : false,
-        searchQuery: curr is FavoriteLoaded ? curr.searchQuery : '',
-      ));
+      // Always reset edit mode when refreshing favorites — the user
+      // added a new item so edit mode is no longer relevant
+      emit(FavoriteLoaded(favorites, isEditMode: false));
     } catch (e) {
       _pendingAddIds.remove(propertyId);
       _confirmedAddIds.remove(propertyId);
       final curr = state;
       if (isClosed) return;
       if (curr is FavoriteLoaded) {
-        emit(curr.copyWith(
-          pendingFavoriteIds: {..._pendingAddIds, ..._confirmedAddIds},
-        ));
+        emit(
+          curr.copyWith(
+            pendingFavoriteIds: {..._pendingAddIds, ..._confirmedAddIds},
+          ),
+        );
       }
       debugPrint('❌ FavoriteCubit.addFavorite error: $e');
     }
@@ -103,6 +104,13 @@ class FavoriteCubit extends Cubit<FavoriteState> {
     }
   }
 
+  void exitEditMode() {
+    final current = state;
+    if (current is FavoriteLoaded && current.isEditMode) {
+      emit(current.copyWith(isEditMode: false));
+    }
+  }
+
   Future<void> removeFavorite(int propertyId) async {
     final current = state;
     if (current is! FavoriteLoaded) return;
@@ -115,28 +123,35 @@ class FavoriteCubit extends Cubit<FavoriteState> {
     final wasEditMode = current.isEditMode;
 
     if (isClosed) return;
-    emit(FavoriteRemoving(
-      currentList,
-      propertyId,
-      isEditMode: wasEditMode,
-      searchQuery: current.searchQuery,
-    ));
+    emit(
+      FavoriteRemoving(
+        currentList,
+        propertyId,
+        isEditMode: wasEditMode,
+        searchQuery: current.searchQuery,
+      ),
+    );
 
     try {
       await removeFavouriteUseCase.call(propertyId);
       if (isClosed) return;
-      emit(FavoriteLoaded(
-        updated,
-        isEditMode: wasEditMode,
-        searchQuery: current.searchQuery,
-      ));
+      // Auto-exit edit mode when the list becomes empty
+      emit(
+        FavoriteLoaded(
+          updated,
+          isEditMode: updated.isEmpty ? false : wasEditMode,
+          searchQuery: current.searchQuery,
+        ),
+      );
     } catch (e) {
       if (isClosed) return;
-      emit(FavoriteLoaded(
-        currentList,
-        isEditMode: wasEditMode,
-        searchQuery: current.searchQuery,
-      ));
+      emit(
+        FavoriteLoaded(
+          currentList,
+          isEditMode: wasEditMode,
+          searchQuery: current.searchQuery,
+        ),
+      );
     }
   }
 }

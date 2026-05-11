@@ -1,7 +1,6 @@
-import 'dart:ui';
-import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../core/theme/app_theme.dart';
 import '../../../../core/utils/app_color.dart';
 import '../../../../core/utils/app_sizes.dart';
 import '../../../home/domain/entities/home_property_entity.dart';
@@ -41,16 +40,13 @@ class _DetailsViewState extends State<DetailsView> {
 
   @override
   void initState() {
-    _initDeepLinks();
-    _scrollController.addListener(_onScroll);
-    context.read<DetailsCubit>().loadDetails(widget.propertyId);
     super.initState();
     _scrollController.addListener(_onScroll);
     context.read<DetailsCubit>().loadDetails(widget.propertyId);
   }
 
   void _onScroll() {
-    final fraction =
+    final double fraction =
         ((_scrollController.offset - _transitionStart) /
                 (_heroHeight - _transitionStart))
             .clamp(0.0, 1.0);
@@ -58,33 +54,6 @@ class _DetailsViewState extends State<DetailsView> {
       setState(() => _scrollFraction = fraction);
     }
   }
-late AppLinks _appLinks;
-void _initDeepLinks() async {
-  _appLinks = AppLinks();
-
-  // 🔹 لو التطبيق اتفتح من لينك وهو مقفول
-  final uri = await _appLinks.getInitialLink();
-  if (uri != null) {
-    _handleLink(uri);
-  }
-
-  // 🔹 لو التطبيق شغال وجاله لينك
-  _appLinks.uriLinkStream.listen((uri) {
-    if (uri != null) {
-      _handleLink(uri);
-    }
-  });
-}
- void _handleLink(Uri uri) {
-  // مثال: /details/slug
-  if (uri.pathSegments.contains('details')) {
-    final slug = uri.pathSegments.last;
-
-     Navigator.push(context,MaterialPageRoute(builder: (context){
-      return DetailsView(propertyId:widget.propertyId);
-     }));
-  }
-} 
 
   @override
   void dispose() {
@@ -98,20 +67,20 @@ void _initDeepLinks() async {
     if (_scrollFraction == 0) return Colors.transparent;
     return Color.lerp(
       Colors.white.withValues(alpha: 0.12),
-      Colors.white,
+      Theme.of(context).colorScheme.surface,
       _scrollFraction,
     )!;
   }
 
   Color get _iconColor =>
-      Color.lerp(Colors.white, AppColors.secondBlack, _scrollFraction)!;
+      Color.lerp(Colors.white, context.appTheme.titleText, _scrollFraction)!;
 
   double get _blurAmount => (1 - _scrollFraction) * 10.0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.lightBackground,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: BlocBuilder<DetailsCubit, DetailsState>(
         builder: (context, state) {
           return Stack(
@@ -192,9 +161,7 @@ void _initDeepLinks() async {
                   bottom: 0,
                   left: 0,
                   right: 0,
-                  child: DetailsBottomBar(
-                    property: state.property
-                     ,),
+                  child: DetailsBottomBar(property: state.property),
                 ),
             ],
           );
@@ -230,9 +197,9 @@ class _DetailsContentCard extends StatelessWidget {
     return Transform.translate(
       offset: const Offset(0, -20),
       child: Container(
-        decoration: const BoxDecoration(
-          color: AppColors.light,
-          borderRadius: BorderRadius.only(
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surface,
+          borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(24),
             topRight: Radius.circular(24),
           ),

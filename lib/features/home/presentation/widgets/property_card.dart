@@ -4,11 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:habispace/core/shared/image_shimmer.dart';
+import '../../../../core/di/get_it.dart';
 import '../../../../core/router/app_router.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../core/utils/app_color.dart';
 import '../../../../core/utils/app_sizes.dart';
 import '../../../../core/utils/app_texts.dart';
+import '../../../details/presentation/cubit/details_cubit.dart';
 import '../../../favorite/presentation/cubit/FavoriteCubit/favorite_cubit_cubit.dart';
 import '../../../favorite/presentation/cubit/FavoriteCubit/favorite_cubit_state.dart';
 import '../../../home/presentation/cubit/home_cubit.dart';
@@ -23,21 +26,40 @@ class PropertyCard extends StatelessWidget {
     final ext = context.appTheme;
     return GestureDetector(
       onTap: () {
-        final homeState = context.read<HomeCubit>().state;
+        final homeCubit = context.read<HomeCubit>();
+        final homeState = homeCubit.state;
         final similar = homeState is HomeSuccess
             ? homeState.filteredRecommended
                   .where((p) => p.id != property.id)
                   .take(5)
                   .toList()
             : <HomePropertyEntity>[];
-        context.push(
-          AppRoutes.details,
-          extra: {
-            'propertyId': property.id,
-            'favoriteCubit': context.read<FavoriteCubit>(),
-            'similarProperties': similar,
-          },
-        );
+
+        // Create a DetailsCubit we can read after pop to get the live rating
+        final detailsCubit = sl<DetailsCubit>();
+
+        context
+            .push(
+              AppRoutes.details,
+              extra: {
+                'propertyId': property.id,
+                'favoriteCubit': context.read<FavoriteCubit>(),
+                'similarProperties': similar,
+                'detailsCubit': detailsCubit,
+              },
+            )
+            .then((_) {
+              // Patch the rating in the home list from the live reviews
+              final detailsState = detailsCubit.state;
+              if (detailsState is DetailsLoaded) {
+                homeCubit.updatePropertyRating(
+                  property.id,
+                  detailsState.liveRating,
+                  detailsState.reviews.length,
+                );
+              }
+              detailsCubit.close();
+            });
       },
       child: Container(
         width: AppSizes.w220,
@@ -68,24 +90,6 @@ class PropertyCard extends StatelessWidget {
                       ? SizedBox(
                           height: AppSizes.h140,
                           width: AppSizes.w220,
-
-                          // child: Image.network(
-                          //   property.images[0],
-                          //   fit: BoxFit.cover,
-                          //   loadingBuilder: (context, child, progress) {
-                          //     if (progress == null) return child;
-                          //     return _PropertyImagePlaceholder(
-                          //       width: AppSizes.w220,
-                          //       height: AppSizes.h140,
-                          //       showShimmer: true,
-                          //     );
-                          //   },
-                          //   errorBuilder: (context, error, stackTrace) =>
-                          //       _PropertyImagePlaceholder(
-                          //         width: AppSizes.w220,
-                          //         height: AppSizes.h140,
-                          //       ),
-                          // ),
                           child: CachedNetworkImage(
                             imageUrl: property.images[0],
                             fit: BoxFit.cover,
@@ -237,7 +241,10 @@ class PropertyCard extends StatelessWidget {
                           ),
                           SizedBox(width: AppSizes.w2),
                           Text(
-                            '4.9',
+                            (property.rating != null && property.rating! > 0
+                                    ? property.rating!
+                                    : 0.0)
+                                .toStringAsFixed(1),
                             style: TextStyle(
                               fontSize: AppSizes.sp12,
                               fontWeight: FontWeight.w600,
@@ -272,35 +279,28 @@ class _PropertyImagePlaceholder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ext = context.appTheme;
+    if (showShimmer) {
+      return SizedBox(
+        width: width,
+        height: height,
+        child: const ImageShimmer(),
+      );
+    }
     return Container(
       width: width,
       height: height,
       color: ext.imagePlaceholder,
-      child: showShimmer
-          ? Center(
-              child: CircularProgressIndicator(
-                strokeWidth: 2,
-                color: AppColors.blue,
-              ),
-            )
-          : Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.home_outlined,
-                  size: AppSizes.sp40,
-                  color: ext.subtleText,
-                ),
-                SizedBox(height: AppSizes.h6),
-                Text(
-                  'No Image',
-                  style: TextStyle(
-                    fontSize: AppSizes.sp11,
-                    color: ext.subtleText,
-                  ),
-                ),
-              ],
-            ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.home_outlined, size: AppSizes.sp40, color: ext.subtleText),
+          SizedBox(height: AppSizes.h6),
+          Text(
+            'No Image',
+            style: TextStyle(fontSize: AppSizes.sp11, color: ext.subtleText),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -1,5 +1,6 @@
- import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:habispace/core/theme/app_theme.dart';
 import 'package:habispace/core/utils/app_color.dart';
 import 'package:habispace/core/utils/app_sizes.dart';
 import 'package:habispace/features/details/domain/entities/property_detail_entity.dart';
@@ -23,9 +24,7 @@ class PaymentView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => PaymentCubit(
-        CreatePaymentUseCase(
-          PaymentRepoImpl(PaymentRemoteDataSourceImpl()),
-        ),
+        CreatePaymentUseCase(PaymentRepoImpl(PaymentRemoteDataSourceImpl())),
       ),
       child: PaymentBody(property: property),
     );
@@ -44,7 +43,8 @@ class PaymentBody extends StatefulWidget {
 class _PaymentBodyState extends State<PaymentBody> with WidgetsBindingObserver {
   DateTime? selectedDate;
   int personCount = 4;
-  bool _paymentInitiated = false; // true بعد ما يضغط Finish ويرجع من الـ browser
+  bool _paymentInitiated =
+      false; // true بعد ما يضغط Finish ويرجع من الـ browser
 
   @override
   void initState() {
@@ -71,12 +71,12 @@ class _PaymentBodyState extends State<PaymentBody> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF9F9F9),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          icon: Icon(Icons.arrow_back, color: context.appTheme.titleText),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
@@ -84,7 +84,7 @@ class _PaymentBodyState extends State<PaymentBody> with WidgetsBindingObserver {
           style: TextStyle(
             fontSize: AppSizes.sp18,
             fontWeight: FontWeight.w600,
-            color: Colors.black,
+            color: context.appTheme.titleText,
           ),
         ),
         centerTitle: true,
@@ -129,28 +129,28 @@ class _PaymentBodyState extends State<PaymentBody> with WidgetsBindingObserver {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       PropertySummaryCard(property: widget.property),
-                      
+
                       SizedBox(height: AppSizes.h20),
-                      
+
                       BookingDetailsSection(
                         selectedDate: selectedDate,
                         personCount: personCount,
                         onEditDate: _showDatePicker,
                         onEditPerson: _showPersonSelector,
                       ),
-                      
+
                       SizedBox(height: AppSizes.h20),
-                      
+
                       PriceDetailsSection(property: widget.property),
-                      
+
                       SizedBox(height: AppSizes.h20),
-                      
+
                       _buildCancellationPolicy(),
                     ],
                   ),
                 ),
               ),
-              
+
               _buildBottomButton(context, state),
             ],
           );
@@ -201,9 +201,9 @@ class _PaymentBodyState extends State<PaymentBody> with WidgetsBindingObserver {
 
     return Container(
       padding: EdgeInsets.all(AppSizes.w16),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        boxShadow: const [
           BoxShadow(
             color: Colors.black12,
             blurRadius: 8,
@@ -221,7 +221,11 @@ class _PaymentBodyState extends State<PaymentBody> with WidgetsBindingObserver {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.check_circle, color: Colors.green, size: AppSizes.h16),
+                    Icon(
+                      Icons.check_circle,
+                      color: Colors.green,
+                      size: AppSizes.h16,
+                    ),
                     SizedBox(width: AppSizes.w6),
                     Text(
                       'Payment submitted — awaiting confirmation',
@@ -237,9 +241,15 @@ class _PaymentBodyState extends State<PaymentBody> with WidgetsBindingObserver {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: isDisabled ? null : () => context.read<PaymentCubit>().createPayment(widget.property.id),
+                onPressed: isDisabled
+                    ? null
+                    : () => context.read<PaymentCubit>().createPayment(
+                        widget.property.id,
+                      ),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: isDisabled ? Colors.grey.shade300 : AppColors.blue,
+                  backgroundColor: isDisabled
+                      ? Colors.grey.shade300
+                      : AppColors.blue,
                   foregroundColor: Colors.white,
                   padding: EdgeInsets.symmetric(vertical: AppSizes.h16),
                   shape: RoundedRectangleBorder(
@@ -317,7 +327,7 @@ class _CancellationPolicySectionState
     return Container(
       padding: EdgeInsets.all(AppSizes.w16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(AppSizes.r12),
       ),
       child: Column(
@@ -328,7 +338,7 @@ class _CancellationPolicySectionState
             style: TextStyle(
               fontSize: AppSizes.sp18,
               fontWeight: FontWeight.w600,
-              color: AppColors.black,
+              color: context.appTheme.titleText,
             ),
           ),
           SizedBox(height: AppSizes.h12),
@@ -336,7 +346,7 @@ class _CancellationPolicySectionState
             _expanded ? _fullText : _shortText,
             style: TextStyle(
               fontSize: AppSizes.sp14,
-              color: Colors.grey.shade600,
+              color: context.appTheme.subtleText,
               height: 1.5,
             ),
           ),

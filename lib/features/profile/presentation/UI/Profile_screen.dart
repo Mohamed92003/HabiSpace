@@ -12,7 +12,6 @@ import 'package:habispace/core/theme/theme_cubit.dart';
 import 'package:habispace/core/utils/app_color.dart';
 import 'package:habispace/core/utils/app_texts.dart';
 import 'package:habispace/features/profile/presentation/Cubit/cubit/profile_cubit.dart';
-import 'package:habispace/features/profile/presentation/widgets/delete_my_account_widget.dart';
 import '../../../../core/utils/app_sizes.dart';
 import '../widgets/build_switch_tile.dart';
 import '../widgets/profile_header.dart';
@@ -23,9 +22,13 @@ import '../widgets/profile_menu_item_widget.dart';
 List<Widget> profileViewSlivers(BuildContext context, ProfileState state) {
   if (state is ProfileInitial || state is ProfileLoading) {
     return [
-        SliverToBoxAdapter(
-          child: AppSkeleton(isLoading: true, skeleton: ProfileSkeleton(), child: SkeletonWidget()),
-        )
+      SliverToBoxAdapter(
+        child: AppSkeleton(
+          isLoading: true,
+          skeleton: ProfileSkeleton(),
+          child: SkeletonWidget(),
+        ),
+      ),
     ];
   }
 
@@ -39,11 +42,28 @@ List<Widget> profileViewSlivers(BuildContext context, ProfileState state) {
     ];
   }
 
-  if (state is ProfileLoaded) {
-    final user = state.profile.isNotEmpty ? state.profile.first : null;
+  // Both ProfileLoaded and ProfileUpdating show the profile content.
+  // ProfileUpdating keeps the current data visible while a save is in progress.
+  final profileList = state is ProfileLoaded
+      ? state.profile
+      : state is ProfileUpdating
+      ? state.profile
+      : null;
+
+  if (profileList != null) {
+    final user = profileList.isNotEmpty ? profileList.first : null;
+    final imageVersion = state is ProfileLoaded
+        ? state.imageVersion
+        : state is ProfileUpdating
+        ? state.imageVersion
+        : 0;
 
     return [
-      ProfileHeaderSliver(imageUrl: user?.image, name: user?.name ?? ''),
+      ProfileHeaderSliver(
+        imageUrl: user?.image,
+        name: user?.name ?? '',
+        imageVersion: imageVersion,
+      ),
       SliverToBoxAdapter(
         child: Container(
           color: Theme.of(context).colorScheme.surfaceContainerHighest,
@@ -58,7 +78,7 @@ List<Widget> profileViewSlivers(BuildContext context, ProfileState state) {
                   style: TextStyle(
                     fontSize: 26,
                     fontWeight: FontWeight.bold,
-                    color: AppColors.secondBlack,
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
                 SizedBox(height: AppSizes.h6),
@@ -67,7 +87,7 @@ List<Widget> profileViewSlivers(BuildContext context, ProfileState state) {
                       ? user!.location
                       : AppTexts.profileNoLocation.tr(),
                   style: TextStyle(
-                    color: AppColors.textSecondaryColor,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                     fontSize: AppSizes.sp15,
                   ),
                 ),
@@ -90,9 +110,17 @@ List<Widget> profileViewSlivers(BuildContext context, ProfileState state) {
                     ),
                     ProfileMenuItem(
                       icon: Icons.manage_accounts_outlined,
-                      title: AppTexts.profileMyAccount.tr(),
+                      title: AppTexts.profileMyAccount,
                       isLast: true,
-                      onTap: () => DeleteAccountPopup.show(context),
+                      onTap: () {
+                        context.pushNamed(
+                          AppRoutes.myAccount,
+                          extra: {
+                            'user': user,
+                            'profileCubit': context.read<ProfileCubit>(),
+                          },
+                        );
+                      },
                     ),
                   ],
                 ),
@@ -121,6 +149,7 @@ List<Widget> profileViewSlivers(BuildContext context, ProfileState state) {
                         builder: (context, themeMode) {
                           final isDark = themeMode == ThemeMode.dark;
                           return buildSwitchTile(
+                            context: context,
                             icon: isDark
                                 ? Icons.dark_mode_outlined
                                 : Icons.light_mode_outlined,
@@ -146,6 +175,7 @@ List<Widget> profileViewSlivers(BuildContext context, ProfileState state) {
                         builder: (context) {
                           final isArabic = context.locale.languageCode == 'ar';
                           return buildSwitchTile(
+                            context: context,
                             icon: Icons.language_outlined,
                             iconColor: Colors.blueGrey,
                             title: AppTexts.profileLanguage.tr(),

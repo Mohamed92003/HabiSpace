@@ -21,7 +21,7 @@ class ProfileRepoImpl implements ProfileRepo {
       await repo.deleteProfile();
       await SecureStorage().remove(SecureKeys.token);
     } catch (e) {
-     throw Exception('Failed to delete account: $e');
+      throw Exception('Failed to delete account: $e');
     }
   }
 
@@ -30,25 +30,26 @@ class ProfileRepoImpl implements ProfileRepo {
     return await repo.getProfileData();
   }
 
-  @override
   Future<ProfileEntity> updateProfile({
     required String name,
     required String phone,
     required String location,
-  }) =>
-      repo.updateProfile(name: name, phone: phone, location: location);
-
+    String? imagePath,
+  }) => repo.updateProfile(
+    name: name,
+    phone: phone,
+    location: location,
+    imagePath: imagePath,
+  );
 
   @override
   Future<String> changePassword({
     required String currentPassword,
     required String password,
     required String passwordConfirmation,
-  }) =>
-      repo.changePassword(
-        currentPassword: currentPassword,
-        password: password,
-        passwordConfirmation: passwordConfirmation,
-      );
-
+  }) => repo.changePassword(
+    currentPassword: currentPassword,
+    password: password,
+    passwordConfirmation: passwordConfirmation,
+  );
 }

@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:readmore/readmore.dart';
+import '../../../../core/theme/app_theme.dart';
 import '../../../../core/utils/app_color.dart';
 import '../../../../core/utils/app_sizes.dart';
 import '../../../../core/utils/app_texts.dart';
@@ -21,7 +22,7 @@ class DetailsDescription extends StatelessWidget {
           style: TextStyle(
             fontSize: AppSizes.sp16,
             fontWeight: FontWeight.w700,
-            color: AppColors.secondBlack,
+            color: context.appTheme.titleText,
           ),
         ),
         SizedBox(height: AppSizes.h8),
@@ -34,7 +35,7 @@ class DetailsDescription extends StatelessWidget {
           textAlign: TextAlign.justify,
           style: TextStyle(
             fontSize: AppSizes.sp13,
-            color: AppColors.textSecondaryColor,
+            color: context.appTheme.bodyText,
             height: 1.6,
           ),
           moreStyle: TextStyle(

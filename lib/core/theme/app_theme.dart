@@ -116,9 +116,9 @@ class AppThemeExtension extends ThemeExtension<AppThemeExtension> {
   static const AppThemeExtension dark = AppThemeExtension(
     cardBg: Color(0xFF1C2B35),
     cardShadow: Color(0x33000000),
-    titleText: Color(0xFFE8EAED),
-    bodyText: Color(0xFFCDD3D8),
-    subtleText: Color(0xFFAAB4BE),
+    titleText: Color(0xFFFFFFFF), // was 0xFFE8EAED
+    bodyText: Color(0xFFE8EAED), // was 0xFFCDD3D8
+    subtleText: Color(0xFFCDD3D8), // was 0xFFAAB4BE
     divider: Color(0xFF2A3C47),
     inputFill: Color(0xFF1C2B35),
     badgeBg: Color(0xFF243340),
@@ -274,9 +274,9 @@ class AppTheme {
       secondary: const Color(0xFF1ABFB8),
       onSecondary: Colors.white,
       surface: _darkSurface,
-      onSurface: const Color(0xFFE8EAED),
+      onSurface: const Color(0xFFFFFFFF), // was 0xFFE8EAED
       surfaceContainerHighest: _darkBackground,
-      onSurfaceVariant: const Color(0xFFAAB4BE),
+      onSurfaceVariant: const Color(0xFFCDD3D8), // was 0xFFAAB4BE
       error: const Color(0xFFCF6679),
       onError: Colors.black,
       outline: const Color(0xFF2A3C47),
@@ -286,11 +286,11 @@ class AppTheme {
       onInverseSurface: _darkBackground,
       inversePrimary: _primary,
       primaryContainer: _darkSurfaceAlt,
-      onPrimaryContainer: const Color(0xFFE8EAED),
+      onPrimaryContainer: const Color(0xFFFFFFFF), // was 0xFFE8EAED
       secondaryContainer: _darkSurfaceAlt,
-      onSecondaryContainer: const Color(0xFFE8EAED),
+      onSecondaryContainer: const Color(0xFFFFFFFF), // was 0xFFE8EAED
       tertiaryContainer: _darkSurfaceAlt,
-      onTertiaryContainer: const Color(0xFFE8EAED),
+      onTertiaryContainer: const Color(0xFFFFFFFF), // was 0xFFE8EAED
     );
 
     return ThemeData(
@@ -304,31 +304,31 @@ class AppTheme {
       iconButtonTheme: IconButtonThemeData(
         style: IconButton.styleFrom(
           backgroundColor: _darkSurfaceAlt,
-          foregroundColor: const Color(0xFFE8EAED),
+          foregroundColor: const Color(0xFFFFFFFF), // was 0xFFE8EAED
           shape: const CircleBorder(),
         ),
       ),
       listTileTheme: const ListTileThemeData(
-        iconColor: Color(0xFFAAB4BE),
-        textColor: Color(0xFFE8EAED),
+        iconColor: Color(0xFFCDD3D8), // was 0xFFAAB4BE
+        textColor: Color(0xFFFFFFFF), // was 0xFFE8EAED
       ),
       textTheme: const TextTheme(
-        bodyLarge: TextStyle(color: Color(0xFFE8EAED)),
-        bodyMedium: TextStyle(color: Color(0xFFE8EAED)),
-        bodySmall: TextStyle(color: Color(0xFFAAB4BE)),
+        bodyLarge: TextStyle(color: Color(0xFFFFFFFF)), // was 0xFFE8EAED
+        bodyMedium: TextStyle(color: Color(0xFFFFFFFF)), // was 0xFFE8EAED
+        bodySmall: TextStyle(color: Color(0xFFCDD3D8)), // was 0xFFAAB4BE
         titleLarge: TextStyle(
-          color: Color(0xFFE8EAED),
+          color: Color(0xFFFFFFFF), // was 0xFFE8EAED
           fontWeight: FontWeight.bold,
         ),
         titleMedium: TextStyle(
-          color: Color(0xFFE8EAED),
+          color: Color(0xFFFFFFFF), // was 0xFFE8EAED
           fontWeight: FontWeight.w600,
         ),
-        labelSmall: TextStyle(color: Color(0xFFAAB4BE)),
+        labelSmall: TextStyle(color: Color(0xFFCDD3D8)), // was 0xFFAAB4BE
       ),
       appBarTheme: const AppBarTheme(
         backgroundColor: _darkBackground,
-        foregroundColor: Color(0xFFE8EAED),
+        foregroundColor: Color(0xFFFFFFFF), // was 0xFFE8EAED
         elevation: 0,
         scrolledUnderElevation: 0,
         centerTitle: true,
@@ -376,7 +376,7 @@ class AppTheme {
         backgroundColor: _darkSurfaceAlt,
         selectedColor: _primary,
         labelStyle: const TextStyle(
-          color: Color(0xFFE8EAED),
+          color: Color(0xFFFFFFFF), // was 0xFFE8EAED
           fontWeight: FontWeight.w600,
         ),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),

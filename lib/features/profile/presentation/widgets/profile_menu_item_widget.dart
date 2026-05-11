@@ -1,7 +1,5 @@
-
 import 'package:flutter/material.dart';
-
-import '../../../../core/utils/app_color.dart';
+import '../../../../core/theme/app_theme.dart';
 
 class ProfileMenuItemWidget extends StatelessWidget {
   final Widget child;
@@ -19,7 +17,7 @@ class ProfileMenuItemWidget extends StatelessWidget {
             height: 1,
             thickness: 0.8,
             indent: 52,
-            color: AppColors.borderColor,
+            color: context.appTheme.divider,
           ),
       ],
     );

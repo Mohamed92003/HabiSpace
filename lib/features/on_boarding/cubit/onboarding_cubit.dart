@@ -10,11 +10,6 @@ class OnboardingCubit extends Cubit<OnboardingState> {
   final PageController pageController = PageController();
 
   void onPageChanged(int index) {
-    if (index == 2) {
-      emit(state.copyWith(isLastPage: true));
-    } else {
-      emit(state.copyWith(isLastPage: false));
-    }
+    emit(state.copyWith(currentIndex: index, isLastPage: index == 2));
   }
-
 }

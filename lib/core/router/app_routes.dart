@@ -16,9 +16,10 @@ abstract class AppRoutes {
   static const String otp = '/otp';
   static const String reviews = '/reviews';
   static const String resetPassword = '/reset-password';
-  static const String payment='/payment';
+  static const String payment = '/payment';
   static const String updateProfile = '/update-profile';
   static const String changePassword = '/change-password';
   static const String deleteAccount = '/delete-account';
+  static const String myAccount = '/my-account';
   static const String explore = '/explore';
 }

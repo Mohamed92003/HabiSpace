@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/utils/app_color.dart';
+import '../../../../core/theme/app_theme.dart';
 import '../../../../core/utils/app_sizes.dart';
 
-
 Widget buildSwitchTile({
+  required BuildContext context,
   required IconData icon,
   required Color iconColor,
   required String title,
   required Widget trailing,
 }) {
   return Padding(
-    padding: EdgeInsets.symmetric(horizontal: AppSizes.w16, vertical: AppSizes.h4),
+    padding: EdgeInsets.symmetric(
+      horizontal: AppSizes.w16,
+      vertical: AppSizes.h4,
+    ),
     child: Row(
       children: [
         Icon(icon, color: iconColor, size: AppSizes.sp22),
@@ -22,7 +25,7 @@ Widget buildSwitchTile({
             style: TextStyle(
               fontSize: AppSizes.sp15,
               fontWeight: FontWeight.w500,
-              color: AppColors.secondBlack,
+              color: context.appTheme.titleText,
             ),
           ),
         ),
@@ -31,5 +34,3 @@ Widget buildSwitchTile({
     ),
   );
 }
-
-
