@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "591287941475",
+    "project_id": "habbi-space28967",
+    "storage_bucket": "habbi-space28967.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:591287941475:android:71471df0c389c8581c3b56",
+        "android_client_info": {
+          "package_name": "com.example.habispace"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXdxoGA-Rx_DQM5sBEMgJUYjsvif5Mgp8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
