@@ -36,5 +36,5 @@ jobs:
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
         run: |
-          bundle exec fastlane android distribute
+          fastlane android distribute
         working-directory: android
