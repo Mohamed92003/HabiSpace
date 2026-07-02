@@ -32,9 +32,9 @@ jobs:
           ruby-version: '3.3'
           bundler-cache: true
 
-      - name: Build and distribute the app
+      - name: Build and Distribute App
         env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          FIREBASE_CLI_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
         run: |
-          fastlane android distribute
+          bundle exec fastlane android distribute
         working-directory: android
