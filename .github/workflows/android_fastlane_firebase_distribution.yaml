@@ -35,7 +35,6 @@ jobs:
       - name: Build and distribute the app
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-          APP_ID: ${{ secrets.APP_ID }}
         run: |
-           fastlane android distribute
+          bundle exec fastlane android distribute
         working-directory: android
