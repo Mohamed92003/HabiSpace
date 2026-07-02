@@ -1,4 +1,4 @@
-name: Android Fastlane Firebase Distribution
+name: Android Fastlane with Firebase App Distribution Workflow
 
 on:
   push:
@@ -37,5 +37,5 @@ jobs:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
           APP_ID: ${{ secrets.APP_ID }}
         run: |
-          bundle exec fastlane_android firebase distribute
+          bundle exec fastlane android distribute
         working-directory: android
